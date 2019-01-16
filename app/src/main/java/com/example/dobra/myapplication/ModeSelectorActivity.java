@@ -12,8 +12,10 @@ public class ModeSelectorActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mode_selector);
+
         binauralBeatsButtonOnClickListener();
         mnemonicsButtonOnClickListener();
         plainButtonOnClickListener();
@@ -25,7 +27,7 @@ public class ModeSelectorActivity extends AppCompatActivity {
         binauralbeatsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gamemode_intent = new Intent("android.intent.action.ChapterActivity");
+                Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
                 startActivity(gamemode_intent);
                 finish();
             }
@@ -38,7 +40,7 @@ public class ModeSelectorActivity extends AppCompatActivity {
         mnemonicsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gamemode_intent = new Intent("android.intent.action.ChapterActivity");
+                Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
                 startActivity(gamemode_intent);
                 finish();
             }
@@ -51,7 +53,7 @@ public class ModeSelectorActivity extends AppCompatActivity {
         plainBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gamemode_intent = new Intent("android.intent.action.ChapterActivity");
+                Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
                 startActivity(gamemode_intent);
                 finish();
             }

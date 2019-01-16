@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dobra.myapplication">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -23,9 +25,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChapterActivity">
+        <activity android:name=".ChapterSelectorActivity">
             <intent-filter>
-                <action android:name="android.intent.action.ChapterActivity" />
+                <action android:name="android.intent.action.ChapterSelectorActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -33,6 +35,20 @@
         <activity android:name=".MapViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MapViewActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".TrainingSceneView">
+            <intent-filter>
+                <action android:name="android.intent.action.TrainingSceneView" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".GameplayScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.GameplayScreen" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
