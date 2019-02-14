@@ -11,6 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <service
+            android:name=".MusicService"
+            android:enabled="true" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,6 +54,20 @@
         <activity android:name=".GameplayScreen">
             <intent-filter>
                 <action android:name="android.intent.action.GameplayScreen" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.LoginActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".SignupActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SignupActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

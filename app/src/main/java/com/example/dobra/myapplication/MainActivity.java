@@ -1,9 +1,16 @@
 package com.example.dobra.myapplication;
 
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.media.MediaPlayer;
+import android.os.IBinder;
+import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Display;
@@ -17,8 +24,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 public class MainActivity extends AppCompatActivity {
+    public static Activity mainActivity;
+
+    HomeWatcher mHomeWatcher;
+
     private ImageButton login_button;
-    private RelativeLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +36,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        doBindService();
+        Intent music = new Intent();
+        music.setClass(this, MusicService.class);
+        startService(music);
+
+        mHomeWatcher = new HomeWatcher(this);
+        mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
+            @Override
+            public void onHomePressed() {
+                if (mServ != null) {
+                    mServ.pauseMusic();
+                }
+            }
+            @Override
+            public void onHomeLongPressed() {
+                if (mServ != null) {
+                    mServ.pauseMusic();
+                }
+            }
+        });
+        mHomeWatcher.startWatch();
+
         loginButtonOnClickListener();
-        //test();
+
+        mainActivity = this;
     }
 
     public void loginButtonOnClickListener(){
@@ -36,41 +69,67 @@ public class MainActivity extends AppCompatActivity {
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent login_intent = new Intent("android.intent.action.ModeSelectorActivity");
+                Intent login_intent = new Intent("android.intent.action.LoginActivity");
                 startActivity(login_intent);
-                finish();
             }
         });
     }
-/*
-    public void test(){
-        ImageButton test = new ImageButton(this);
-        test.setBackgroundResource(R.drawable.boss);
-
-        float scale = getResources().getDisplayMetrics().density;
-
-        int dpWidthInPx2 = (int) (50 * scale);
-        int dpHeightInPx2 = (int) (80 * scale);
-
-        LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-        test.setLayoutParams(layoutParams2);
-
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent gameScreen = new Intent("android.intent.action.GameplayScreen");
-                startActivity(gameScreen);
-            }
-        });
-
-        test.setY(400);
-        test.setX(400);
 
 
-        layout = (RelativeLayout) findViewById(R.id.mainlayout);
 
-        layout.addView(test);
+    private boolean mIsBound = false;
+    private MusicService mServ;
+    private ServiceConnection Scon = new ServiceConnection(){
+
+        public void onServiceConnected(ComponentName name, IBinder
+                binder) {
+            mServ = ((MusicService.ServiceBinder)binder).getService();
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+            mServ = null;
+        }
+    };
+
+    void doBindService(){
+        bindService(new Intent(this,MusicService.class),
+                Scon,Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+    }
+
+    void doUnbindService()
+    {
+        if(mIsBound)
+        {
+            unbindService(Scon);
+            mIsBound = false;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mServ != null) {
+            mServ.resumeMusic();
+        }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
 
 
-    }*/
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        doUnbindService();
+/*        Intent music = new Intent();
+        music.setClass(this,MusicService.class);
+        stopService(music);*/
+
+    }
 }
