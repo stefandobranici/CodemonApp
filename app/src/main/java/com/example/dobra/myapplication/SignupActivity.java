@@ -2,6 +2,7 @@ package com.example.dobra.myapplication;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,8 +21,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -32,6 +41,7 @@ public class SignupActivity extends AppCompatActivity {
     private LinearLayout screenLayout;
     private float scale;
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener firebaseAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,5 +240,29 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
         screenLayout.addView(signupBtn);
+
+
+        ImageButton loginBtn = new ImageButton(this);
+
+        loginBtn.setBackgroundResource(R.drawable.loginbtn2);
+        dpWidthInPx = (int) (130 * scale);
+        dpHeightInPx = (int) (40 * scale);
+
+        layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
+        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+        layoutParams.setMargins(0, dpHeightInPx, 0, 0);
+        loginBtn.setLayoutParams(layoutParams);
+
+        loginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent login_intent = new Intent("android.intent.action.LoginActivity");
+                LoginActivity.loginActivity.finish();
+                startActivity(login_intent);
+                finish();
+            }
+        });
+
+        screenLayout.addView(loginBtn);
     }
 }
