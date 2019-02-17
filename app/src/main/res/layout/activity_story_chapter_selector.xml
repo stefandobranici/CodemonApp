@@ -7,76 +7,84 @@
     android:background="@drawable/background"
     tools:context=".ChapterSelectorActivity">
 
-    <ImageView
-        android:id="@+id/chaptertxt"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:layout_alignParentTop="true"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="29dp"
-        android:src="@drawable/chapter" />
+        android:weightSum="8">
+        <ImageView
+            android:id="@+id/chaptertxt"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:src="@drawable/chapter" />
+        <ImageButton
+            android:id="@+id/variables"
+            android:layout_width="200dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/variables" />
+
+        <ImageButton
+            android:id="@+id/ifs"
+            android:layout_width="200dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/ifworld" />
+
+        <ImageButton
+            android:id="@+id/whiles"
+            android:layout_width="200dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/whilewait" />
+
+        <ImageButton
+            android:id="@+id/fors"
+            android:layout_width="200dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/forever" />
+
+        <ImageButton
+            android:id="@+id/arrays"
+            android:layout_width="200dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/arrays" />
+
+        <ImageButton
+            android:id="@+id/methods"
+            android:layout_width="200dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/methods" />
+
+        <ImageButton
+            android:id="@+id/classes"
+            android:layout_width="200dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="15dp"
+            android:layout_weight="1"
+            android:background="@drawable/classes" />
+    </LinearLayout>
 
     <ImageButton
-        android:id="@+id/variables"
-        android:layout_width="200dp"
-        android:layout_height="52dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="106dp"
-        android:background="@drawable/variables" />
-
-    <ImageButton
-        android:id="@+id/ifs"
-        android:layout_width="200dp"
-        android:layout_height="52dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="175dp"
-        android:background="@drawable/ifworld" />
-
-    <ImageButton
-        android:id="@+id/whiles"
-        android:layout_width="200dp"
-        android:layout_height="52dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="242dp"
-        android:background="@drawable/whilewait" />
-
-    <ImageButton
-        android:id="@+id/fors"
-        android:layout_width="200dp"
-        android:layout_height="52dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="307dp"
-        android:background="@drawable/forever" />
-
-    <ImageButton
-        android:id="@+id/arrays"
-        android:layout_width="200dp"
-        android:layout_height="52dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="374dp"
-        android:background="@drawable/arrays" />
-
-    <ImageButton
-        android:id="@+id/methods"
-        android:layout_width="200dp"
-        android:layout_height="52dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="441dp"
-        android:background="@drawable/methods" />
-
-    <ImageButton
-        android:id="@+id/classes"
-        android:layout_width="200dp"
-        android:layout_height="52dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="508dp"
-        android:background="@drawable/classes" />
-
+        android:id="@+id/settingsbutton"
+        android:background="@drawable/settingsicon"
+        android:layout_width="60dp"
+        android:layout_height="56dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"/>
 </RelativeLayout>
