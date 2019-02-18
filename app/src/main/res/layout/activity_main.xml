@@ -26,23 +26,39 @@
         android:layout_marginBottom="0dp"
         android:background="@drawable/loginbtn" />
 
-    <ImageButton
+<!--    <ImageButton
         android:id="@+id/fblogin"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="0dp"
         android:layout_marginBottom="0dp"
-        android:background="@drawable/fb" />
+        android:background="@drawable/fb" />-->
 
     <ImageButton
         android:id="@+id/bsulogin"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp"
         android:background="@drawable/bsu" />
 
+    <TextView
+        android:id="@+id/loggedInID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
+
+    <ImageButton
+        android:id="@+id/settingsbutton"
+        android:background="@drawable/settingsicon"
+        android:layout_width="60dp"
+        android:layout_height="56dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"/>
 </RelativeLayout>

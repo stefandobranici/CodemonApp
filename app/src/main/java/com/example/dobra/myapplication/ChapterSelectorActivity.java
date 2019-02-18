@@ -19,35 +19,12 @@ public class ChapterSelectorActivity extends AppCompatActivity {
 
     private ImageButton variablesBtn, ifBtn, whileBtn, forBtn, arraysBtn, methodsBtn, classesBtn;
 
-    public static int chapter_selected;
-
-    public static GameStatus gameStatus;
-
-    private DatabaseReference dbLevels;
+    public static Integer chapter_selected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_chapter_selector);
-
-        gameStatus = new GameStatus();
-
-        for(int i = 0; i < 7; i++) {
-
-            LinkedList<Level> levelList = new LinkedList<>();
-
-            for (int j = 0; j < 21; j++) {
-                Level level = new Level();
-                level.chapter_id = i;
-                level.mission_id = j;
-                level.colour_label = (int) (Math.random() * 4 + 1);
-                level.completed = false;
-
-                levelList.add(level);
-            }
-
-            gameStatus.addChapter(i, levelList);
-        }
 
         variablesButtonOnClickListener();
         ifButtonOnClickListener();
@@ -56,10 +33,6 @@ public class ChapterSelectorActivity extends AppCompatActivity {
         arraysButtonOnClickListener();
         methodsButtonOnClickListener();
         classesButtonOnClickListener();
-
-
-/*        Query query = FirebaseDatabase.getInstance().getReference("levels").orderByChild("chapter_id").equalTo("variables");
-        query.addListenerForSingleValueEvent(valueEventListener);*/
     }
 
     public void variablesButtonOnClickListener(){
@@ -70,7 +43,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 0;
+                chapter_selected = 1;
 
                 startActivity(mapview_intent);
             }
@@ -85,7 +58,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 1;
+                chapter_selected = 2;
 
                 startActivity(mapview_intent);
             }
@@ -100,7 +73,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 2;
+                chapter_selected = 3;
 
                 startActivity(mapview_intent);
             }
@@ -115,7 +88,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 3;
+                chapter_selected = 4;
 
                 startActivity(mapview_intent);
             }
@@ -130,7 +103,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 4;
+                chapter_selected = 5;
 
                 startActivity(mapview_intent);
             }
@@ -145,7 +118,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 5;
+                chapter_selected = 6;
 
                 startActivity(mapview_intent);
             }
@@ -160,32 +133,10 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 6;
+                chapter_selected = 7;
 
                 startActivity(mapview_intent);
             }
         });
     }
-
-/*    ValueEventListener valueEventListener = new ValueEventListener() {
-        @Override
-        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-            levelList.clear();
-            if(dataSnapshot.exists()) {
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                    Level level = snapshot.getValue(Level.class);
-                    levelList.add(level);
-                }
-
-                adapter.generateMap(map,  levelList);
-            }
-
-
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-        }
-    };*/
 }

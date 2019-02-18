@@ -15,443 +15,436 @@ import android.widget.Toast;
 import java.util.List;
 
 public class LevelAdapter {
-    private Context context;
-    private float scale;
-    public static Level CURRENT_GAME_MISSION;
+   private List<Level> mLevelList;
+   private List<String> mKeys;
+   private Context context;
+   private RelativeLayout layout;
+   private float scale;
+   private int countX, countY, widthPixels;
+   private boolean goRight;
 
-    public LevelAdapter(Context context){
+   public LevelAdapter(List<Level> mLevelList, List<String> mKeys, Context context, RelativeLayout layout) {
+        this.mLevelList = mLevelList;
+        this.mKeys = mKeys;
         this.context = context;
-
-        CURRENT_GAME_MISSION = null;
+        this.layout = layout;
 
         scale = context.getResources().getDisplayMetrics().density;
-    }
+        countX = 0;
+        countY = 0;
+        goRight = true;
+        widthPixels = context.getResources().getDisplayMetrics().widthPixels;
+   }
 
-    public void generateMap(RelativeLayout map, List<Level> levelList){
-        int countX = 0;
-        int countY = 0;
-        boolean goRight = true;
+   public void generateMap() {
+       for(final Level level:mLevelList){
+           if(level.getType().equals("blue")){
+               if(goRight) {
+                   ImageView image = new ImageView(context);
+                   image.setImageResource(R.drawable.bluetile);
 
-        int widthPixels = context.getResources().getDisplayMetrics().widthPixels;
+
+                   int dpWidthInPx = (int) (120 * scale);
+                   int dpHeightInPx = (int) (30 * scale);
 
-        for(final Level level:levelList){
-            if(level.colour_label == 1){
-                if(goRight) {
-                    ImageView image = new ImageView(context);
-                    image.setImageResource(R.drawable.bluetile);
+                   if(countX == 0){
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
+                   } else if(countX == 1){
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
+                   } else {
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx );
+                   }
+                   image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
 
+                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
+                   image.setLayoutParams(layoutParams);
 
-                    int dpWidthInPx = (int) (120 * scale);
-                    int dpHeightInPx = (int) (30 * scale);
+                   layout.addView(image);
 
-                    if(countX == 0){
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                    } else if(countX == 1){
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
-                    } else {
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx );
-                    }
-                    image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
+                   ImageView image2 = new ImageView(context);
+                   image2.setImageResource(R.drawable.chiuplus);
 
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                    image.setLayoutParams(layoutParams);
 
-                    map.addView(image);
+                   int dpWidthInPx2 = (int) (40 * scale);
+                   int dpHeightInPx2 = (int) (60 * scale);
 
-                    ImageView image2 = new ImageView(context);
-                    image2.setImageResource(R.drawable.chiuplus);
 
+                   image2.setX(image.getX() + dpWidthInPx/3 );
+                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
 
-                    int dpWidthInPx2 = (int) (40 * scale);
-                    int dpHeightInPx2 = (int) (60 * scale);
+                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
+                   image2.setLayoutParams(layoutParams2);
 
+                   layout.addView(image2);
 
-                    image2.setX(image.getX() + dpWidthInPx/3 );
-                    image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
+                   if(countX+1<=2){
+                       countX++;
+                   } else {
+                       countY++;
+                       goRight = false;
+                   }
+               } else {
+                   ImageView image = new ImageView(context);
+                   image.setImageResource(R.drawable.bluetile);
 
-                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                    image2.setLayoutParams(layoutParams2);
+                   int dpWidthInPx = (int) (120 * scale);
+                   int dpHeightInPx = (int) (30 * scale);
 
-                    map.addView(image2);
+                   if(countX == 0){
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
+                   } else if(countX == 1){
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
+                   } else {
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx );
+                   }
+                   image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
 
-                    if(countX+1<=2){
-                        countX++;
-                    } else {
-                        countY++;
-                        goRight = false;
-                    }
-                } else {
-                    ImageView image = new ImageView(context);
-                    image.setImageResource(R.drawable.bluetile);
+                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
+                   image.setLayoutParams(layoutParams);
 
-                    int dpWidthInPx = (int) (120 * scale);
-                    int dpHeightInPx = (int) (30 * scale);
+                   layout.addView(image);
 
-                    if(countX == 0){
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                    } else if(countX == 1){
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
-                    } else {
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx );
-                    }
-                    image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
+                   ImageView image2 = new ImageView(context);
+                   image2.setImageResource(R.drawable.chiuplus);
 
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                    image.setLayoutParams(layoutParams);
 
-                    map.addView(image);
+                   int dpWidthInPx2 = (int) (40 * scale);
+                   int dpHeightInPx2 = (int) (60 * scale);
 
-                    ImageView image2 = new ImageView(context);
-                    image2.setImageResource(R.drawable.chiuplus);
 
+                   image2.setX(image.getX() + dpWidthInPx/3);
+                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
 
-                    int dpWidthInPx2 = (int) (40 * scale);
-                    int dpHeightInPx2 = (int) (60 * scale);
+                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
+                   image2.setLayoutParams(layoutParams2);
 
+                   layout.addView(image2);
 
-                    image2.setX(image.getX() + dpWidthInPx/3);
-                    image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
+                   if(countX-1>=0){
+                       countX--;
+                   } else {
+                       countY++;
+                       goRight = true;
+                   }
+               }
+           }  else if(level.getType().equals("green")){
+               if(goRight) {
+                   ImageView image = new ImageView(context);
+                   image.setImageResource(R.drawable.greentile);
 
-                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                    image2.setLayoutParams(layoutParams2);
+                   int dpWidthInPx = (int) (120 * scale);
+                   int dpHeightInPx = (int) (30 * scale);
 
-                    map.addView(image2);
+                   if(countX == 0){
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
+                   } else if(countX == 1){
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
+                   } else {
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx );
+                   }
+                   image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
 
-                    if(countX-1>=0){
-                        countX--;
-                    } else {
-                        countY++;
-                        goRight = true;
-                    }
-                }
-            }  else if(level.colour_label == 2){
-                if(goRight) {
-                    ImageView image = new ImageView(context);
-                    image.setImageResource(R.drawable.greentile);
+                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
+                   image.setLayoutParams(layoutParams);
 
-                    int dpWidthInPx = (int) (120 * scale);
-                    int dpHeightInPx = (int) (30 * scale);
+                   layout.addView(image);
+
+                   ImageButton image2 = new ImageButton(context);
+                   image2.setBackgroundResource(R.drawable.trainingcap);
+
 
-                    if(countX == 0){
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                    } else if(countX == 1){
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
-                    } else {
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx );
-                    }
-                    image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
+                   int dpWidthInPx2 = (int) (50 * scale);
+                   int dpHeightInPx2 = (int) (30 * scale);
 
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                    image.setLayoutParams(layoutParams);
 
-                    map.addView(image);
+                   image2.setX(image.getX() + dpWidthInPx/3 - dpWidthInPx/12);
+                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
 
-                    ImageButton image2 = new ImageButton(context);
-                    image2.setBackgroundResource(R.drawable.trainingcap);
+                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
+                   image2.setLayoutParams(layoutParams2);
 
+/*                   image2.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                           context.startActivity(intent);
+                       }
+                   });*/
 
-                    int dpWidthInPx2 = (int) (50 * scale);
-                    int dpHeightInPx2 = (int) (30 * scale);
+                   layout.addView(image2);
 
+                   if(countX+1<=2){
+                       countX++;
+                   } else {
+                       countY++;
+                       goRight = false;
+                   }
+               } else {
+                   ImageView image = new ImageView(context);
+                   image.setImageResource(R.drawable.greentile);
 
-                    image2.setX(image.getX() + dpWidthInPx/3 - dpWidthInPx/12);
-                    image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
+                   int dpWidthInPx = (int) (120 * scale);
+                   int dpHeightInPx = (int) (30 * scale);
 
-                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                    image2.setLayoutParams(layoutParams2);
+                   if(countX == 0){
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
+                   } else if(countX == 1){
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
+                   } else {
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx );
+                   }
+                   image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
 
-                    image2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
+                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
+                   image.setLayoutParams(layoutParams);
 
-                            CURRENT_GAME_MISSION = level;
-                        }
-                    });
+                   layout.addView(image);
 
-                    map.addView(image2);
+                   ImageButton image2 = new ImageButton(context);
+                   image2.setBackgroundResource(R.drawable.trainingcap);
 
-                    if(countX+1<=2){
-                        countX++;
-                    } else {
-                        countY++;
-                        goRight = false;
-                    }
-                } else {
-                    ImageView image = new ImageView(context);
-                    image.setImageResource(R.drawable.greentile);
 
-                    int dpWidthInPx = (int) (120 * scale);
-                    int dpHeightInPx = (int) (30 * scale);
+                   int dpWidthInPx2 = (int) (50 * scale);
+                   int dpHeightInPx2 = (int) (30 * scale);
 
-                    if(countX == 0){
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                    } else if(countX == 1){
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
-                    } else {
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx );
-                    }
-                    image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
 
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                    image.setLayoutParams(layoutParams);
+                   image2.setX(image.getX() + dpWidthInPx/3 - dpWidthInPx/12);
+                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
 
-                    map.addView(image);
+                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
+                   image2.setLayoutParams(layoutParams2);
 
-                    ImageButton image2 = new ImageButton(context);
-                    image2.setBackgroundResource(R.drawable.trainingcap);
+/*                   image2.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                           context.startActivity(intent);
+                       }
+                   });*/
 
 
-                    int dpWidthInPx2 = (int) (50 * scale);
-                    int dpHeightInPx2 = (int) (30 * scale);
+                   layout.addView(image2);
 
+                   if(countX-1>=0){
+                       countX--;
+                   } else {
+                       countY++;
+                       goRight = true;
+                   }
+               }
+           } else if(level.getType().equals("violet")){
+               if(goRight) {
+                   ImageView image = new ImageView(context);
+                   image.setImageResource(R.drawable.violettile);
 
-                    image2.setX(image.getX() + dpWidthInPx/3 - dpWidthInPx/12);
-                    image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
+                   int dpWidthInPx = (int) (120 * scale);
+                   int dpHeightInPx = (int) (30 * scale);
 
-                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                    image2.setLayoutParams(layoutParams2);
+                   if(countX == 0){
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
+                   } else if(countX == 1){
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
+                   } else {
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx );
+                   }
+                   image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
 
-                    image2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
+                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
+                   image.setLayoutParams(layoutParams);
 
-                            CURRENT_GAME_MISSION = level;
-                        }
-                    });
+                   layout.addView(image);
 
+                   ImageButton image2 = new ImageButton(context);
+                   image2.setBackgroundResource(R.drawable.codebug);
 
-                    map.addView(image2);
 
-                    if(countX-1>=0){
-                        countX--;
-                    } else {
-                        countY++;
-                        goRight = true;
-                    }
-                }
-            } else if(level.colour_label == 3){
-                if(goRight) {
-                    ImageView image = new ImageView(context);
-                    image.setImageResource(R.drawable.violettile);
+                   int dpWidthInPx2 = (int) (50 * scale);
+                   int dpHeightInPx2 = (int) (60 * scale);
 
-                    int dpWidthInPx = (int) (120 * scale);
-                    int dpHeightInPx = (int) (30 * scale);
 
-                    if(countX == 0){
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                    } else if(countX == 1){
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
-                    } else {
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx );
-                    }
-                    image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
+                   image2.setX(image.getX() + dpWidthInPx/3 - dpWidthInPx/12);
+                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
 
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                    image.setLayoutParams(layoutParams);
+                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
+                   image2.setLayoutParams(layoutParams2);
 
-                    map.addView(image);
+/*                   image2.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                           context.startActivity(intent);
+                       }
+                   });*/
 
-                    ImageButton image2 = new ImageButton(context);
-                    image2.setBackgroundResource(R.drawable.codebug);
 
+                   layout.addView(image2);
 
-                    int dpWidthInPx2 = (int) (50 * scale);
-                    int dpHeightInPx2 = (int) (60 * scale);
+                   if(countX+1<=2){
+                       countX++;
+                   } else {
+                       countY++;
+                       goRight = false;
+                   }
+               } else {
+                   ImageView image = new ImageView(context);
+                   image.setImageResource(R.drawable.violettile);
 
+                   int dpWidthInPx = (int) (120 * scale);
+                   int dpHeightInPx = (int) (30 * scale);
 
-                    image2.setX(image.getX() + dpWidthInPx/3 - dpWidthInPx/12);
-                    image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
+                   if(countX == 0){
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
+                   } else if(countX == 1){
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
+                   } else {
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx );
+                   }
+                   image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
 
-                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                    image2.setLayoutParams(layoutParams2);
+                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
+                   image.setLayoutParams(layoutParams);
 
-                    image2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
+                   layout.addView(image);
 
-                            CURRENT_GAME_MISSION = level;
-                        }
-                    });
+                   ImageButton image2 = new ImageButton(context);
+                   image2.setBackgroundResource(R.drawable.codebug);
 
 
-                    map.addView(image2);
+                   int dpWidthInPx2 = (int) (50 * scale);
+                   int dpHeightInPx2 = (int) (60 * scale);
 
-                    if(countX+1<=2){
-                        countX++;
-                    } else {
-                        countY++;
-                        goRight = false;
-                    }
-                } else {
-                    ImageView image = new ImageView(context);
-                    image.setImageResource(R.drawable.violettile);
 
-                    int dpWidthInPx = (int) (120 * scale);
-                    int dpHeightInPx = (int) (30 * scale);
+                   image2.setX(image.getX() + dpWidthInPx/3 - dpWidthInPx/12);
+                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
 
-                    if(countX == 0){
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                    } else if(countX == 1){
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
-                    } else {
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx );
-                    }
-                    image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
+                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
+                   image2.setLayoutParams(layoutParams2);
 
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                    image.setLayoutParams(layoutParams);
+/*                   image2.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                           context.startActivity(intent);
+                       }
+                   });*/
 
-                    map.addView(image);
 
-                    ImageButton image2 = new ImageButton(context);
-                    image2.setBackgroundResource(R.drawable.codebug);
+                   layout.addView(image2);
 
+                   if(countX-1>=0){
+                       countX--;
+                   } else {
+                       countY++;
+                       goRight = true;
+                   }
+               }
+           } else if(level.getType().equals("red")) {
+               if (goRight) {
+                   ImageView image = new ImageView(context);
+                   image.setImageResource(R.drawable.redtile);
 
-                    int dpWidthInPx2 = (int) (50 * scale);
-                    int dpHeightInPx2 = (int) (60 * scale);
+                   int dpWidthInPx = (int) (120 * scale);
+                   int dpHeightInPx = (int) (30 * scale);
 
+                   if (countX == 0) {
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
+                   } else if (countX == 1) {
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx / 2);
+                   } else {
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
+                   }
+                   image.setY(180 + countY * dpWidthInPx - countY * dpWidthInPx / 4);
 
-                    image2.setX(image.getX() + dpWidthInPx/3 - dpWidthInPx/12);
-                    image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
+                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
+                   image.setLayoutParams(layoutParams);
 
-                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                    image2.setLayoutParams(layoutParams2);
+                   layout.addView(image);
 
-                    image2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
-                            CURRENT_GAME_MISSION = level;
-                        }
-                    });
+                   ImageButton image2 = new ImageButton(context);
+                   image2.setBackgroundResource(R.drawable.boss);
 
 
-                    map.addView(image2);
+                   int dpWidthInPx2 = (int) (50 * scale);
+                   int dpHeightInPx2 = (int) (80 * scale);
 
-                    if(countX-1>=0){
-                        countX--;
-                    } else {
-                        countY++;
-                        goRight = true;
-                    }
-                }
-            } else if(level.colour_label == 4) {
-                if (goRight) {
-                    ImageView image = new ImageView(context);
-                    image.setImageResource(R.drawable.redtile);
 
-                    int dpWidthInPx = (int) (120 * scale);
-                    int dpHeightInPx = (int) (30 * scale);
+                   image2.setX(image.getX() + dpWidthInPx/3);
+                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
 
-                    if (countX == 0) {
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                    } else if (countX == 1) {
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx / 2);
-                    } else {
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                    }
-                    image.setY(180 + countY * dpWidthInPx - countY * dpWidthInPx / 4);
+                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
+                   image2.setLayoutParams(layoutParams2);
 
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                    image.setLayoutParams(layoutParams);
+/*                   image2.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                           context.startActivity(intent);
+                       }
+                   });*/
 
-                    map.addView(image);
 
-                    ImageButton image2 = new ImageButton(context);
-                    image2.setBackgroundResource(R.drawable.boss);
+                   layout.addView(image2);
 
+                   if (countX + 1 <= 2) {
+                       countX++;
+                   } else {
+                       countY++;
+                       goRight = false;
+                   }
+               } else {
+                   ImageView image = new ImageView(context);
+                   image.setImageResource(R.drawable.redtile);
 
-                    int dpWidthInPx2 = (int) (50 * scale);
-                    int dpHeightInPx2 = (int) (80 * scale);
+                   int dpWidthInPx = (int) (120 * scale);
+                   int dpHeightInPx = (int) (30 * scale);
 
+                   if (countX == 0) {
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
+                   } else if (countX == 1) {
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx / 2);
+                   } else {
+                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
+                   }
+                   image.setY(180 + countY * dpWidthInPx - countY * dpWidthInPx / 4);
 
-                    image2.setX(image.getX() + dpWidthInPx/3);
-                    image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
+                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
+                   image.setLayoutParams(layoutParams);
 
-                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                    image2.setLayoutParams(layoutParams2);
+                   layout.addView(image);
 
-                    image2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
-                            CURRENT_GAME_MISSION = level;;
-                        }
-                    });
+                   ImageButton image2 = new ImageButton(context);
+                   image2.setBackgroundResource(R.drawable.boss);
 
 
-                    map.addView(image2);
+                   int dpWidthInPx2 = (int) (50 * scale);
+                   int dpHeightInPx2 = (int) (80 * scale);
 
-                    if (countX + 1 <= 2) {
-                        countX++;
-                    } else {
-                        countY++;
-                        goRight = false;
-                    }
-                } else {
-                    ImageView image = new ImageView(context);
-                    image.setImageResource(R.drawable.redtile);
 
-                    int dpWidthInPx = (int) (120 * scale);
-                    int dpHeightInPx = (int) (30 * scale);
+                   image2.setX(image.getX() + dpWidthInPx/3 );
+                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
 
-                    if (countX == 0) {
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                    } else if (countX == 1) {
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx / 2);
-                    } else {
-                        image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                    }
-                    image.setY(180 + countY * dpWidthInPx - countY * dpWidthInPx / 4);
+                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
+                   image2.setLayoutParams(layoutParams2);
 
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                    image.setLayoutParams(layoutParams);
+/*                   image2.setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                           context.startActivity(intent);
+                       }
+                   });*/
 
-                    map.addView(image);
 
-                    ImageButton image2 = new ImageButton(context);
-                    image2.setBackgroundResource(R.drawable.boss);
+                   layout.addView(image2);
 
-
-                    int dpWidthInPx2 = (int) (50 * scale);
-                    int dpHeightInPx2 = (int) (80 * scale);
-
-
-                    image2.setX(image.getX() + dpWidthInPx/3 );
-                    image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
-
-                    LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                    image2.setLayoutParams(layoutParams2);
-
-                    image2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            context.startActivity(intent);
-                            CURRENT_GAME_MISSION = level;
-                        }
-                    });
-
-
-                    map.addView(image2);
-
-                    if (countX - 1 >= 0) {
-                        countX--;
-                    } else {
-                        countY++;
-                        goRight = true;
-                    }
-                }
-            }
-        }
-
-    }
+                   if (countX - 1 >= 0) {
+                       countX--;
+                   } else {
+                       countY++;
+                       goRight = true;
+                   }
+               }
+           }
+       }
+   }
 }

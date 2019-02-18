@@ -1,5 +1,6 @@
 package com.example.dobra.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -26,25 +27,40 @@ import java.util.List;
 
 public class MapViewActivity extends AppCompatActivity {
 
-    private RelativeLayout map;
-
-    LevelAdapter adapter;
+    private RelativeLayout layout;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_view);
+        context = this;
 
-        map = (RelativeLayout) findViewById(R.id.layout);
+        layout = (RelativeLayout) findViewById(R.id.layout);
 
-        adapter = new LevelAdapter(getApplicationContext());
+        new FirebaseDatabaseHelper().readLevels(new FirebaseDatabaseHelper.DataStatus() {
+            @Override
+            public void DataIsLoaded(List<Level> levels, List<String> keys) {
+                new LevelAdapter(levels, keys, context, layout).generateMap();
+            }
 
-        adapter.generateMap(map, ChapterSelectorActivity.gameStatus.getChapter(ChapterSelectorActivity.chapter_selected));
+            @Override
+            public void DataIsInserted() {
 
-    }
+            }
 
-    public static void startIntent(Intent intent){
-        startIntent(intent);
+            @Override
+            public void DataIsUpdated() {
+
+            }
+
+            @Override
+            public void DataIsDeleted() {
+
+            }
+        });
+
+
     }
 }

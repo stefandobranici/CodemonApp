@@ -1,19 +1,60 @@
 package com.example.dobra.myapplication;
 
 public class Level {
-    public int chapter_id;
-    public int colour_label;
-    public int mission_id;
-    public boolean completed;
+    private int chapter;
+    private boolean completed;
+    private String content;
+    private int level;
+    private String type;
 
-    Level(){
-
+    public Level() {
     }
 
-    public void setValues(Level level){
-        chapter_id = level.chapter_id;
-        colour_label = level.colour_label;
-        mission_id = level.mission_id;
-        completed = level.completed;
+    public Level(int chapter, boolean completed, String content, int level, String type) {
+        this.chapter = chapter;
+        this.completed = completed;
+        this.content = content;
+        this.level = level;
+        this.type = type;
+    }
+
+    public int getChapter() {
+        return chapter;
+    }
+
+    public void setChapter(int chapter) {
+        this.chapter = chapter;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -1,8 +1,10 @@
 package com.example.dobra.myapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +24,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import pl.droidsonroids.gif.GifImageView;
 
 import static android.graphics.Color.WHITE;
@@ -31,7 +39,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private LinearLayout screenLayout;
     private float scale;
+    private Typeface cyberFont;
     private FirebaseAuth mAuth;
+    private ImageButton settingsBtn;
+
+    private static final String FILE_NAME = "currentuser.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +58,17 @@ public class LoginActivity extends AppCompatActivity {
 
         scale = getResources().getDisplayMetrics().density;
 
-        Typeface cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
+        cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
+
+        writeData("");
+
+        generateScreenElements();
+    }
 
 
-
-        //Set gif on top of screen
+    //This method will generate all View elements that will be displayed on screen
+    private void generateScreenElements(){
+        //Top part of the screen
         GifImageView credentialsText = new GifImageView(this);
         credentialsText.setImageResource(R.drawable.logintext);
 
@@ -62,6 +80,8 @@ public class LoginActivity extends AppCompatActivity {
         credentialsText.setLayoutParams(layoutParams);
 
         screenLayout.addView(credentialsText);
+
+        //Middle part of the screen
 
         //Show USER ID text
         ImageView userIdTxt = new ImageView(this);
@@ -131,6 +151,8 @@ public class LoginActivity extends AppCompatActivity {
 
         screenLayout.addView(passwordBox);
 
+        //Bottom part of the screen
+
         //Login button
         ImageButton loginBtn = new ImageButton(this);
 
@@ -147,7 +169,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String userId = userIdBox.getText().toString().trim();
+                final String UID = userId;
                 String password = passwordBox.getText().toString().trim();
+                final String PW = password;
 
                 if(TextUtils.isEmpty(userId)){
                     Toast.makeText(getApplicationContext(), "User ID field is empty!", Toast.LENGTH_SHORT).show();
@@ -164,6 +188,9 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+
+                            writeData(UID +"\n" + PW);
+
                             Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
 
                             Intent mode_selector = new Intent("android.intent.action.ModeSelectorActivity");
@@ -201,5 +228,37 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         screenLayout.addView(signupBtn);
+    }
+
+    private void writeData(String data){
+        FileOutputStream fos = null;
+
+        try{
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(data.getBytes());
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos!=null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void setSettingsBtnOnClickListener(){
+        settingsBtn = (ImageButton) findViewById(R.id.settingsbutton);
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent settings_intent = new Intent("android.intent.action.SettingsScreen");
+                startActivity(settings_intent);
+            }
+        });
     }
 }

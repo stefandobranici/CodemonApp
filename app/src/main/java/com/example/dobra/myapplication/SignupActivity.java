@@ -42,6 +42,7 @@ public class SignupActivity extends AppCompatActivity {
     private float scale;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
+    private Typeface cyberFont;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +55,13 @@ public class SignupActivity extends AppCompatActivity {
 
         scale = getResources().getDisplayMetrics().density;
 
-        Typeface cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
+        cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
+
+        generateScreenElements();
+    }
 
 
-
+    private void generateScreenElements(){
         //Set gif on top of screen
         GifImageView credentialsText = new GifImageView(this);
         credentialsText.setImageResource(R.drawable.logintext);
