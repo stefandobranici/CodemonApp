@@ -31,8 +31,8 @@ public class SettingsScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 clearData();
-                MainActivity.mainActivity.finish();
-                Intent back_to_main = new Intent("android.intent.action.MAIN");
+                MainScreenActivity.mainActivity.finish();
+                Intent back_to_main = new Intent("android.intent.action.MainScreenActivity");
                 startActivity(back_to_main);
                 finish();
             }

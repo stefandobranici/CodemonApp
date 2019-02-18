@@ -195,7 +195,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             Intent mode_selector = new Intent("android.intent.action.ModeSelectorActivity");
                             startActivity(mode_selector);
-                            MainActivity.mainActivity.finish();
+                            MainScreenActivity.mainActivity.finish();
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
