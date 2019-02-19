@@ -23,6 +23,8 @@ public class ModeSelectorActivity extends AppCompatActivity {
 
     private ImageButton binauralbeatsBtn, mnemonicsBtn, plainBtn;
 
+    private ImageButton settingsBtn;
+
     private FirebaseDatabase mDatabase;
 
     private FirebaseAuth mAuth;
@@ -44,27 +46,6 @@ public class ModeSelectorActivity extends AppCompatActivity {
         String currentUser = mAuth.getCurrentUser().getUid();
 
         modeSelectorReference = mDatabase.getReference("Users").child(currentUser).child("mode");
-
-        modeSelectorReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String modeSelected = dataSnapshot.getValue(String.class);
-
-
-                if(!TextUtils.isEmpty(modeSelected)){
-                    Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
-                    startActivity(gamemode_intent);
-                    finish();
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
 
         binauralBeatsButtonOnClickListener();
         mnemonicsButtonOnClickListener();
@@ -91,6 +72,8 @@ public class ModeSelectorActivity extends AppCompatActivity {
             }
         });
         mHomeWatcher.startWatch();
+
+        setSettingsBtnOnClickListener();
     }
 
     public void binauralBeatsButtonOnClickListener(){
@@ -116,6 +99,10 @@ public class ModeSelectorActivity extends AppCompatActivity {
         mnemonicsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String mode = "mnemonics";
+
+                modeSelectorReference.setValue(mode);
+
                 Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
                 startActivity(gamemode_intent);
                 finish();
@@ -129,6 +116,10 @@ public class ModeSelectorActivity extends AppCompatActivity {
         plainBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String mode = "plain";
+
+                modeSelectorReference.setValue(mode);
+
                 Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
                 startActivity(gamemode_intent);
                 finish();
@@ -189,6 +180,17 @@ public class ModeSelectorActivity extends AppCompatActivity {
         music.setClass(this,MusicService.class);
         stopService(music);*/
 
+    }
+
+    private void setSettingsBtnOnClickListener(){
+        settingsBtn = (ImageButton) findViewById(R.id.settingsbutton);
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent settings_intent = new Intent("android.intent.action.SettingsScreen");
+                startActivity(settings_intent);
+            }
+        });
     }
 
 }

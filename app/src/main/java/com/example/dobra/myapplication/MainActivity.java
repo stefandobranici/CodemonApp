@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
     private GifImageButton opening;
 
+    private static int TIME_OUT = 6500;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         setUpMusic();
 
+        //This is the opening screen
         opening = (GifImageButton) findViewById(R.id.openingGif);
 
         opening.setOnClickListener(new View.OnClickListener() {
@@ -38,14 +42,23 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        //Change the intro animation to a looping one
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                opening.setBackgroundResource(R.drawable.opening2);
+            }
+        }, TIME_OUT);
+
     }
 
 
 
+    //Settings for the music app
     private boolean mIsBound = false;
     private MusicService mServ;
     private ServiceConnection Scon = new ServiceConnection(){
-
         public void onServiceConnected(ComponentName name, IBinder
                 binder) {
             mServ = ((MusicService.ServiceBinder)binder).getService();
@@ -62,8 +75,7 @@ public class MainActivity extends AppCompatActivity {
         mIsBound = true;
     }
 
-    void doUnbindService()
-    {
+    void doUnbindService() {
         if(mIsBound)
         {
             unbindService(Scon);

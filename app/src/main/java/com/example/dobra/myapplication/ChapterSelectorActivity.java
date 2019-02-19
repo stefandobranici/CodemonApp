@@ -24,7 +24,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
 
     private ImageButton variablesBtn, ifBtn, whileBtn, forBtn, arraysBtn, methodsBtn, classesBtn;
 
-    public static Integer chapter_selected;
+    private ImageButton settingsBtn;
 
     private FirebaseAuth mAuth;
 
@@ -34,7 +34,11 @@ public class ChapterSelectorActivity extends AppCompatActivity {
 
     private DatabaseReference mLevelReference;
 
+    private FirebaseDatabaseHelper mHelper;
+
     private List<Integer> chapterProgress;
+
+    public static Integer chapterSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +49,13 @@ public class ChapterSelectorActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
 
+        mHelper = new FirebaseDatabaseHelper();
+
+        mHelper.generateUserLevels();
+
         String currentUser = mAuth.getCurrentUser().getUid();
 
-        chapterProgress = new ArrayList<>();
+/*        chapterProgress = new ArrayList<>();
         for(int i = 0 ; i < 1; i++){
             chapterProgress.add(0);
         }
@@ -80,18 +88,13 @@ public class ChapterSelectorActivity extends AppCompatActivity {
 
                 }
             });
-        }
+        }*/
 
-        variablesButtonOnClickListener();
-        ifButtonOnClickListener();
-        whileButtonOnClickListener();
-        forButtonOnClickListener();
-        arraysButtonOnClickListener();
-        methodsButtonOnClickListener();
-        classesButtonOnClickListener();
+        setUpButtons();
     }
 
-    public void variablesButtonOnClickListener(){
+
+    private void variablesButtonOnClickListener(){
         variablesBtn = (ImageButton) findViewById(R.id.variables);
 
         variablesBtn.setOnClickListener(new View.OnClickListener() {
@@ -99,14 +102,14 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 1;
+                chapterSelected = 1;
 
                 startActivity(mapview_intent);
             }
         });
     }
 
-    public void ifButtonOnClickListener(){
+    private void ifButtonOnClickListener(){
         ifBtn = (ImageButton) findViewById(R.id.ifs);
 
         ifBtn.setOnClickListener(new View.OnClickListener() {
@@ -114,14 +117,14 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 2;
+                chapterSelected = 2;
 
                 startActivity(mapview_intent);
             }
         });
     }
 
-    public void whileButtonOnClickListener(){
+    private void whileButtonOnClickListener(){
         whileBtn = (ImageButton) findViewById(R.id.whiles);
 
         whileBtn.setOnClickListener(new View.OnClickListener() {
@@ -129,14 +132,14 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 3;
+                chapterSelected = 3;
 
                 startActivity(mapview_intent);
             }
         });
     }
 
-    public void forButtonOnClickListener(){
+    private void forButtonOnClickListener(){
         forBtn = (ImageButton) findViewById(R.id.fors);
 
         forBtn.setOnClickListener(new View.OnClickListener() {
@@ -144,14 +147,14 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 4;
+                chapterSelected = 4;
 
                 startActivity(mapview_intent);
             }
         });
     }
 
-    public void arraysButtonOnClickListener(){
+    private void arraysButtonOnClickListener(){
         arraysBtn = (ImageButton) findViewById(R.id.arrays);
 
         arraysBtn.setOnClickListener(new View.OnClickListener() {
@@ -159,14 +162,14 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 5;
+                chapterSelected = 5;
 
                 startActivity(mapview_intent);
             }
         });
     }
 
-    public void methodsButtonOnClickListener(){
+    private void methodsButtonOnClickListener(){
         methodsBtn = (ImageButton) findViewById(R.id.methods);
 
         methodsBtn.setOnClickListener(new View.OnClickListener() {
@@ -174,14 +177,14 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 6;
+                chapterSelected = 6;
 
                 startActivity(mapview_intent);
             }
         });
     }
 
-    public void classesButtonOnClickListener(){
+    private void classesButtonOnClickListener(){
         classesBtn = (ImageButton) findViewById(R.id.classes);
 
         classesBtn.setOnClickListener(new View.OnClickListener() {
@@ -189,10 +192,33 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapter_selected = 7;
+                chapterSelected = 7;
 
                 startActivity(mapview_intent);
             }
         });
+    }
+
+    private void setSettingsBtnOnClickListener(){
+        settingsBtn = (ImageButton) findViewById(R.id.settingsbutton);
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent settings_intent = new Intent("android.intent.action.SettingsScreen");
+                startActivity(settings_intent);
+            }
+        });
+    }
+
+    private void setUpButtons(){
+        variablesButtonOnClickListener();
+        ifButtonOnClickListener();
+        whileButtonOnClickListener();
+        forButtonOnClickListener();
+        arraysButtonOnClickListener();
+        methodsButtonOnClickListener();
+        classesButtonOnClickListener();
+
+        setSettingsBtnOnClickListener();
     }
 }

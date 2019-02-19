@@ -29,6 +29,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,10 +42,20 @@ import static android.graphics.Color.WHITE;
 public class SignupActivity extends AppCompatActivity {
 
     private LinearLayout screenLayout;
+
     private float scale;
+
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener firebaseAuthListener;
+
+    private FirebaseDatabase mDatabase;
+
     private Typeface cyberFont;
+
+    private ImageButton settingsBtn;
+
+    private String userID, userPW;
+
+    private static final String FILE_NAME = "currentuser.txt";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +64,8 @@ public class SignupActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        mDatabase = FirebaseDatabase.getInstance();
+
         screenLayout = (LinearLayout) findViewById(R.id.signuplayout);
 
         scale = getResources().getDisplayMetrics().density;
@@ -58,6 +73,8 @@ public class SignupActivity extends AppCompatActivity {
         cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
 
         generateScreenElements();
+
+        setSettingsBtnOnClickListener();
     }
 
 
@@ -191,50 +208,47 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String userId = userIdBox.getText().toString().trim();
-                String password = passwordBox.getText().toString().trim();
+                userID = userIdBox.getText().toString().trim();
+                userPW = passwordBox.getText().toString().trim();
                 String confirmPassword = passwordBox2.getText().toString().trim();
 
-                if(TextUtils.isEmpty(userId)){
+                if(TextUtils.isEmpty(userID)){
                     Toast.makeText(getApplicationContext(), "ID Field cannot be empty!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if(userId.length() < 4){
+                if(userID.length() < 4){
                     Toast.makeText(getApplicationContext(), "ID must be at least four characters long!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if(TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)){
+                if(TextUtils.isEmpty(userPW) || TextUtils.isEmpty(confirmPassword)){
                     Toast.makeText(getApplicationContext(), "Password Fields cannot be empty!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if(password.length() < 4){
-                    Toast.makeText(getApplicationContext(), "Password must be at least four characters long!", Toast.LENGTH_SHORT).show();
+                if(userPW.length() < 6){
+                    Toast.makeText(getApplicationContext(), "Password must be at least six characters long!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if(!password.equals(confirmPassword)){
+                if(!userPW.equals(confirmPassword)){
                     Toast.makeText(getApplicationContext(), "Confirmation password does not match!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                userId = userId+"@bathspa.ac.uk";
+                userID = userID+"@bathspa.ac.uk";
 
-                mAuth.createUserWithEmailAndPassword(userId, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                mAuth.createUserWithEmailAndPassword(userID, userPW).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(getApplicationContext(), "Signed Up Successfuly!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "Signed Up Successfully! Logging " + userID+" ID in...", Toast.LENGTH_SHORT).show();
 
-                            Intent login_intent = new Intent("android.intent.action.LoginActivity");
-                            LoginActivity.loginActivity.finish();
-                            startActivity(login_intent);
-                            finish();
+                            logUserIn();
                         } else {
                             if(task.getException() instanceof FirebaseAuthException){
-                                Toast.makeText(getApplicationContext(), "User ID already registered!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -268,5 +282,56 @@ public class SignupActivity extends AppCompatActivity {
         });
 
         screenLayout.addView(loginBtn);
+    }
+
+    private void writeData(String data){
+        FileOutputStream fos = null;
+
+        try{
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+            fos.write(data.getBytes());
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos!=null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+    private void logUserIn(){
+        mAuth.signInWithEmailAndPassword(userID, userPW).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    writeData(userID +"\n" + userPW);
+                    Intent login_intent = new Intent("android.intent.action.ModeSelectorActivity");
+                    LoginActivity.loginActivity.finish();
+                    MainScreenActivity.mainActivity.finish();
+                    startActivity(login_intent);
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void setSettingsBtnOnClickListener(){
+        settingsBtn = (ImageButton) findViewById(R.id.settingsbutton);
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent settings_intent = new Intent("android.intent.action.SettingsScreen");
+                startActivity(settings_intent);
+            }
+        });
     }
 }

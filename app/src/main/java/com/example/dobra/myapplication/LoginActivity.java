@@ -23,6 +23,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,10 +45,17 @@ public class LoginActivity extends AppCompatActivity {
     private LinearLayout screenLayout;
     private float scale;
     private Typeface cyberFont;
+    private FirebaseDatabase mDatabase;
+
     private FirebaseAuth mAuth;
+
+    private DatabaseReference modeSelectorReference;
+
     private ImageButton settingsBtn;
 
     private static final String FILE_NAME = "currentuser.txt";
+
+    private String UID, PW;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +63,8 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+
+        mDatabase = FirebaseDatabase.getInstance();
 
         loginActivity = this;
 
@@ -60,9 +74,9 @@ public class LoginActivity extends AppCompatActivity {
 
         cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
 
-        writeData("");
-
         generateScreenElements();
+
+        setSettingsBtnOnClickListener();
     }
 
 
@@ -168,35 +182,26 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userId = userIdBox.getText().toString().trim();
-                final String UID = userId;
-                String password = passwordBox.getText().toString().trim();
-                final String PW = password;
+                UID = userIdBox.getText().toString().trim();
+                PW = passwordBox.getText().toString().trim();
 
-                if(TextUtils.isEmpty(userId)){
+                if(TextUtils.isEmpty(UID)){
                     Toast.makeText(getApplicationContext(), "User ID field is empty!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(TextUtils.isEmpty(password)){
+                if(TextUtils.isEmpty(PW)){
                     Toast.makeText(getApplicationContext(), "Password field is empty!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                userId = userId + "@bathspa.ac.uk";
+                UID = UID + "@bathspa.ac.uk";
 
-                mAuth.signInWithEmailAndPassword(userId, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                mAuth.signInWithEmailAndPassword(UID, PW).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            loginSuccessful();
 
-                            writeData(UID +"\n" + PW);
-
-                            Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
-
-                            Intent mode_selector = new Intent("android.intent.action.ModeSelectorActivity");
-                            startActivity(mode_selector);
-                            MainScreenActivity.mainActivity.finish();
-                            finish();
                         } else {
                             Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
@@ -249,6 +254,42 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    private void loginSuccessful(){
+        writeData(UID +"\n" + PW);
+
+        Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+
+        String currentUser = mAuth.getCurrentUser().getUid();
+
+        modeSelectorReference = mDatabase.getReference("Users").child(currentUser).child("mode");
+
+        modeSelectorReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String modeSelected = dataSnapshot.getValue(String.class);
+
+
+                if(!TextUtils.isEmpty(modeSelected)){
+                    Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
+                    startActivity(gamemode_intent);
+                    MainScreenActivity.mainActivity.finish();
+                    finish();
+                } else {
+                    Intent mode_selector = new Intent("android.intent.action.ModeSelectorActivity");
+                    startActivity(mode_selector);
+                    MainScreenActivity.mainActivity.finish();
+                    finish();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void setSettingsBtnOnClickListener(){
