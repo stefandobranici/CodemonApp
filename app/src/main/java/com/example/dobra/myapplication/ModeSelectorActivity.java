@@ -5,14 +5,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ModeSelectorActivity extends AppCompatActivity {
 
     private ImageButton binauralbeatsBtn, mnemonicsBtn, plainBtn;
+
+    private FirebaseDatabase mDatabase;
+
+    private FirebaseAuth mAuth;
+
+    private DatabaseReference modeSelectorReference;
 
     HomeWatcher mHomeWatcher;
 
@@ -21,6 +36,35 @@ public class ModeSelectorActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mode_selector);
+
+        mDatabase = FirebaseDatabase.getInstance();
+
+        mAuth = FirebaseAuth.getInstance();
+
+        String currentUser = mAuth.getCurrentUser().getUid();
+
+        modeSelectorReference = mDatabase.getReference("Users").child(currentUser).child("mode");
+
+        modeSelectorReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String modeSelected = dataSnapshot.getValue(String.class);
+
+
+                if(!TextUtils.isEmpty(modeSelected)){
+                    Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
+                    startActivity(gamemode_intent);
+                    finish();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         binauralBeatsButtonOnClickListener();
         mnemonicsButtonOnClickListener();
@@ -55,6 +99,10 @@ public class ModeSelectorActivity extends AppCompatActivity {
         binauralbeatsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String mode = "binaural";
+
+                modeSelectorReference.setValue(mode);
+
                 Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
                 startActivity(gamemode_intent);
                 finish();
