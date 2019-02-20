@@ -45,6 +45,7 @@ public class MapViewActivity extends AppCompatActivity {
                 new LevelAdapter(levels, keys, context, layout).generateMap();
             }
 
+
             @Override
             public void DataIsInserted() {
 

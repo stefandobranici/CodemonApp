@@ -31,10 +31,10 @@ public class FirebaseDatabaseHelper {
     private DatabaseReference mReferenceLevels;
     private DatabaseReference fromDatabaseChapterInfo;
     private List<Level> levels = new ArrayList<>();
-    private Integer currentChapter, currentLevel;
 
     private DatabaseReference userLevelsProgression;
-    private DatabaseReference userLevelsProgressionOnEachChapter;
+
+    private Integer chapter;
 
     private static final String FILE_NAME = "currentuser.txt";
 
@@ -51,10 +51,10 @@ public class FirebaseDatabaseHelper {
     }
 
     public void readLevels(final DataStatus dataStatus){
-        mReferenceChapters = mDatabase.getReference("Chapters");
+        mReferenceChapters = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression");
         mReferenceLevels = mReferenceChapters.child(ChapterSelectorActivity.chapterSelected.toString());
 
-        mReferenceLevels.addValueEventListener(new ValueEventListener() {
+        mReferenceLevels.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 levels.clear();
@@ -75,45 +75,66 @@ public class FirebaseDatabaseHelper {
         });
     }
 
-    public void generateUserLevels(){
-        userLevelsProgression = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression");
 
-        for(int i = 1; i < 2; i ++){
-            levels.clear();
-            currentChapter = i;
-            userLevelsProgressionOnEachChapter = userLevelsProgression.child(currentChapter.toString());
-
-            userLevelsProgressionOnEachChapter.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(!dataSnapshot.exists()){
-                        fromDatabaseChapterInfo = mDatabase.getReference("Chapters").child(currentChapter.toString());
-
-                        fromDatabaseChapterInfo.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for(DataSnapshot keyNode:dataSnapshot.getChildren()){
-                                    Level level = keyNode.getValue(Level.class);
-                                    levels.add(level);
-                                }
-
-                                userLevelsProgression.setValue(levels);
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-
+    public void generateUserLevels(final DataStatus dataStatus) {
+        levels.clear();
+        mReferenceChapters = mDatabase.getReference("Chapters");
+        mReferenceChapters.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for(DataSnapshot keyNode:dataSnapshot.getChildren()){
+                    for(DataSnapshot keyNode2:keyNode.getChildren()){
+                        keys.add(keyNode2.getKey());
+                        Level level = keyNode2.getValue(Level.class);
+                        levels.add(level);
                     }
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                dataStatus.DataIsLoaded(levels, keys);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    /*    mReferenceChapters = mDatabase.getReference("Chapters");
+        levels.clear();
+        DatabaseReference referenceForChapter1 = mReferenceChapters.child("1");
+        referenceForChapter1.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot keyNode : dataSnapshot.getChildren()){
+                    Level level = keyNode.getValue(Level.class);
+                    levels.add(level);
                 }
-            });
-        }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        DatabaseReference referenceForChapter2 = mReferenceChapters.child("2");
+        referenceForChapter2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot keyNode : dataSnapshot.getChildren()){
+                    Level level = keyNode.getValue(Level.class);
+                    levels.add(level);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        List<String> keys = new ArrayList<>();
+        dataStatus.DataIsLoaded(levels, keys);*/
     }
 }

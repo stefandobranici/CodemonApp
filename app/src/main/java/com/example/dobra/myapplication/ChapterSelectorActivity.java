@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -13,6 +14,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,9 +25,11 @@ import java.util.Map;
 
 public class ChapterSelectorActivity extends AppCompatActivity {
 
-    private ImageButton variablesBtn, ifBtn, whileBtn, forBtn, arraysBtn, methodsBtn, classesBtn;
+    private ImageButton variablesBtn, ifBtn, whileBtn, forBtn, arraysBtn, methodsBtn, classesBtn, settingsBtn;
 
-    private ImageButton settingsBtn;
+    private Boolean chapterLocked2, chapterLocked3, chapterLocked4, chapterLocked5, chapterLocked6, chapterLocked7;
+
+    private TextView variableProgression, ifProgression, whileProgression, forProgression, arraysProgression, methodsProgression, classesProgression;
 
     private FirebaseAuth mAuth;
 
@@ -34,9 +39,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
 
     private DatabaseReference mLevelReference;
 
-    private FirebaseDatabaseHelper mHelper;
-
-    private List<Integer> chapterProgress;
+    private Map<Integer, Integer> progressionOfChapters;
 
     public static Integer chapterSelected;
 
@@ -45,52 +48,77 @@ public class ChapterSelectorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_chapter_selector);
 
+        progressionOfChapters = new HashMap<>();
+
         mAuth = FirebaseAuth.getInstance();
 
         mDatabase = FirebaseDatabase.getInstance();
 
-        mHelper = new FirebaseDatabaseHelper();
+        mChaptersReference = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression");
 
-        mHelper.generateUserLevels();
+        mChaptersReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChildren()){
+                    for(DataSnapshot keyNode:dataSnapshot.getChildren()){
+                        for(DataSnapshot keyNode2:keyNode.getChildren()){
+                            Level level = keyNode2.getValue(Level.class);
+                            if(level.isCompleted()) {
+                                if(progressionOfChapters.containsKey(level.getChapter())) {
+                                    progressionOfChapters.put(level.getChapter(), progressionOfChapters.get(level.getChapter()) + 1);
+                                } else {
+                                    progressionOfChapters.put(level.getChapter(), 1);
+                                }
+                            }
 
-        String currentUser = mAuth.getCurrentUser().getUid();
-
-/*        chapterProgress = new ArrayList<>();
-        for(int i = 0 ; i < 1; i++){
-            chapterProgress.add(0);
-        }
-
-        for(int i = 1 ; i < 2; i++) {
-            Integer currentChapter = i;
-            mChaptersReference = mDatabase.getReference("Users").child(currentUser).child("Chapters").child(currentChapter.toString());
-
-            mChaptersReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists()){
-                        for(DataSnapshot keyNode : dataSnapshot.getChildren()){
-                            Boolean completed = keyNode.getValue(Boolean.class);
-                            if(completed) chapterProgress.set(0, chapterProgress.get(0)+1);
                         }
-                    } else {
-                        //Map<Integer, Boolean> newPost = new HashMap();
-                        for(int i = 1; i < 22; i++){
-                            Integer level = i;
-                            DatabaseReference currentLevel = mChaptersReference.child(level.toString());
-                            currentLevel.setValue(false);
-                        }
-                        //mChaptersReference.setValue(newPost);
                     }
+                } else {
+                    new FirebaseDatabaseHelper().generateUserLevels(new FirebaseDatabaseHelper.DataStatus() {
+                        @Override
+                        public void DataIsLoaded(List<Level> levels, List<String> keys) {
+                            Integer levelId = 1;
+                            for(Level level:levels){
+                                if(levelId == 22) {
+                                    levelId = 1;
+                                }
+                                Integer chapterId = level.getChapter();
+                                DatabaseReference currentLevelReference = mChaptersReference.child(chapterId.toString()).child(levelId.toString());
+                                currentLevelReference.setValue(level);
+
+                                levelId++;
+                            }
+
+                        }
+
+
+                        @Override
+                        public void DataIsInserted() {
+
+                        }
+
+                        @Override
+                        public void DataIsUpdated() {
+
+                        }
+
+                        @Override
+                        public void DataIsDeleted() {
+
+                        }
+                    });
                 }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                setUpLayout();
+            }
 
-                }
-            });
-        }*/
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-        setUpButtons();
+            }
+        });
+
+
     }
 
 
@@ -112,91 +140,120 @@ public class ChapterSelectorActivity extends AppCompatActivity {
     private void ifButtonOnClickListener(){
         ifBtn = (ImageButton) findViewById(R.id.ifs);
 
-        ifBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
+        if(chapterLocked2){
+            ifBtn.setBackgroundResource(R.drawable.ifworldlocked);
+        } else {
 
-                chapterSelected = 2;
+            ifBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                startActivity(mapview_intent);
-            }
-        });
+                    chapterSelected = 2;
+
+                    startActivity(mapview_intent);
+                }
+            });
+        }
     }
 
     private void whileButtonOnClickListener(){
         whileBtn = (ImageButton) findViewById(R.id.whiles);
 
-        whileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
+        if(chapterLocked3){
+            whileBtn.setBackgroundResource(R.drawable.whilewaitlocked);
+        } else {
 
-                chapterSelected = 3;
+            whileBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                startActivity(mapview_intent);
-            }
-        });
+                    chapterSelected = 3;
+
+                    startActivity(mapview_intent);
+                }
+            });
+        }
     }
 
     private void forButtonOnClickListener(){
         forBtn = (ImageButton) findViewById(R.id.fors);
 
-        forBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
+        if(chapterLocked4){
+            forBtn.setBackgroundResource(R.drawable.foreverlocked);
+        } else {
 
-                chapterSelected = 4;
+            forBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                startActivity(mapview_intent);
-            }
-        });
+                    chapterSelected = 4;
+
+                    startActivity(mapview_intent);
+                }
+            });
+        }
     }
 
     private void arraysButtonOnClickListener(){
         arraysBtn = (ImageButton) findViewById(R.id.arrays);
 
-        arraysBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
+        if(chapterLocked5){
+            arraysBtn.setBackgroundResource(R.drawable.arrayslocked);
+        } else {
 
-                chapterSelected = 5;
+            arraysBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                startActivity(mapview_intent);
-            }
-        });
+                    chapterSelected = 5;
+
+                    startActivity(mapview_intent);
+                }
+            });
+        }
     }
 
     private void methodsButtonOnClickListener(){
         methodsBtn = (ImageButton) findViewById(R.id.methods);
 
-        methodsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
+        if(chapterLocked6){
+            methodsBtn.setBackgroundResource(R.drawable.methodslocked);
+        } else {
+            methodsBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapterSelected = 6;
+                    chapterSelected = 6;
 
-                startActivity(mapview_intent);
-            }
-        });
+                    startActivity(mapview_intent);
+                }
+            });
+        }
     }
 
     private void classesButtonOnClickListener(){
         classesBtn = (ImageButton) findViewById(R.id.classes);
 
-        classesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
+        if(chapterLocked7){
+            classesBtn.setBackgroundResource(R.drawable.classeslocked);
+        } else {
 
-                chapterSelected = 7;
+            classesBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                startActivity(mapview_intent);
-            }
-        });
+                    chapterSelected = 7;
+
+                    startActivity(mapview_intent);
+                }
+            });
+        }
     }
 
     private void setSettingsBtnOnClickListener(){
@@ -218,7 +275,93 @@ public class ChapterSelectorActivity extends AppCompatActivity {
         arraysButtonOnClickListener();
         methodsButtonOnClickListener();
         classesButtonOnClickListener();
-
         setSettingsBtnOnClickListener();
+    }
+
+    private void setUpLayout(){
+        String defaultProgression = "0/21";
+
+        chapterLocked2 = true;
+        chapterLocked3 = true;
+        chapterLocked4 = true;
+        chapterLocked5 = true;
+        chapterLocked6 = true;
+        chapterLocked7 = true;
+
+        variableProgression = (TextView) findViewById(R.id.variablesProgression);
+
+        if(progressionOfChapters.containsKey(1)){
+            if(progressionOfChapters.get(1) == 21){
+                chapterLocked2 = false;
+            }
+            variableProgression.setText(String.format(progressionOfChapters.get(1).toString()+"/21"));
+        } else {
+            variableProgression.setText(defaultProgression);
+        }
+
+        ifProgression = (TextView) findViewById(R.id.ifsProgression);
+
+        if(progressionOfChapters.containsKey(2)){
+            if(progressionOfChapters.get(2) == 21){
+                chapterLocked3 = false;
+            }
+            ifProgression.setText(String.format(progressionOfChapters.get(2).toString()+"/21"));
+        } else {
+            ifProgression.setText(defaultProgression);
+        }
+
+        whileProgression = (TextView) findViewById(R.id.whilesProgression);
+
+        if(progressionOfChapters.containsKey(3)){
+            if(progressionOfChapters.get(3) == 21){
+                chapterLocked4 = false;
+            }
+            whileProgression.setText(String.format(progressionOfChapters.get(3).toString()+"/21"));
+        } else {
+            whileProgression.setText(defaultProgression);
+        }
+
+        forProgression = (TextView) findViewById(R.id.forsProgression);
+
+        if(progressionOfChapters.containsKey(4)){
+            if(progressionOfChapters.get(4) == 21){
+                chapterLocked5 = false;
+            }
+            forProgression.setText(String.format(progressionOfChapters.get(4).toString()+"/21"));
+        } else {
+            forProgression.setText(defaultProgression);
+        }
+
+        arraysProgression = (TextView) findViewById(R.id.arraysProgression);
+
+        if(progressionOfChapters.containsKey(5)){
+            if(progressionOfChapters.get(5) == 21){
+                chapterLocked6 = false;
+            }
+            arraysProgression.setText(String.format(progressionOfChapters.get(5).toString()+"/21"));
+        } else {
+            arraysProgression.setText(defaultProgression);
+        }
+
+        methodsProgression = (TextView) findViewById(R.id.methodsProgression);
+
+        if(progressionOfChapters.containsKey(6)){
+            if(progressionOfChapters.get(6) == 21){
+                chapterLocked7 = false;
+            }
+            methodsProgression.setText(String.format(progressionOfChapters.get(6).toString()+"/21"));
+        } else {
+            methodsProgression.setText(defaultProgression);
+        }
+
+        classesProgression = (TextView) findViewById(R.id.classesProgression);
+
+        if(progressionOfChapters.containsKey(7)){
+            classesProgression.setText(String.format(progressionOfChapters.get(7).toString()+"/21"));
+        } else {
+            classesProgression.setText(defaultProgression);
+        }
+
+        setUpButtons();
     }
 }

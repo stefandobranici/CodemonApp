@@ -15,6 +15,8 @@
         <service
             android:name=".MusicService"
             android:enabled="true" />
+        <activity android:name=".GameplaySelectorActivity"></activity>
+        <activity android:name=".ProfileViewActivity" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -51,14 +53,18 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" android:windowSoftInputMode="adjustPan">
+        <activity
+            android:name=".LoginActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.LoginActivity" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignupActivity" android:windowSoftInputMode="adjustPan">
+        <activity
+            android:name=".SignupActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SignupActivity" />
 

@@ -19,6 +19,9 @@ import pl.droidsonroids.gif.GifImageView;
 public class MainActivity extends AppCompatActivity {
     HomeWatcher mHomeWatcher;
 
+    private boolean mIsBound = false;
+    private MusicService mServ;
+
     private GifImageButton opening;
 
     private static int TIME_OUT = 6500;
@@ -56,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     //Settings for the music app
-    private boolean mIsBound = false;
-    private MusicService mServ;
     private ServiceConnection Scon = new ServiceConnection(){
         public void onServiceConnected(ComponentName name, IBinder
                 binder) {

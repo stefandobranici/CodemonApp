@@ -41,13 +41,14 @@
                 android:layout_width="80dp"
                 android:layout_height="51dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="17dp"
                 android:background="@drawable/credentialsbox"
                 android:fontFamily="@font/cyberverse"
-                android:paddingTop="5dp"
+                android:paddingTop="7dp"
                 android:text="0/21"
+                android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -68,13 +69,14 @@
                 android:layout_width="80dp"
                 android:layout_height="51dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="17dp"
                 android:background="@drawable/credentialsbox"
                 android:fontFamily="@font/cyberverse"
-                android:paddingTop="5dp"
+                android:paddingTop="7dp"
                 android:text="0/21"
+                android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -86,7 +88,7 @@
                 android:id="@+id/whiles"
                 android:layout_width="200dp"
                 android:layout_height="52dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="17dp"
                 android:background="@drawable/whilewait" />
 
             <TextView
@@ -94,13 +96,14 @@
                 android:layout_width="80dp"
                 android:layout_height="51dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="17dp"
                 android:background="@drawable/credentialsbox"
                 android:fontFamily="@font/cyberverse"
-                android:paddingTop="5dp"
+                android:paddingTop="7dp"
                 android:text="0/21"
+                android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -121,13 +124,14 @@
                 android:layout_width="80dp"
                 android:layout_height="51dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="17dp"
                 android:background="@drawable/credentialsbox"
                 android:fontFamily="@font/cyberverse"
-                android:paddingTop="5dp"
+                android:paddingTop="7dp"
                 android:text="0/21"
+                android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -148,13 +152,14 @@
                 android:layout_width="80dp"
                 android:layout_height="51dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="17dp"
                 android:background="@drawable/credentialsbox"
                 android:fontFamily="@font/cyberverse"
-                android:paddingTop="5dp"
+                android:paddingTop="7dp"
                 android:text="0/21"
+                android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -175,13 +180,14 @@
                 android:layout_width="80dp"
                 android:layout_height="51dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="17dp"
                 android:background="@drawable/credentialsbox"
                 android:fontFamily="@font/cyberverse"
-                android:paddingTop="5dp"
+                android:paddingTop="7dp"
                 android:text="0/21"
+                android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -202,13 +208,14 @@
                 android:layout_width="80dp"
                 android:layout_height="51dp"
                 android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="17dp"
                 android:background="@drawable/credentialsbox"
                 android:fontFamily="@font/cyberverse"
-                android:paddingTop="5dp"
+                android:paddingTop="7dp"
                 android:text="0/21"
+                android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp" />
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -218,11 +225,11 @@
 
     <ImageButton
         android:id="@+id/settingsbutton"
-        android:background="@drawable/settingsicon"
-        android:layout_width="60dp"
-        android:layout_height="56dp"
+        android:layout_width="44dp"
+        android:layout_height="40dp"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"/>
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/settingsicon" />
 </RelativeLayout>
