@@ -40,7 +40,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
 
         currentUserInformation = CurrentUserInformation.getInstance();
 
-        currentUserInformation.getUserProgressionStatus();
+        currentUserInformation.getUserProgressionStatus(this);
 
         setUpLayout();
 
@@ -203,7 +203,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
         setSettingsBtnOnClickListener();
     }
 
-    private void setUpLayout(){
+    public void setUpLayout(){
         String defaultProgression = "0/21";
 
         chapterLocked2 = true;

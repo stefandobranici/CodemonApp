@@ -48,7 +48,7 @@ public class CurrentUserInformation {
         return SINGLE_INSTANCE;
     }
 
-    public void getUserProgressionStatus(){
+    public void getUserProgressionStatus(final ChapterSelectorActivity chapterSelectorActivity){
         progressionOfChapters.clear();
 
         mChaptersReference = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression");
@@ -104,6 +104,8 @@ public class CurrentUserInformation {
                         }
                     });
                 }
+
+                chapterSelectorActivity.setUpLayout();
             }
 
             @Override

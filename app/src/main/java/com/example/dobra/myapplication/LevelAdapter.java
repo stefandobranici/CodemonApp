@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class LevelAdapter {
     private List<Level> mLevelList;
     private List<String> mKeys;
     private Context context;
-    private LinearLayout mainLayout, firstThirdLayout, secondThirdLayout, lastThirdLayout;
+    private LinearLayout mainLayout;
+    private LinearLayout firstThirdLayout, secondThirdLayout, lastThirdLayout;
 
     public LevelAdapter(List<Level> mLevelList, List<String> mKeys, Context context, LinearLayout mainLayout) {
         this.mLevelList = mLevelList;
@@ -31,6 +33,30 @@ public class LevelAdapter {
     }
 
     public void generateMap() {
+
+        if(CurrentUserInformation.getInstance().getChapterSelected().equals(1)){
+            ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
+            chapterImage.setImageResource(R.drawable.variables);
+        } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(2)){
+            ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
+            chapterImage.setImageResource(R.drawable.ifworld);
+        } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(3)){
+            ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
+            chapterImage.setImageResource(R.drawable.whilewait);
+        } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(4)){
+            ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
+            chapterImage.setImageResource(R.drawable.forever);
+        } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(5)){
+            ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
+            chapterImage.setImageResource(R.drawable.arrays);
+        } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(6)){
+            ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
+            chapterImage.setImageResource(R.drawable.methods);
+        } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(7)){
+            ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
+            chapterImage.setImageResource(R.drawable.classes);
+        }
+
         int countLevelsDrawn = 1;
 
         for (final Level level : mLevelList) {
