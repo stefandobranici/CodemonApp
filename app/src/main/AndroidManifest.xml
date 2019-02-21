@@ -15,7 +15,7 @@
         <service
             android:name=".MusicService"
             android:enabled="true" />
-        <activity android:name=".GameplaySelectorActivity"></activity>
+        <activity android:name=".MenuScreenActivity"></activity>
         <activity android:name=".ProfileViewActivity" />
 
         <activity android:name=".MainActivity">

@@ -31,93 +31,18 @@ public class ChapterSelectorActivity extends AppCompatActivity {
 
     private TextView variableProgression, ifProgression, whileProgression, forProgression, arraysProgression, methodsProgression, classesProgression;
 
-    private FirebaseAuth mAuth;
-
-    private FirebaseDatabase mDatabase;
-
-    private DatabaseReference mChaptersReference;
-
-    private DatabaseReference mLevelReference;
-
-    private Map<Integer, Integer> progressionOfChapters;
-
-    public static Integer chapterSelected;
+    private CurrentUserInformation currentUserInformation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story_chapter_selector);
 
-        progressionOfChapters = new HashMap<>();
+        currentUserInformation = CurrentUserInformation.getInstance();
 
-        mAuth = FirebaseAuth.getInstance();
+        currentUserInformation.getUserProgressionStatus();
 
-        mDatabase = FirebaseDatabase.getInstance();
-
-        mChaptersReference = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression");
-
-        mChaptersReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChildren()){
-                    for(DataSnapshot keyNode:dataSnapshot.getChildren()){
-                        for(DataSnapshot keyNode2:keyNode.getChildren()){
-                            Level level = keyNode2.getValue(Level.class);
-                            if(level.isCompleted()) {
-                                if(progressionOfChapters.containsKey(level.getChapter())) {
-                                    progressionOfChapters.put(level.getChapter(), progressionOfChapters.get(level.getChapter()) + 1);
-                                } else {
-                                    progressionOfChapters.put(level.getChapter(), 1);
-                                }
-                            }
-
-                        }
-                    }
-                } else {
-                    new FirebaseDatabaseHelper().generateUserLevels(new FirebaseDatabaseHelper.DataStatus() {
-                        @Override
-                        public void DataIsLoaded(List<Level> levels, List<String> keys) {
-                            Integer levelId = 1;
-                            for(Level level:levels){
-                                if(levelId == 22) {
-                                    levelId = 1;
-                                }
-                                Integer chapterId = level.getChapter();
-                                DatabaseReference currentLevelReference = mChaptersReference.child(chapterId.toString()).child(levelId.toString());
-                                currentLevelReference.setValue(level);
-
-                                levelId++;
-                            }
-
-                        }
-
-
-                        @Override
-                        public void DataIsInserted() {
-
-                        }
-
-                        @Override
-                        public void DataIsUpdated() {
-
-                        }
-
-                        @Override
-                        public void DataIsDeleted() {
-
-                        }
-                    });
-                }
-
-                setUpLayout();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
+        setUpLayout();
 
     }
 
@@ -130,7 +55,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                chapterSelected = 1;
+                currentUserInformation.setChapterSelected(1);
 
                 startActivity(mapview_intent);
             }
@@ -149,7 +74,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                    chapterSelected = 2;
+                    currentUserInformation.setChapterSelected(2);
 
                     startActivity(mapview_intent);
                 }
@@ -169,7 +94,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                    chapterSelected = 3;
+                    currentUserInformation.setChapterSelected(3);
 
                     startActivity(mapview_intent);
                 }
@@ -189,7 +114,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                    chapterSelected = 4;
+                    currentUserInformation.setChapterSelected(4);
 
                     startActivity(mapview_intent);
                 }
@@ -209,7 +134,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                    chapterSelected = 5;
+                    currentUserInformation.setChapterSelected(5);
 
                     startActivity(mapview_intent);
                 }
@@ -228,7 +153,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                    chapterSelected = 6;
+                    currentUserInformation.setChapterSelected(6);
 
                     startActivity(mapview_intent);
                 }
@@ -248,7 +173,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
 
-                    chapterSelected = 7;
+                    currentUserInformation.setChapterSelected(7);
 
                     startActivity(mapview_intent);
                 }
@@ -290,74 +215,74 @@ public class ChapterSelectorActivity extends AppCompatActivity {
 
         variableProgression = (TextView) findViewById(R.id.variablesProgression);
 
-        if(progressionOfChapters.containsKey(1)){
-            if(progressionOfChapters.get(1) == 21){
+        if(currentUserInformation.progressionOfChapters.containsKey(1)){
+            if(currentUserInformation.progressionOfChapters.get(1) == 21){
                 chapterLocked2 = false;
             }
-            variableProgression.setText(String.format(progressionOfChapters.get(1).toString()+"/21"));
+            variableProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(1).toString()+"/21"));
         } else {
             variableProgression.setText(defaultProgression);
         }
 
         ifProgression = (TextView) findViewById(R.id.ifsProgression);
 
-        if(progressionOfChapters.containsKey(2)){
-            if(progressionOfChapters.get(2) == 21){
+        if(currentUserInformation.progressionOfChapters.containsKey(2)){
+            if(currentUserInformation.progressionOfChapters.get(2) == 21){
                 chapterLocked3 = false;
             }
-            ifProgression.setText(String.format(progressionOfChapters.get(2).toString()+"/21"));
+            ifProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(2).toString()+"/21"));
         } else {
             ifProgression.setText(defaultProgression);
         }
 
         whileProgression = (TextView) findViewById(R.id.whilesProgression);
 
-        if(progressionOfChapters.containsKey(3)){
-            if(progressionOfChapters.get(3) == 21){
+        if(currentUserInformation.progressionOfChapters.containsKey(3)){
+            if(currentUserInformation.progressionOfChapters.get(3) == 21){
                 chapterLocked4 = false;
             }
-            whileProgression.setText(String.format(progressionOfChapters.get(3).toString()+"/21"));
+            whileProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(3).toString()+"/21"));
         } else {
             whileProgression.setText(defaultProgression);
         }
 
         forProgression = (TextView) findViewById(R.id.forsProgression);
 
-        if(progressionOfChapters.containsKey(4)){
-            if(progressionOfChapters.get(4) == 21){
+        if(currentUserInformation.progressionOfChapters.containsKey(4)){
+            if(currentUserInformation.progressionOfChapters.get(4) == 21){
                 chapterLocked5 = false;
             }
-            forProgression.setText(String.format(progressionOfChapters.get(4).toString()+"/21"));
+            forProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(4).toString()+"/21"));
         } else {
             forProgression.setText(defaultProgression);
         }
 
         arraysProgression = (TextView) findViewById(R.id.arraysProgression);
 
-        if(progressionOfChapters.containsKey(5)){
-            if(progressionOfChapters.get(5) == 21){
+        if(currentUserInformation.progressionOfChapters.containsKey(5)){
+            if(currentUserInformation.progressionOfChapters.get(5) == 21){
                 chapterLocked6 = false;
             }
-            arraysProgression.setText(String.format(progressionOfChapters.get(5).toString()+"/21"));
+            arraysProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(5).toString()+"/21"));
         } else {
             arraysProgression.setText(defaultProgression);
         }
 
         methodsProgression = (TextView) findViewById(R.id.methodsProgression);
 
-        if(progressionOfChapters.containsKey(6)){
-            if(progressionOfChapters.get(6) == 21){
+        if(currentUserInformation.progressionOfChapters.containsKey(6)){
+            if(currentUserInformation.progressionOfChapters.get(6) == 21){
                 chapterLocked7 = false;
             }
-            methodsProgression.setText(String.format(progressionOfChapters.get(6).toString()+"/21"));
+            methodsProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(6).toString()+"/21"));
         } else {
             methodsProgression.setText(defaultProgression);
         }
 
         classesProgression = (TextView) findViewById(R.id.classesProgression);
 
-        if(progressionOfChapters.containsKey(7)){
-            classesProgression.setText(String.format(progressionOfChapters.get(7).toString()+"/21"));
+        if(currentUserInformation.progressionOfChapters.containsKey(7)){
+            classesProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(7).toString()+"/21"));
         } else {
             classesProgression.setText(defaultProgression);
         }

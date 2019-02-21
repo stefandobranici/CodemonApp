@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class MapViewActivity extends AppCompatActivity {
 
-    private RelativeLayout layout;
+    private LinearLayout layout;
     private Context context;
 
     @Override
@@ -37,7 +38,7 @@ public class MapViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map_view);
         context = this;
 
-        layout = (RelativeLayout) findViewById(R.id.layout);
+        layout = (LinearLayout) findViewById(R.id.mainMapLayout);
 
         new FirebaseDatabaseHelper().readLevels(new FirebaseDatabaseHelper.DataStatus() {
             @Override

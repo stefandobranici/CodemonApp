@@ -15,436 +15,241 @@ import android.widget.Toast;
 import java.util.List;
 
 public class LevelAdapter {
-   private List<Level> mLevelList;
-   private List<String> mKeys;
-   private Context context;
-   private RelativeLayout layout;
-   private float scale;
-   private int countX, countY, widthPixels;
-   private boolean goRight;
+    private List<Level> mLevelList;
+    private List<String> mKeys;
+    private Context context;
+    private LinearLayout mainLayout, firstThirdLayout, secondThirdLayout, lastThirdLayout;
 
-   public LevelAdapter(List<Level> mLevelList, List<String> mKeys, Context context, RelativeLayout layout) {
+    public LevelAdapter(List<Level> mLevelList, List<String> mKeys, Context context, LinearLayout mainLayout) {
         this.mLevelList = mLevelList;
         this.mKeys = mKeys;
         this.context = context;
-        this.layout = layout;
+        this.mainLayout = mainLayout;
+        this.firstThirdLayout = (LinearLayout) this.mainLayout.findViewById(R.id.firstThirdOfTheScreenLayout);
+        this.secondThirdLayout = (LinearLayout) this.mainLayout.findViewById(R.id.secondThirdOfTheScreenLayout);
+        this.lastThirdLayout = (LinearLayout) this.mainLayout.findViewById(R.id.lastThirdOfTheScreenLayout);
+    }
+
+    public void generateMap() {
+        int countLevelsDrawn = 1;
+
+        for (final Level level : mLevelList) {
+            if (level.isBlue()) {
+
+                ImageView blueTile = new ImageView(context);
+                blueTile.setAdjustViewBounds(true);
+
+                if(level.isCompleted()) {
+                    blueTile.setImageResource(R.drawable.bluetile);
+
+                } else if(level.getLevel().equals(CurrentUserInformation.getInstance().getCurrentActiveLevel())){
+                    blueTile.setImageResource(R.drawable.bluetilecurrent);
+                } else {
+                    blueTile.setImageResource(R.drawable.bluetile);
+                }
+
+                if (countLevelsDrawn == 1) {
+                    firstThirdLayout.addView(blueTile);
+                } else if (countLevelsDrawn == 2) {
+                    secondThirdLayout.addView(blueTile);
+                } else if (countLevelsDrawn == 3) {
+                    lastThirdLayout.addView(blueTile);
+                }
+
+                if (countLevelsDrawn == 3) {
+                    countLevelsDrawn = 1;
+                } else {
+                    countLevelsDrawn++;
+                }
+
+            } else if (level.isGreen()) {
+                ImageView greenTile = new ImageView(context);
+
+                greenTile.setAdjustViewBounds(true);
+
+                if(level.isCompleted() && !level.getLevel().equals(CurrentUserInformation.getInstance().getCurrentActiveLevel())) {
+                    greenTile.setImageResource(R.drawable.greentile);
+                    greenTile.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CurrentUserInformation.getInstance().setLevelSelectedForPlay(level);
+                            Intent startGameplay = new Intent("android.intent.action.GameplayScreen");
+                            context.startActivity(startGameplay);
+                        }
+                    });
+
+                }else if(level.getLevel().equals(CurrentUserInformation.getInstance().getCurrentActiveLevel())){
+                    greenTile.setImageResource(R.drawable.greentilecurrent);
+
+                    greenTile.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CurrentUserInformation.getInstance().setLevelSelectedForPlay(level);
+                            Intent startGameplay = new Intent("android.intent.action.GameplayScreen");
+                            context.startActivity(startGameplay);
+                        }
+                    });
+                } else {
+                    greenTile.setImageResource(R.drawable.greentileactive);
+                    if(level.getLevel().equals(CurrentUserInformation.getInstance().getCurrentActiveLevel()+1)){
+                        greenTile.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CurrentUserInformation.getInstance().setLevelSelectedForPlay(level);
+                                Intent startGameplay = new Intent("android.intent.action.GameplayScreen");
+                                context.startActivity(startGameplay);
+                            }
+                        });
+                    } else {
+                        greenTile.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(context, "You need to complete previous levels!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+
+                if (countLevelsDrawn == 1) {
+                    firstThirdLayout.addView(greenTile);
+                } else if (countLevelsDrawn == 2) {
+                    secondThirdLayout.addView(greenTile);
+                } else if (countLevelsDrawn == 3) {
+                    lastThirdLayout.addView(greenTile);
+                }
+
+                if (countLevelsDrawn == 3) {
+                    countLevelsDrawn = 1;
+                } else {
+                    countLevelsDrawn++;
+                }
+
+            } else if (level.isViolette()) {
+                ImageView violetteTile = new ImageView(context);
+
+                violetteTile.setAdjustViewBounds(true);
+
+                if(level.isCompleted() && !level.getLevel().equals(CurrentUserInformation.getInstance().getCurrentActiveLevel())) {
+                    violetteTile.setImageResource(R.drawable.violettile);
+                    violetteTile.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CurrentUserInformation.getInstance().setLevelSelectedForPlay(level);
+                            Intent startGameplay = new Intent("android.intent.action.GameplayScreen");
+                            context.startActivity(startGameplay);
+                        }
+                    });
+
+                }else if(level.getLevel().equals(CurrentUserInformation.getInstance().getCurrentActiveLevel())){
+                    violetteTile.setImageResource(R.drawable.violettilecurrent);
+                    violetteTile.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CurrentUserInformation.getInstance().setLevelSelectedForPlay(level);
+                            Intent startGameplay = new Intent("android.intent.action.GameplayScreen");
+                            context.startActivity(startGameplay);
+                        }
+                    });
+                } else {
+                    violetteTile.setImageResource(R.drawable.violettileactive);
+                    if(level.getLevel().equals(CurrentUserInformation.getInstance().getCurrentActiveLevel()+1)){
+                        violetteTile.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CurrentUserInformation.getInstance().setLevelSelectedForPlay(level);
+                                Intent startGameplay = new Intent("android.intent.action.GameplayScreen");
+                                context.startActivity(startGameplay);
+                            }
+                        });
+                    } else {
+                        violetteTile.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(context, "You need to complete previous levels!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+
+                if (countLevelsDrawn == 1) {
+                    firstThirdLayout.addView(violetteTile);
+                } else if (countLevelsDrawn == 2) {
+                    secondThirdLayout.addView(violetteTile);
+                } else if (countLevelsDrawn == 3) {
+                    lastThirdLayout.addView(violetteTile);
+                }
+
+                if (countLevelsDrawn == 3) {
+                    countLevelsDrawn = 1;
+                } else {
+                    countLevelsDrawn++;
+                }
+
+            } else if (level.isRed()) {
+                ImageView redTile = new ImageView(context);
+
+                redTile.setAdjustViewBounds(true);
+
+                if(level.isCompleted() && !level.getLevel().equals(CurrentUserInformation.getInstance().getCurrentActiveLevel())) {
+                    redTile.setImageResource(R.drawable.redtile);
+
+                    redTile.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CurrentUserInformation.getInstance().setLevelSelectedForPlay(level);
+                            Intent startGameplay = new Intent("android.intent.action.GameplayScreen");
+                            context.startActivity(startGameplay);
+                        }
+                    });
+
+                }else if(level.getLevel().equals(CurrentUserInformation.getInstance().getCurrentActiveLevel())){
+                    redTile.setImageResource(R.drawable.redtilecurrent);
+                    redTile.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CurrentUserInformation.getInstance().setLevelSelectedForPlay(level);
+                            Intent startGameplay = new Intent("android.intent.action.GameplayScreen");
+                            context.startActivity(startGameplay);
+                        }
+                    });
+
+                } else {
+                    redTile.setImageResource(R.drawable.redtileactive);
+
+                    if(level.getLevel().equals(CurrentUserInformation.getInstance().getCurrentActiveLevel()+1)){
+                        redTile.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CurrentUserInformation.getInstance().setLevelSelectedForPlay(level);
+                                Intent startGameplay = new Intent("android.intent.action.GameplayScreen");
+                                context.startActivity(startGameplay);
+                            }
+                        });
+                    } else {
+                        redTile.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Toast.makeText(context, "You need to complete previous levels!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+
+                if (countLevelsDrawn == 1) {
+                    firstThirdLayout.addView(redTile);
+                } else if (countLevelsDrawn == 2) {
+                    secondThirdLayout.addView(redTile);
+                } else if (countLevelsDrawn == 3) {
+                    lastThirdLayout.addView(redTile);
+                }
+
+                if (countLevelsDrawn == 3) {
+                    countLevelsDrawn = 1;
+                } else {
+                    countLevelsDrawn++;
+                }
+            }
+        }
+    }
 
-        scale = context.getResources().getDisplayMetrics().density;
-        countX = 0;
-        countY = 0;
-        goRight = true;
-        widthPixels = context.getResources().getDisplayMetrics().widthPixels;
-   }
-
-   public void generateMap() {
-       for(final Level level:mLevelList){
-           if(level.getType().equals("blue")){
-               if(goRight) {
-                   ImageView image = new ImageView(context);
-                   image.setImageResource(R.drawable.bluetile);
-
-
-                   int dpWidthInPx = (int) (120 * scale);
-                   int dpHeightInPx = (int) (30 * scale);
-
-                   if(countX == 0){
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                   } else if(countX == 1){
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
-                   } else {
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx );
-                   }
-                   image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
-
-                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                   image.setLayoutParams(layoutParams);
-
-                   layout.addView(image);
-
-                   ImageView image2 = new ImageView(context);
-                   image2.setImageResource(R.drawable.chiuplus);
-
-
-                   int dpWidthInPx2 = (int) (40 * scale);
-                   int dpHeightInPx2 = (int) (60 * scale);
-
-
-                   image2.setX(image.getX() + dpWidthInPx/3 );
-                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
-
-                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                   image2.setLayoutParams(layoutParams2);
-
-                   layout.addView(image2);
-
-                   if(countX+1<=2){
-                       countX++;
-                   } else {
-                       countY++;
-                       goRight = false;
-                   }
-               } else {
-                   ImageView image = new ImageView(context);
-                   image.setImageResource(R.drawable.bluetile);
-
-                   int dpWidthInPx = (int) (120 * scale);
-                   int dpHeightInPx = (int) (30 * scale);
-
-                   if(countX == 0){
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                   } else if(countX == 1){
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
-                   } else {
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx );
-                   }
-                   image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
-
-                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                   image.setLayoutParams(layoutParams);
-
-                   layout.addView(image);
-
-                   ImageView image2 = new ImageView(context);
-                   image2.setImageResource(R.drawable.chiuplus);
-
-
-                   int dpWidthInPx2 = (int) (40 * scale);
-                   int dpHeightInPx2 = (int) (60 * scale);
-
-
-                   image2.setX(image.getX() + dpWidthInPx/3);
-                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
-
-                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                   image2.setLayoutParams(layoutParams2);
-
-                   layout.addView(image2);
-
-                   if(countX-1>=0){
-                       countX--;
-                   } else {
-                       countY++;
-                       goRight = true;
-                   }
-               }
-           }  else if(level.getType().equals("green")){
-               if(goRight) {
-                   ImageView image = new ImageView(context);
-                   image.setImageResource(R.drawable.greentile);
-
-                   int dpWidthInPx = (int) (120 * scale);
-                   int dpHeightInPx = (int) (30 * scale);
-
-                   if(countX == 0){
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                   } else if(countX == 1){
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
-                   } else {
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx );
-                   }
-                   image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
-
-                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                   image.setLayoutParams(layoutParams);
-
-                   layout.addView(image);
-
-                   ImageButton image2 = new ImageButton(context);
-                   image2.setBackgroundResource(R.drawable.trainingcap);
-
-
-                   int dpWidthInPx2 = (int) (50 * scale);
-                   int dpHeightInPx2 = (int) (30 * scale);
-
-
-                   image2.setX(image.getX() + dpWidthInPx/3 - dpWidthInPx/12);
-                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
-
-                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                   image2.setLayoutParams(layoutParams2);
-
-/*                   image2.setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View v) {
-                           Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                           context.startActivity(intent);
-                       }
-                   });*/
-
-                   layout.addView(image2);
-
-                   if(countX+1<=2){
-                       countX++;
-                   } else {
-                       countY++;
-                       goRight = false;
-                   }
-               } else {
-                   ImageView image = new ImageView(context);
-                   image.setImageResource(R.drawable.greentile);
-
-                   int dpWidthInPx = (int) (120 * scale);
-                   int dpHeightInPx = (int) (30 * scale);
-
-                   if(countX == 0){
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                   } else if(countX == 1){
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
-                   } else {
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx );
-                   }
-                   image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
-
-                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                   image.setLayoutParams(layoutParams);
-
-                   layout.addView(image);
-
-                   ImageButton image2 = new ImageButton(context);
-                   image2.setBackgroundResource(R.drawable.trainingcap);
-
-
-                   int dpWidthInPx2 = (int) (50 * scale);
-                   int dpHeightInPx2 = (int) (30 * scale);
-
-
-                   image2.setX(image.getX() + dpWidthInPx/3 - dpWidthInPx/12);
-                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
-
-                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                   image2.setLayoutParams(layoutParams2);
-
-/*                   image2.setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View v) {
-                           Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                           context.startActivity(intent);
-                       }
-                   });*/
-
-
-                   layout.addView(image2);
-
-                   if(countX-1>=0){
-                       countX--;
-                   } else {
-                       countY++;
-                       goRight = true;
-                   }
-               }
-           } else if(level.getType().equals("violet")){
-               if(goRight) {
-                   ImageView image = new ImageView(context);
-                   image.setImageResource(R.drawable.violettile);
-
-                   int dpWidthInPx = (int) (120 * scale);
-                   int dpHeightInPx = (int) (30 * scale);
-
-                   if(countX == 0){
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                   } else if(countX == 1){
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
-                   } else {
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx );
-                   }
-                   image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
-
-                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                   image.setLayoutParams(layoutParams);
-
-                   layout.addView(image);
-
-                   ImageButton image2 = new ImageButton(context);
-                   image2.setBackgroundResource(R.drawable.codebug);
-
-
-                   int dpWidthInPx2 = (int) (50 * scale);
-                   int dpHeightInPx2 = (int) (60 * scale);
-
-
-                   image2.setX(image.getX() + dpWidthInPx/3 - dpWidthInPx/12);
-                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
-
-                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                   image2.setLayoutParams(layoutParams2);
-
-/*                   image2.setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View v) {
-                           Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                           context.startActivity(intent);
-                       }
-                   });*/
-
-
-                   layout.addView(image2);
-
-                   if(countX+1<=2){
-                       countX++;
-                   } else {
-                       countY++;
-                       goRight = false;
-                   }
-               } else {
-                   ImageView image = new ImageView(context);
-                   image.setImageResource(R.drawable.violettile);
-
-                   int dpWidthInPx = (int) (120 * scale);
-                   int dpHeightInPx = (int) (30 * scale);
-
-                   if(countX == 0){
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                   } else if(countX == 1){
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx/2);
-                   } else {
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx );
-                   }
-                   image.setY(180 + countY * dpWidthInPx -  countY * dpWidthInPx/4);
-
-                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                   image.setLayoutParams(layoutParams);
-
-                   layout.addView(image);
-
-                   ImageButton image2 = new ImageButton(context);
-                   image2.setBackgroundResource(R.drawable.codebug);
-
-
-                   int dpWidthInPx2 = (int) (50 * scale);
-                   int dpHeightInPx2 = (int) (60 * scale);
-
-
-                   image2.setX(image.getX() + dpWidthInPx/3 - dpWidthInPx/12);
-                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
-
-                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                   image2.setLayoutParams(layoutParams2);
-
-/*                   image2.setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View v) {
-                           Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                           context.startActivity(intent);
-                       }
-                   });*/
-
-
-                   layout.addView(image2);
-
-                   if(countX-1>=0){
-                       countX--;
-                   } else {
-                       countY++;
-                       goRight = true;
-                   }
-               }
-           } else if(level.getType().equals("red")) {
-               if (goRight) {
-                   ImageView image = new ImageView(context);
-                   image.setImageResource(R.drawable.redtile);
-
-                   int dpWidthInPx = (int) (120 * scale);
-                   int dpHeightInPx = (int) (30 * scale);
-
-                   if (countX == 0) {
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                   } else if (countX == 1) {
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx / 2);
-                   } else {
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                   }
-                   image.setY(180 + countY * dpWidthInPx - countY * dpWidthInPx / 4);
-
-                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                   image.setLayoutParams(layoutParams);
-
-                   layout.addView(image);
-
-                   ImageButton image2 = new ImageButton(context);
-                   image2.setBackgroundResource(R.drawable.boss);
-
-
-                   int dpWidthInPx2 = (int) (50 * scale);
-                   int dpHeightInPx2 = (int) (80 * scale);
-
-
-                   image2.setX(image.getX() + dpWidthInPx/3);
-                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
-
-                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                   image2.setLayoutParams(layoutParams2);
-
-/*                   image2.setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View v) {
-                           Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                           context.startActivity(intent);
-                       }
-                   });*/
-
-
-                   layout.addView(image2);
-
-                   if (countX + 1 <= 2) {
-                       countX++;
-                   } else {
-                       countY++;
-                       goRight = false;
-                   }
-               } else {
-                   ImageView image = new ImageView(context);
-                   image.setImageResource(R.drawable.redtile);
-
-                   int dpWidthInPx = (int) (120 * scale);
-                   int dpHeightInPx = (int) (30 * scale);
-
-                   if (countX == 0) {
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                   } else if (countX == 1) {
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx / 2);
-                   } else {
-                       image.setX(widthPixels / (3 - countX) - dpWidthInPx);
-                   }
-                   image.setY(180 + countY * dpWidthInPx - countY * dpWidthInPx / 4);
-
-                   LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-                   image.setLayoutParams(layoutParams);
-
-                   layout.addView(image);
-
-                   ImageButton image2 = new ImageButton(context);
-                   image2.setBackgroundResource(R.drawable.boss);
-
-
-                   int dpWidthInPx2 = (int) (50 * scale);
-                   int dpHeightInPx2 = (int) (80 * scale);
-
-
-                   image2.setX(image.getX() + dpWidthInPx/3 );
-                   image2.setY(image.getY() - dpHeightInPx2 + dpHeightInPx/3 + dpHeightInPx/5);
-
-                   LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(dpWidthInPx2, dpHeightInPx2);
-                   image2.setLayoutParams(layoutParams2);
-
-/*                   image2.setOnClickListener(new View.OnClickListener() {
-                       @Override
-                       public void onClick(View v) {
-                           Intent intent = new Intent(context, GameplayScreen.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                           context.startActivity(intent);
-                       }
-                   });*/
-
-
-                   layout.addView(image2);
-
-                   if (countX - 1 >= 0) {
-                       countX--;
-                   } else {
-                       countY++;
-                       goRight = true;
-                   }
-               }
-           }
-       }
-   }
 }

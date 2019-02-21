@@ -1,16 +1,16 @@
 package com.example.dobra.myapplication;
 
 public class Level {
-    private int chapter;
+    private Integer chapter;
     private boolean completed;
     private String content;
-    private int level;
+    private Integer level;
     private String type;
 
     public Level() {
     }
 
-    public Level(int chapter, boolean completed, String content, int level, String type) {
+    public Level(Integer chapter, boolean completed, String content, Integer level, String type) {
         this.chapter = chapter;
         this.completed = completed;
         this.content = content;
@@ -18,11 +18,11 @@ public class Level {
         this.type = type;
     }
 
-    public int getChapter() {
+    public Integer getChapter() {
         return chapter;
     }
 
-    public void setChapter(int chapter) {
+    public void setChapter(Integer chapter) {
         this.chapter = chapter;
     }
 
@@ -42,11 +42,11 @@ public class Level {
         this.content = content;
     }
 
-    public int getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(Integer level) {
         this.level = level;
     }
 
@@ -56,5 +56,21 @@ public class Level {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public boolean isBlue(){
+        return (type.equals("blue"));
+    }
+
+    public boolean isGreen(){
+        return (type.equals("green"));
+    }
+
+    public boolean isViolette(){
+        return (type.equals("violet"));
+    }
+
+    public boolean isRed(){
+        return (type.equals("red"));
     }
 }
