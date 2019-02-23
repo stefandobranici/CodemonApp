@@ -49,7 +49,6 @@ public class CurrentUserInformation {
     }
 
     public void getUserProgressionStatus(final ChapterSelectorActivity chapterSelectorActivity){
-        progressionOfChapters.clear();
 
         mChaptersReference = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression");
 
@@ -57,6 +56,7 @@ public class CurrentUserInformation {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChildren()){
+                    progressionOfChapters.clear();
                     for(DataSnapshot keyNode:dataSnapshot.getChildren()){
                         for(DataSnapshot keyNode2:keyNode.getChildren()){
                             Level level = keyNode2.getValue(Level.class);
