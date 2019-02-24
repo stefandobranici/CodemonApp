@@ -36,10 +36,10 @@ public class LevelAdapter {
 
         if(CurrentUserInformation.getInstance().getChapterSelected().equals(1)){
             ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
-            chapterImage.setImageResource(R.drawable.variables);
+            chapterImage.setImageResource(R.drawable.variablesmap);
         } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(2)){
             ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
-            chapterImage.setImageResource(R.drawable.ifworld);
+            chapterImage.setImageResource(R.drawable.ifworldmap);
         } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(3)){
             ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
             chapterImage.setImageResource(R.drawable.whilewait);

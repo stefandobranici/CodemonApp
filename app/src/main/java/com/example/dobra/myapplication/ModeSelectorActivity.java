@@ -86,7 +86,7 @@ public class ModeSelectorActivity extends AppCompatActivity {
 
                 modeSelectorReference.setValue(mode);
 
-                Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
+                Intent gamemode_intent = new Intent("android.intent.action.MenuScreenActivity");
                 startActivity(gamemode_intent);
                 finish();
             }
@@ -103,7 +103,7 @@ public class ModeSelectorActivity extends AppCompatActivity {
 
                 modeSelectorReference.setValue(mode);
 
-                Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
+                Intent gamemode_intent = new Intent("android.intent.action.MenuScreenActivity");
                 startActivity(gamemode_intent);
                 finish();
             }
@@ -120,7 +120,7 @@ public class ModeSelectorActivity extends AppCompatActivity {
 
                 modeSelectorReference.setValue(mode);
 
-                Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
+                Intent gamemode_intent = new Intent("android.intent.action.MenuScreenActivity");
                 startActivity(gamemode_intent);
                 finish();
             }

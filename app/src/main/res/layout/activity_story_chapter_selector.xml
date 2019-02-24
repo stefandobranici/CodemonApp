@@ -6,230 +6,265 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     tools:context=".ChapterSelectorActivity">
-
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
-
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:weightSum="9">
 
         <ImageView
             android:id="@+id/chaptertxt"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:src="@drawable/chapter" />
-
-        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:src="@drawable/chapter"
+            android:layout_weight="1"/>
 
-            <ImageButton
-                android:id="@+id/variables"
-                android:layout_width="200dp"
-                android:layout_height="52dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/variables" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7">
 
-            <TextView
-                android:id="@+id/variablesProgression"
-                android:layout_width="80dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="17dp"
-                android:background="@drawable/credentialsbox"
-                android:fontFamily="@font/cyberverse"
-                android:paddingTop="7dp"
-                android:text="0/21"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-        <LinearLayout
+                    <ImageButton
+                        android:id="@+id/variables"
+                        android:layout_width="200dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/variables" />
+
+                    <TextView
+                        android:id="@+id/variablesProgression"
+                        android:layout_width="80dp"
+                        android:layout_height="51dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/credentialsbox"
+                        android:fontFamily="@font/cyberverse"
+                        android:paddingTop="7dp"
+                        android:text="0/21"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/ifs"
+                        android:layout_width="200dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/ifworld" />
+
+                    <TextView
+                        android:id="@+id/ifsProgression"
+                        android:layout_width="80dp"
+                        android:layout_height="51dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/credentialsbox"
+                        android:fontFamily="@font/cyberverse"
+                        android:paddingTop="7dp"
+                        android:text="0/21"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+                    <ImageButton
+                        android:id="@+id/whiles"
+                        android:layout_width="200dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/whilewait" />
+
+                    <TextView
+                        android:id="@+id/whilesProgression"
+                        android:layout_width="80dp"
+                        android:layout_height="51dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/credentialsbox"
+                        android:fontFamily="@font/cyberverse"
+                        android:paddingTop="7dp"
+                        android:text="0/21"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/fors"
+                        android:layout_width="200dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/forever" />
+
+                    <TextView
+                        android:id="@+id/forsProgression"
+                        android:layout_width="80dp"
+                        android:layout_height="51dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/credentialsbox"
+                        android:fontFamily="@font/cyberverse"
+                        android:paddingTop="7dp"
+                        android:text="0/21"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/arrays"
+                        android:layout_width="200dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/arrays" />
+
+                    <TextView
+                        android:id="@+id/arraysProgression"
+                        android:layout_width="80dp"
+                        android:layout_height="51dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/credentialsbox"
+                        android:fontFamily="@font/cyberverse"
+                        android:paddingTop="7dp"
+                        android:text="0/21"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/methods"
+                        android:layout_width="200dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/methods" />
+
+                    <TextView
+                        android:id="@+id/methodsProgression"
+                        android:layout_width="80dp"
+                        android:layout_height="51dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/credentialsbox"
+                        android:fontFamily="@font/cyberverse"
+                        android:paddingTop="7dp"
+                        android:text="0/21"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/classes"
+                        android:layout_width="200dp"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/classes" />
+
+                    <TextView
+                        android:id="@+id/classesProgression"
+                        android:layout_width="80dp"
+                        android:layout_height="51dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginTop="17dp"
+                        android:background="@drawable/credentialsbox"
+                        android:fontFamily="@font/cyberverse"
+                        android:paddingTop="7dp"
+                        android:text="0/21"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:weightSum="3"
+            android:id="@+id/menubar">
+            <ImageView
+                android:id="@+id/settingsbutton"
+                android:layout_width="61dp"
+                android:layout_height="60dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/settingsicon" />
 
-            <ImageButton
-                android:id="@+id/ifs"
-                android:layout_width="200dp"
-                android:layout_height="52dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/ifworld" />
+            <ImageView
+                android:id="@+id/profilebutton"
+                android:layout_width="61dp"
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/profile" />
 
-            <TextView
-                android:id="@+id/ifsProgression"
-                android:layout_width="80dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="17dp"
-                android:background="@drawable/credentialsbox"
-                android:fontFamily="@font/cyberverse"
-                android:paddingTop="7dp"
-                android:text="0/21"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageButton
-                android:id="@+id/whiles"
-                android:layout_width="200dp"
-                android:layout_height="52dp"
-                android:layout_marginTop="17dp"
-                android:background="@drawable/whilewait" />
-
-            <TextView
-                android:id="@+id/whilesProgression"
-                android:layout_width="80dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="17dp"
-                android:background="@drawable/credentialsbox"
-                android:fontFamily="@font/cyberverse"
-                android:paddingTop="7dp"
-                android:text="0/21"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/fors"
-                android:layout_width="200dp"
-                android:layout_height="52dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/forever" />
-
-            <TextView
-                android:id="@+id/forsProgression"
-                android:layout_width="80dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="17dp"
-                android:background="@drawable/credentialsbox"
-                android:fontFamily="@font/cyberverse"
-                android:paddingTop="7dp"
-                android:text="0/21"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/arrays"
-                android:layout_width="200dp"
-                android:layout_height="52dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/arrays" />
-
-            <TextView
-                android:id="@+id/arraysProgression"
-                android:layout_width="80dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="17dp"
-                android:background="@drawable/credentialsbox"
-                android:fontFamily="@font/cyberverse"
-                android:paddingTop="7dp"
-                android:text="0/21"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/methods"
-                android:layout_width="200dp"
-                android:layout_height="52dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/methods" />
-
-            <TextView
-                android:id="@+id/methodsProgression"
-                android:layout_width="80dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="17dp"
-                android:background="@drawable/credentialsbox"
-                android:fontFamily="@font/cyberverse"
-                android:paddingTop="7dp"
-                android:text="0/21"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/classes"
-                android:layout_width="200dp"
-                android:layout_height="52dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/classes" />
-
-            <TextView
-                android:id="@+id/classesProgression"
-                android:layout_width="80dp"
-                android:layout_height="51dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="17dp"
-                android:background="@drawable/credentialsbox"
-                android:fontFamily="@font/cyberverse"
-                android:paddingTop="7dp"
-                android:text="0/21"
-                android:textAlignment="center"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
-
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/friendsbutton"
+                android:layout_width="61dp"
+                android:layout_height="60dp"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/friends" />
+        </RelativeLayout>
 
     </LinearLayout>
 
-    </ScrollView>
-
-    <ImageButton
-        android:id="@+id/settingsbutton"
-        android:layout_width="44dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
-        android:background="@drawable/settingsicon" />
 </RelativeLayout>

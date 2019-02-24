@@ -53,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private ImageButton settingsBtn;
 
+    private GifImageView loadingAnimation;
+
     private static final String FILE_NAME = "currentuser.txt";
 
     private String UID, PW;
@@ -73,6 +75,8 @@ public class LoginActivity extends AppCompatActivity {
         scale = getResources().getDisplayMetrics().density;
 
         cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
+
+        loadingAnimation = (GifImageView) findViewById(R.id.loadingAnimation);
 
         generateScreenElements();
 
@@ -182,6 +186,7 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingAnimation.setVisibility(View.VISIBLE);
                 UID = userIdBox.getText().toString().trim();
                 PW = passwordBox.getText().toString().trim();
 
@@ -203,6 +208,7 @@ public class LoginActivity extends AppCompatActivity {
                             loginSuccessful();
 
                         } else {
+                            loadingAnimation.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
@@ -272,14 +278,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 if(!TextUtils.isEmpty(modeSelected)){
-                    Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
+                    Intent gamemode_intent = new Intent("android.intent.action.MenuScreenActivity");
                     startActivity(gamemode_intent);
                     MainScreenActivity.mainActivity.finish();
+                    loadingAnimation.setVisibility(View.INVISIBLE);
                     finish();
                 } else {
                     Intent mode_selector = new Intent("android.intent.action.ModeSelectorActivity");
                     startActivity(mode_selector);
                     MainScreenActivity.mainActivity.finish();
+                    loadingAnimation.setVisibility(View.INVISIBLE);
                     finish();
                 }
 

@@ -53,6 +53,8 @@ public class SignupActivity extends AppCompatActivity {
 
     private ImageButton settingsBtn;
 
+    private GifImageView loadingAnimation;
+
     private String userID, userPW;
 
     private static final String FILE_NAME = "currentuser.txt";
@@ -71,6 +73,8 @@ public class SignupActivity extends AppCompatActivity {
         scale = getResources().getDisplayMetrics().density;
 
         cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
+
+        loadingAnimation = (GifImageView) findViewById(R.id.loadingAnimation);
 
         generateScreenElements();
 
@@ -207,6 +211,7 @@ public class SignupActivity extends AppCompatActivity {
         signupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingAnimation.setVisibility(View.VISIBLE);
 
                 userID = userIdBox.getText().toString().trim();
                 userPW = passwordBox.getText().toString().trim();
@@ -248,6 +253,7 @@ public class SignupActivity extends AppCompatActivity {
                             logUserIn();
                         } else {
                             if(task.getException() instanceof FirebaseAuthException){
+                                loadingAnimation.setVisibility(View.INVISIBLE);
                                 Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -315,9 +321,11 @@ public class SignupActivity extends AppCompatActivity {
                     Intent login_intent = new Intent("android.intent.action.ModeSelectorActivity");
                     LoginActivity.loginActivity.finish();
                     MainScreenActivity.mainActivity.finish();
+                    loadingAnimation.setVisibility(View.INVISIBLE);
                     startActivity(login_intent);
                     finish();
                 } else {
+                    loadingAnimation.setVisibility(View.INVISIBLE);
                     Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
             }

@@ -28,7 +28,7 @@ public class GameplayScreen extends AppCompatActivity {
 
     private final String ENEMY_CODEBOSS = "Fatal Error";
 
-    private Typeface cyberFont;
+    private Typeface cyberFont, consolasFont;
 
     private LinearLayout topLayout, firstHalfTopLayout, secondHalfTopLayout, middleLayout, bottomLayout,  firstHalfBottomLayout, secondHalfBottomLayout;
 
@@ -61,6 +61,8 @@ public class GameplayScreen extends AppCompatActivity {
         level = CurrentUserInformation.getInstance().getLevelSelectedForPlay();
 
         cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
+
+        consolasFont = Typeface.createFromAsset(getAssets(), "font/Consolas.ttf");
 
         gameplayManager = new GameplayManager();
 
@@ -198,12 +200,15 @@ public class GameplayScreen extends AppCompatActivity {
 
         LinearLayout currentLine = new LinearLayout(getApplicationContext());
         currentLine.setOrientation(LinearLayout.HORIZONTAL);
+        currentLine.setPadding(100,0,0,0);
 
         for(ContentParser.ContentType entry:contentWords){
             if(entry.isNewLine()){
                 middleLayout.addView(currentLine);
 
                 currentLine = new LinearLayout(getApplicationContext());
+                currentLine.setOrientation(LinearLayout.HORIZONTAL);
+                currentLine.setPadding(100,0,0,0);
 
             } else {
                 addNewView(entry, currentLine);
@@ -391,13 +396,13 @@ public class GameplayScreen extends AppCompatActivity {
 
         newWord.setTextColor(WHITE);
 
-        newWord.setTypeface(cyberFont);
+        newWord.setTypeface(consolasFont);
 
         newWord.setPadding(10, 10, 10, 10);
 
         newWord.setGravity(View.TEXT_ALIGNMENT_CENTER);
 
-        newWord.setTextSize(12);
+        newWord.setTextSize(16);
 
         newWord.setText(content.wordContent);
 

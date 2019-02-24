@@ -1,6 +1,7 @@
 package com.example.dobra.myapplication;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +50,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import pl.droidsonroids.gif.GifImageView;
+
 import static android.graphics.Color.WHITE;
 
 public class MainScreenActivity extends AppCompatActivity {
@@ -70,6 +74,8 @@ public class MainScreenActivity extends AppCompatActivity {
 
     private DatabaseReference modeSelectorReference;
 
+    private GifImageView loadingAnimation;
+
     HomeWatcher mHomeWatcher;
 
     @Override
@@ -84,6 +90,8 @@ public class MainScreenActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance();
 
         cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
+
+        loadingAnimation = (GifImageView) findViewById(R.id.loadingAnimation);
 
         setUpMusic();
 
@@ -158,6 +166,8 @@ public class MainScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                loadingAnimation.setVisibility(View.VISIBLE);
+
                 mAuth.signInWithEmailAndPassword(userID, userPW).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -173,12 +183,14 @@ public class MainScreenActivity extends AppCompatActivity {
 
 
                                     if(!TextUtils.isEmpty(modeSelected)){
-                                        Intent gamemode_intent = new Intent("android.intent.action.ChapterSelectorActivity");
+                                        Intent gamemode_intent = new Intent("android.intent.action.MenuScreenActivity");
                                         startActivity(gamemode_intent);
+                                        loadingAnimation.setVisibility(View.INVISIBLE);
                                         finish();
                                     } else {
                                         Intent mode_selector = new Intent("android.intent.action.ModeSelectorActivity");
                                         startActivity(mode_selector);
+                                        loadingAnimation.setVisibility(View.INVISIBLE);
                                         finish();
                                     }
 
@@ -190,6 +202,7 @@ public class MainScreenActivity extends AppCompatActivity {
                                 }
                             });
                         } else {
+                            loadingAnimation.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }

@@ -27,6 +27,8 @@ public class CurrentUserInformation {
 
     public Map<Integer, Integer> progressionOfChapters;
 
+    public Map<Integer, Integer> numberOfMissionsInChapter;
+
     private Integer currentActiveChapter, currentActiveLevel;
 
     private Integer chapterSelected;
@@ -37,6 +39,8 @@ public class CurrentUserInformation {
     private CurrentUserInformation() {
 
         progressionOfChapters = new HashMap<>();
+
+        numberOfMissionsInChapter = new HashMap<>();
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -57,6 +61,7 @@ public class CurrentUserInformation {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChildren()){
                     progressionOfChapters.clear();
+                    numberOfMissionsInChapter.clear();
                     for(DataSnapshot keyNode:dataSnapshot.getChildren()){
                         for(DataSnapshot keyNode2:keyNode.getChildren()){
                             Level level = keyNode2.getValue(Level.class);
@@ -66,6 +71,12 @@ public class CurrentUserInformation {
                                 } else {
                                     progressionOfChapters.put(level.getChapter(), 1);
                                 }
+                            }
+
+                            if(numberOfMissionsInChapter.containsKey(level.getChapter())){
+                                numberOfMissionsInChapter.put(level.getChapter(), numberOfMissionsInChapter.get(level.getChapter()) + 1);
+                            } else {
+                                numberOfMissionsInChapter.put(level.getChapter(), 1);
                             }
 
                         }

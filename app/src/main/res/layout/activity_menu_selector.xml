@@ -1,9 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background"
     tools:context=".MenuScreenActivity">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/menu"/>
 
-</android.support.constraint.ConstraintLayout>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="4">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/storyModeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/storymode"
+                    android:layout_marginBottom="20dp"
+                    android:adjustViewBounds="true"/>
+                <ImageView
+                    android:id="@+id/multiplayerModeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/multiplayer"
+                    android:layout_marginBottom="20dp"
+                    android:adjustViewBounds="true"/>
+                <ImageView
+                    android:id="@+id/practiceModeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/practice"
+                    android:layout_marginBottom="20dp"
+                    android:adjustViewBounds="true"/>
+                <ImageView
+                    android:id="@+id/profileModeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/profileview"
+                    android:layout_marginBottom="20dp"
+                    android:adjustViewBounds="true"/>
+                <ImageView
+                    android:id="@+id/friendsModeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/friendsview"
+                    android:layout_marginBottom="20dp"
+                    android:adjustViewBounds="true"/>
+                <ImageView
+                    android:id="@+id/shopModeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/shop"
+                    android:layout_marginBottom="20dp"
+                    android:adjustViewBounds="true"/>
+                <ImageView
+                    android:id="@+id/settingsModeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/settings"
+                    android:adjustViewBounds="true"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
