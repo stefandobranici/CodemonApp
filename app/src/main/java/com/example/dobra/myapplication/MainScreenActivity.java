@@ -231,6 +231,7 @@ public class MainScreenActivity extends AppCompatActivity {
 
     private boolean mIsBound = false;
     private MusicService mServ;
+
     private ServiceConnection Scon = new ServiceConnection(){
 
         public void onServiceConnected(ComponentName name, IBinder

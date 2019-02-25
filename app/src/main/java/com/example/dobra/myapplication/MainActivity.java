@@ -105,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         doUnbindService();
-/*        Intent music = new Intent();
+        Intent music = new Intent();
         music.setClass(this,MusicService.class);
-        stopService(music);*/
+        stopService(music);
 
     }
 
