@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 public class SettingsScreen extends AppCompatActivity {
 
-    private Button logoutBtn;
+    private ImageView logoutBtn, changeModeBtn;
     private static final String FILE_NAME = "currentuser.txt";
 
     @Override
@@ -20,20 +21,35 @@ public class SettingsScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_screen);
 
-        logoutBtnOnClickListener();
+        setLogoutBtnOnClickListener();
+
+        setChangeGameModeBtnOnClickListener();
 
     }
 
-    private void logoutBtnOnClickListener(){
-        logoutBtn = (Button) findViewById(R.id.logoutButton);
+    private void setLogoutBtnOnClickListener(){
+        logoutBtn = (ImageView) findViewById(R.id.logoutButton);
 
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clearData();
                 MainScreenActivity.mainActivity.finish();
-                Intent back_to_main = new Intent("android.intent.action.MainScreenActivity");
-                startActivity(back_to_main);
+                Intent backToMain = new Intent("android.intent.action.MainScreenActivity");
+                startActivity(backToMain);
+                finish();
+            }
+        });
+    }
+
+    private void setChangeGameModeBtnOnClickListener(){
+        changeModeBtn = (ImageView) findViewById(R.id.changeModeButton);
+
+        changeModeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent changeGameMode = new Intent("android.intent.action.ModeSelectorActivity");
+                startActivity(changeGameMode);
                 finish();
             }
         });

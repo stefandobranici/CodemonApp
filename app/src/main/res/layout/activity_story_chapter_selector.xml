@@ -8,26 +8,25 @@
     tools:context=".ChapterSelectorActivity">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:orientation="vertical"
-        android:weightSum="9">
+        android:weightSum="10">
 
         <ImageView
-            android:id="@+id/chaptertxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:src="@drawable/chapter"
             android:layout_weight="1"/>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="7">
+            android:layout_height="0dp"
+            android:layout_weight="8">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -236,34 +235,79 @@
 
         </ScrollView>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:orientation="horizontal"
-            android:layout_gravity="center_horizontal"
-            android:weightSum="3"
+            android:layout_weight="1"
+            android:weightSum="8"
             android:id="@+id/menubar">
+
             <ImageView
-                android:id="@+id/settingsbutton"
-                android:layout_width="61dp"
-                android:layout_height="60dp"
-                android:layout_alignParentEnd="true"
-                android:src="@drawable/settingsicon" />
+                android:id="@+id/storybutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:src="@drawable/storybutton" />
+
+            <ImageView
+                android:id="@+id/multiplayerbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/multiplayerbutton" />
+
+            <ImageView
+                android:id="@+id/practicebutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/practicebutton" />
 
             <ImageView
                 android:id="@+id/profilebutton"
-                android:layout_width="61dp"
-                android:layout_height="60dp"
-                android:layout_centerHorizontal="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:src="@drawable/profile" />
 
             <ImageView
                 android:id="@+id/friendsbutton"
-                android:layout_width="61dp"
-                android:layout_height="60dp"
-                android:layout_alignParentStart="true"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:src="@drawable/friends" />
-        </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/itemsbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/itemsbutton" />
+
+
+            <ImageView
+                android:id="@+id/shopbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/shopbutton" />
+
+            <ImageView
+                android:id="@+id/settingsbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/settingsicon" />
+
+            <ImageView
+                android:id="@+id/backbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/backbutton" />
+        </LinearLayout>
 
     </LinearLayout>
 

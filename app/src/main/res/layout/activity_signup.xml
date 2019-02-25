@@ -22,6 +22,7 @@
 <ImageButton
 android:id="@+id/settingsbutton"
 android:background="@drawable/settingsicon"
+    android:visibility="invisible"
 android:layout_width="44dp"
 android:layout_height="40dp"
 android:layout_alignParentEnd="true"

@@ -79,8 +79,6 @@ public class LoginActivity extends AppCompatActivity {
         loadingAnimation = (GifImageView) findViewById(R.id.loadingAnimation);
 
         generateScreenElements();
-
-        setSettingsBtnOnClickListener();
     }
 
 
@@ -264,8 +262,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginSuccessful(){
         writeData(UID +"\n" + PW);
-
-        Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
 
         String currentUser = mAuth.getCurrentUser().getUid();
 

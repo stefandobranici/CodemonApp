@@ -1,28 +1,13 @@
 package com.example.dobra.myapplication;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import android.widget.Toast;
 
 public class ChapterSelectorActivity extends AppCompatActivity {
 
@@ -32,7 +17,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
 
     private TextView variableProgression, ifProgression, whileProgression, forProgression, arraysProgression, methodsProgression, classesProgression;
 
-    private ImageView settingsBtn, profileBtn, friendsBtn;
+    private ImageView storyModeButton, multiplayerModeButton, practiceModeButton,  profileModeButton, friendsModeButton, inventoryModeButton, shopModeButton, settingsModeButton, backButton;
 
     private CurrentUserInformation currentUserInformation;
 
@@ -184,9 +169,84 @@ public class ChapterSelectorActivity extends AppCompatActivity {
         }
     }
 
-    private void setSettingsBtnOnClickListener(){
-        settingsBtn = (ImageView) findViewById(R.id.settingsbutton);
-        settingsBtn.setOnClickListener(new View.OnClickListener() {
+
+
+    private void setStoryModeButtonOnClickListener(){
+        storyModeButton = (ImageView) findViewById(R.id.storybutton);
+        storyModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent storyMode = new Intent("android.intent.action.ChapterSelectorActivity");
+                startActivity(storyMode);
+            }
+        });
+    }
+
+    private void setMultiplayerModeButtonOnClickListener(){
+        multiplayerModeButton = (ImageView) findViewById(R.id.multiplayerbutton);
+        multiplayerModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setPracticeModeButtonOnClickListener(){
+        practiceModeButton = (ImageView) findViewById(R.id.practicebutton);
+        practiceModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setProfileButtonOnClickListener(){
+        profileModeButton = (ImageView) findViewById(R.id.profilebutton);
+        profileModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profileMode = new Intent("android.intent.action.ProfileViewActivity");
+                startActivity(profileMode);
+            }
+        });
+    }
+
+    private void setFriendsButtonOnClickListener(){
+        friendsModeButton = (ImageView) findViewById(R.id.friendsbutton);
+        friendsModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent friendsMode = new Intent("android.intent.action.FriendsView");
+                startActivity(friendsMode);
+            }
+        });
+    }
+
+    private void setInventoryModeButtonOnClickListener(){
+        inventoryModeButton = (ImageView) findViewById(R.id.itemsbutton);
+        inventoryModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setShopModeButtonOnClickListener(){
+        shopModeButton = (ImageView) findViewById(R.id.shopbutton);
+        shopModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setSettingsButtonOnClickListener(){
+        settingsModeButton = (ImageView) findViewById(R.id.settingsbutton);
+        settingsModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent settings_intent = new Intent("android.intent.action.SettingsScreen");
@@ -195,29 +255,19 @@ public class ChapterSelectorActivity extends AppCompatActivity {
         });
     }
 
-    private void setProfileBtnOnClickListener(){
-        profileBtn = (ImageView) findViewById(R.id.profilebutton);
-        profileBtn.setOnClickListener(new View.OnClickListener() {
+    private void setBackButtonOnClickListener(){
+        backButton = (ImageView) findViewById(R.id.backbutton);
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent settings_intent = new Intent("android.intent.action.ProfileViewActivity");
-                startActivity(settings_intent);
+                finish();
             }
         });
     }
 
-    private void setFriendsBtnOnClickListener(){
-        friendsBtn = (ImageView) findViewById(R.id.friendsbutton);
-        friendsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent settings_intent = new Intent("android.intent.action.FriendsView");
-                startActivity(settings_intent);
-            }
-        });
-    }
 
     private void setUpButtons(){
+        //Chapter view buttons
         variablesButtonOnClickListener();
         ifButtonOnClickListener();
         whileButtonOnClickListener();
@@ -225,13 +275,21 @@ public class ChapterSelectorActivity extends AppCompatActivity {
         arraysButtonOnClickListener();
         methodsButtonOnClickListener();
         classesButtonOnClickListener();
-        setSettingsBtnOnClickListener();
-        setProfileBtnOnClickListener();
-        setFriendsBtnOnClickListener();
+
+        //Sub menu setup
+        setStoryModeButtonOnClickListener();
+        setMultiplayerModeButtonOnClickListener();
+        setPracticeModeButtonOnClickListener();
+        setProfileButtonOnClickListener();
+        setFriendsButtonOnClickListener();
+        setInventoryModeButtonOnClickListener();
+        setShopModeButtonOnClickListener();
+        setSettingsButtonOnClickListener();
+        setBackButtonOnClickListener();
     }
 
     public void setUpLayout(){
-        String defaultProgression = "0/21";
+        String defaultProgression = "0/??";
 
         chapterLocked2 = true;
         chapterLocked3 = true;

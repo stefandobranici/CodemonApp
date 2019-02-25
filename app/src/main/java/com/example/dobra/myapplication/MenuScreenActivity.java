@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 public class MenuScreenActivity extends AppCompatActivity {
 
-    ImageView storyMode, multiplayerMode, practiceMode, profileMode, friendsMode, shopMode, settingsMode;
+    ImageView storyMode, multiplayerMode, practiceMode, profileMode, itemsMode, friendsMode, shopMode, settingsMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +79,17 @@ public class MenuScreenActivity extends AppCompatActivity {
         });
     }
 
+    private void setItemsModeOnClickListener(){
+        itemsMode = (ImageView) findViewById(R.id.itemsModeView);
+
+        itemsMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void setShopModeOnClickListener(){
         shopMode = (ImageView) findViewById(R.id.shopModeView);
 
@@ -113,5 +124,6 @@ public class MenuScreenActivity extends AppCompatActivity {
         setMultiplayerModeOnClickListener();
         setPracticeModeOnClickListener();
         setShopModeOnClickListener();
+        setItemsModeOnClickListener();
     }
 }

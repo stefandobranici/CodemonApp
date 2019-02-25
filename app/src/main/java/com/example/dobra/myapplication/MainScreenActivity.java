@@ -95,8 +95,6 @@ public class MainScreenActivity extends AppCompatActivity {
 
         setUpMusic();
 
-        setSettingsBtnOnClickListener();
-
         loginButtonOnClickListener();
 
         detectIfUserWasLoggedIn();
@@ -124,6 +122,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 loggedInUserID.setTypeface(cyberFont);
                 loggedInUserID.setText(userDisplayedID);
 
+                setSettingsBtnOnClickListener();
                 loginButtonOnClickListenerIfLoggedIn(UID, PW);
             }
         } catch (FileNotFoundException e) {
@@ -142,6 +141,7 @@ public class MainScreenActivity extends AppCompatActivity {
     }
 
     public void loginButtonOnClickListener(){
+
         login_button = (ImageButton) findViewById(R.id.loginbtn);
 
         login_button.setOnClickListener(new View.OnClickListener() {
@@ -214,6 +214,9 @@ public class MainScreenActivity extends AppCompatActivity {
 
     private void setSettingsBtnOnClickListener(){
         settingsBtn = (ImageButton) findViewById(R.id.settingsbutton);
+
+        settingsBtn.setVisibility(View.VISIBLE);
+
         settingsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -77,8 +77,6 @@ public class SignupActivity extends AppCompatActivity {
         loadingAnimation = (GifImageView) findViewById(R.id.loadingAnimation);
 
         generateScreenElements();
-
-        setSettingsBtnOnClickListener();
     }
 
 

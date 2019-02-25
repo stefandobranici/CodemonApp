@@ -1,71 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mainMapLayout"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-    android:orientation="vertical"
-android:background="@drawable/background"
-    android:weightSum="9"
-tools:context=".MapViewActivity">
-
-    <ImageView
-        android:id="@+id/chapterName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-
-    <ScrollView
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-        android:layout_weight="8">
-        <LinearLayout
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".MapViewActivity">
+
+    <LinearLayout
+        android:id="@+id/mainMapLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <ImageView
+            android:id="@+id/chapterName"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:weightSum="9">
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:weightSum="9">
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="9"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <LinearLayout
+                        android:id="@+id/firstThirdOfTheScreenLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/secondThirdOfTheScreenLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lastThirdOfTheScreenLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </ScrollView>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="horizontal"
-            android:layout_weight="9"
-            android:weightSum="3">
+            android:layout_weight="1"
+            android:weightSum="8"
+            android:id="@+id/menubar">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/storybutton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/firstThirdOfTheScreenLayout"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:visibility="gone"
+                android:src="@drawable/storybutton" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/multiplayerbutton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/secondThirdOfTheScreenLayout"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:src="@drawable/multiplayerbutton" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/practicebutton"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:id="@+id/lastThirdOfTheScreenLayout"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:src="@drawable/practicebutton" />
 
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/profilebutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/profile" />
+
+            <ImageView
+                android:id="@+id/friendsbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/friends" />
+
+            <ImageView
+                android:id="@+id/itemsbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/itemsbutton" />
 
 
+            <ImageView
+                android:id="@+id/shopbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/shopbutton" />
+
+            <ImageView
+                android:id="@+id/settingsbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/settingsicon" />
+
+            <ImageView
+                android:id="@+id/backbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/backbutton" />
         </LinearLayout>
-        </LinearLayout>
 
-    </ScrollView>
-
-</LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
