@@ -32,6 +32,7 @@ import org.w3c.dom.Text;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -217,26 +218,31 @@ public class SignupActivity extends AppCompatActivity {
 
                 if(TextUtils.isEmpty(userID)){
                     Toast.makeText(getApplicationContext(), "ID Field cannot be empty!", Toast.LENGTH_SHORT).show();
+                    loadingAnimation.setVisibility(View.INVISIBLE);
                     return;
                 }
 
                 if(userID.length() < 4){
                     Toast.makeText(getApplicationContext(), "ID must be at least four characters long!", Toast.LENGTH_SHORT).show();
+                    loadingAnimation.setVisibility(View.INVISIBLE);
                     return;
                 }
 
                 if(TextUtils.isEmpty(userPW) || TextUtils.isEmpty(confirmPassword)){
                     Toast.makeText(getApplicationContext(), "Password Fields cannot be empty!", Toast.LENGTH_SHORT).show();
+                    loadingAnimation.setVisibility(View.INVISIBLE);
                     return;
                 }
 
                 if(userPW.length() < 6){
                     Toast.makeText(getApplicationContext(), "Password must be at least six characters long!", Toast.LENGTH_SHORT).show();
+                    loadingAnimation.setVisibility(View.INVISIBLE);
                     return;
                 }
 
                 if(!userPW.equals(confirmPassword)){
                     Toast.makeText(getApplicationContext(), "Confirmation password does not match!", Toast.LENGTH_SHORT).show();
+                    loadingAnimation.setVisibility(View.INVISIBLE);
                     return;
                 }
 
@@ -316,11 +322,19 @@ public class SignupActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     writeData(userID +"\n" + userPW);
+
+                    addBasicUserInformationToTheDatabase();
+
                     Intent login_intent = new Intent("android.intent.action.ModeSelectorActivity");
+
                     LoginActivity.loginActivity.finish();
+
                     MainScreenActivity.mainActivity.finish();
+
                     loadingAnimation.setVisibility(View.INVISIBLE);
+
                     startActivity(login_intent);
+
                     finish();
                 } else {
                     loadingAnimation.setVisibility(View.INVISIBLE);
@@ -328,6 +342,142 @@ public class SignupActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void addBasicUserInformationToTheDatabase(){
+        DatabaseReference userInformation = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information");
+
+        DatabaseReference userInnerId = userInformation.child("User ID");
+
+        userInnerId.setValue(userID);
+
+        DatabaseReference userName = userInformation.child("Name");
+
+        userName.setValue("ChiuPlus");
+
+        DatabaseReference userCurrency = userInformation.child("Cybercoins");
+
+        userCurrency.setValue(100);
+
+        DatabaseReference userLevel = userInformation.child("Level");
+
+        userLevel.setValue(1);
+
+        DatabaseReference userXP= userInformation.child("XP");
+
+        userXP.setValue(0);
+
+        CurrentUserInformation.getInstance().getUserSkills();
+
+        final DatabaseReference userSkills = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Skills");
+
+
+        DatabaseReference skills = mDatabase.getReference("Skills");
+
+        final ArrayList<Skill> availableSkills = new ArrayList<>();
+
+        skills.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot keyNode:dataSnapshot.getChildren()){
+                    Skill skill = keyNode.getValue(Skill.class);
+                    availableSkills.add(skill);
+                }
+
+                for(Skill skill:availableSkills){
+                    DatabaseReference currentSkill = userSkills.child(skill.getSkillname());
+                    currentSkill.setValue(skill);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        final DatabaseReference userItemsConsumables = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Consumables");
+
+
+        DatabaseReference consumables = mDatabase.getReference("Items").child("Consumables");
+
+        final ArrayList<Consumable> availableConsumables = new ArrayList<>();
+
+        consumables.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot keyNode:dataSnapshot.getChildren()){
+                    Consumable consumable = keyNode.getValue(Consumable.class);
+                    availableConsumables.add(consumable);
+                }
+
+                for(Consumable consumable:availableConsumables){
+                    DatabaseReference currentConsumable = userItemsConsumables.child(consumable.getName());
+                    currentConsumable.setValue(consumable);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        final DatabaseReference userItemsMedals = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Medals");
+
+
+        DatabaseReference medals = mDatabase.getReference("Items").child("Medals");
+
+        final ArrayList<Medal> availableMedals = new ArrayList<>();
+
+        medals.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot keyNode:dataSnapshot.getChildren()){
+                    Medal medal = keyNode.getValue(Medal.class);
+                    availableMedals.add(medal);
+                }
+
+                for(Medal medal:availableMedals){
+                    DatabaseReference currentMedal = userItemsMedals.child(medal.getName());
+                    currentMedal.setValue(medal);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        final DatabaseReference userItemsAppearances = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Appearance");
+
+
+        DatabaseReference appearances = mDatabase.getReference("Items").child("Appearance");
+
+        final ArrayList<Appearance> availableAppearances = new ArrayList<>();
+
+        appearances.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot keyNode:dataSnapshot.getChildren()){
+                    Appearance appearance = keyNode.getValue(Appearance.class);
+                    availableAppearances.add(appearance);
+                }
+
+                for(Appearance appearance:availableAppearances){
+                    DatabaseReference currentAppearance = userItemsAppearances.child(appearance.getName());
+                    currentAppearance.setValue(appearance);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        CurrentUserInformation.getInstance().getUserProgressionStatus();
     }
 
     private void setSettingsBtnOnClickListener(){

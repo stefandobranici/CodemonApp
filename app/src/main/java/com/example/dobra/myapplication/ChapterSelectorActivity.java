@@ -1,6 +1,7 @@
 package com.example.dobra.myapplication;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,9 +29,16 @@ public class ChapterSelectorActivity extends AppCompatActivity {
 
         currentUserInformation = CurrentUserInformation.getInstance();
 
-        currentUserInformation.getUserProgressionStatus(this);
-
         setUpLayout();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setUpLayout();
+                handler.postDelayed(this, 2000);
+            }
+        }, 1500);
 
     }
 
@@ -297,7 +305,6 @@ public class ChapterSelectorActivity extends AppCompatActivity {
         chapterLocked5 = true;
         chapterLocked6 = true;
         chapterLocked7 = true;
-
         variableProgression = (TextView) findViewById(R.id.variablesProgression);
 
         if(currentUserInformation.progressionOfChapters.containsKey(1)){
@@ -306,7 +313,7 @@ public class ChapterSelectorActivity extends AppCompatActivity {
             }
             variableProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(1).toString()+"/"+currentUserInformation.numberOfMissionsInChapter.get(1).toString()));
         } else {
-            variableProgression.setText(defaultProgression);
+            variableProgression.setText(String.format("0/"+currentUserInformation.numberOfMissionsInChapter.get(1).toString()));
         }
 
         ifProgression = (TextView) findViewById(R.id.ifsProgression);
@@ -316,8 +323,10 @@ public class ChapterSelectorActivity extends AppCompatActivity {
                 chapterLocked3 = false;
             }
             ifProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(2).toString()+"/"+currentUserInformation.numberOfMissionsInChapter.get(2).toString()));
-        } else {
+        } else if(chapterLocked2){
             ifProgression.setText(defaultProgression);
+        } else {
+            ifProgression.setText(String.format("0/"+currentUserInformation.numberOfMissionsInChapter.get(2).toString()));
         }
 
         whileProgression = (TextView) findViewById(R.id.whilesProgression);
@@ -327,8 +336,10 @@ public class ChapterSelectorActivity extends AppCompatActivity {
                 chapterLocked4 = false;
             }
             whileProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(3).toString()+"/"+currentUserInformation.numberOfMissionsInChapter.get(3).toString()));
-        } else {
+        } else if(chapterLocked3){
             whileProgression.setText(defaultProgression);
+        } else {
+            whileProgression.setText(String.format("0/"+currentUserInformation.numberOfMissionsInChapter.get(3).toString()));
         }
 
         forProgression = (TextView) findViewById(R.id.forsProgression);
@@ -338,8 +349,10 @@ public class ChapterSelectorActivity extends AppCompatActivity {
                 chapterLocked5 = false;
             }
             forProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(4).toString()+"/"+currentUserInformation.numberOfMissionsInChapter.get(4).toString()));
-        } else {
+        } else if(chapterLocked4){
             forProgression.setText(defaultProgression);
+        } else {
+            forProgression.setText(String.format("0/"+currentUserInformation.numberOfMissionsInChapter.get(4).toString()));
         }
 
         arraysProgression = (TextView) findViewById(R.id.arraysProgression);
@@ -349,8 +362,10 @@ public class ChapterSelectorActivity extends AppCompatActivity {
                 chapterLocked6 = false;
             }
             arraysProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(5).toString()+"/"+currentUserInformation.numberOfMissionsInChapter.get(5).toString()));
-        } else {
+        } else if(chapterLocked5) {
             arraysProgression.setText(defaultProgression);
+        } else {
+            arraysProgression.setText(String.format("0/"+currentUserInformation.numberOfMissionsInChapter.get(5).toString()));
         }
 
         methodsProgression = (TextView) findViewById(R.id.methodsProgression);
@@ -360,18 +375,21 @@ public class ChapterSelectorActivity extends AppCompatActivity {
                 chapterLocked7 = false;
             }
             methodsProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(6).toString()+"/"+currentUserInformation.numberOfMissionsInChapter.get(6).toString()));
-        } else {
+        } else if(chapterLocked6){
             methodsProgression.setText(defaultProgression);
+        } else {
+            methodsProgression.setText(String.format("0/"+currentUserInformation.numberOfMissionsInChapter.get(6).toString()));
         }
 
         classesProgression = (TextView) findViewById(R.id.classesProgression);
 
         if(currentUserInformation.progressionOfChapters.containsKey(7)){
             classesProgression.setText(String.format(currentUserInformation.progressionOfChapters.get(7).toString()+"/"+currentUserInformation.numberOfMissionsInChapter.get(7).toString()));
-        } else {
+        } else if(chapterLocked7){
             classesProgression.setText(defaultProgression);
+        } else {
+            classesProgression.setText(String.format("0/"+currentUserInformation.numberOfMissionsInChapter.get(7).toString()));
         }
-
         setUpButtons();
     }
 }

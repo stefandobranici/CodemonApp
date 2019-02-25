@@ -51,6 +51,7 @@ public class MapViewActivity extends AppCompatActivity {
             }
 
 
+
             @Override
             public void DataIsInserted() {
 

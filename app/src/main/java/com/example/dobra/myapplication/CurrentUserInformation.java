@@ -10,6 +10,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,9 +27,13 @@ public class CurrentUserInformation {
 
     private DatabaseReference userCurrentActiveChapter, userCurrentActiveLevel;
 
+    DatabaseReference userSkills;
+
     public Map<Integer, Integer> progressionOfChapters;
 
     public Map<Integer, Integer> numberOfMissionsInChapter;
+
+    public List<Skill> skillsFromDb;
 
     private Integer currentActiveChapter, currentActiveLevel;
 
@@ -43,6 +48,13 @@ public class CurrentUserInformation {
 
         numberOfMissionsInChapter = new HashMap<>();
 
+        for(int i = 1; i < 8; i++){
+            numberOfMissionsInChapter.put(i,0);
+            progressionOfChapters.put(i,0);
+        }
+
+        skillsFromDb = new ArrayList<>();
+
         mAuth = FirebaseAuth.getInstance();
 
         mDatabase = FirebaseDatabase.getInstance();
@@ -53,7 +65,7 @@ public class CurrentUserInformation {
         return SINGLE_INSTANCE;
     }
 
-    public void getUserProgressionStatus(final ChapterSelectorActivity chapterSelectorActivity){
+    public void getUserProgressionStatus(){
 
         mChaptersReference = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression");
 
@@ -116,8 +128,6 @@ public class CurrentUserInformation {
                         }
                     });
                 }
-
-                chapterSelectorActivity.setUpLayout();
             }
 
             @Override
@@ -164,6 +174,19 @@ public class CurrentUserInformation {
 
             }
         });
+    }
+
+    public void getUserInvetoryStatus(){
+        DatabaseReference userItemsMedals = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Medals");
+
+        DatabaseReference userItemsConsumables = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Consumables");
+
+        DatabaseReference userItemsAppearance = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Appearance");
+    }
+
+    public void getUserSkills(){
+        userSkills = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Skills");
+
     }
 
     public Integer getCurrentActiveChapter(){

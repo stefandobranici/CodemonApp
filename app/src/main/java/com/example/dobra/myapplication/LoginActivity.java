@@ -185,15 +185,18 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingAnimation.setVisibility(View.VISIBLE);
+
                 UID = userIdBox.getText().toString().trim();
                 PW = passwordBox.getText().toString().trim();
 
                 if(TextUtils.isEmpty(UID)){
                     Toast.makeText(getApplicationContext(), "User ID field is empty!", Toast.LENGTH_SHORT).show();
+                    loadingAnimation.setVisibility(View.INVISIBLE);
                     return;
                 }
                 if(TextUtils.isEmpty(PW)){
                     Toast.makeText(getApplicationContext(), "Password field is empty!", Toast.LENGTH_SHORT).show();
+                    loadingAnimation.setVisibility(View.INVISIBLE);
                     return;
                 }
 
@@ -261,11 +264,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginSuccessful(){
+        CurrentUserInformation.getInstance().getUserProgressionStatus();
+
+
         writeData(UID +"\n" + PW);
 
         String currentUser = mAuth.getCurrentUser().getUid();
 
-        modeSelectorReference = mDatabase.getReference("Users").child(currentUser).child("mode");
+        modeSelectorReference = mDatabase.getReference("Users").child(currentUser).child("User Information").child("Mode");
 
         modeSelectorReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

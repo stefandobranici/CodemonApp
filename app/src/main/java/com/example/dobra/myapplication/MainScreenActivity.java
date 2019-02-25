@@ -172,9 +172,11 @@ public class MainScreenActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            CurrentUserInformation.getInstance().getUserProgressionStatus();
+
                             String currentUser = mAuth.getCurrentUser().getUid();
 
-                            modeSelectorReference = mDatabase.getReference("Users").child(currentUser).child("mode");
+                            modeSelectorReference = mDatabase.getReference("Users").child(currentUser).child("User Information").child("Mode");
 
                             modeSelectorReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override

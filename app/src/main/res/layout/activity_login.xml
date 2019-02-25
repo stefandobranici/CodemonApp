@@ -6,35 +6,39 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     tools:context=".LoginActivity">
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/loginlayout"
-    android:orientation="vertical">
-</LinearLayout>
-</ScrollView>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/loginlayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
+
     <ImageButton
         android:id="@+id/settingsbutton"
-        android:background="@drawable/settingsicon"
         android:layout_width="44dp"
         android:layout_height="40dp"
-        android:visibility="invisible"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"/>
+        android:layout_marginBottom="0dp"
+        android:background="@drawable/settingsicon"
+        android:visibility="invisible" />
 
     <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/loadingAnimation"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:visibility="invisible"
-        android:id="@+id/loadingAnimation"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/loadinganimation"/>
+        android:background="@drawable/loadinganimation"
+        android:visibility="invisible" />
 </RelativeLayout>

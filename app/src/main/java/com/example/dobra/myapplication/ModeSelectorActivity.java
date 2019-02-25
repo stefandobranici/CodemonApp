@@ -40,7 +40,7 @@ public class ModeSelectorActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        modeSelectorReference = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("mode");
+        modeSelectorReference = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Mode");
 
         binauralBeatsButtonOnClickListener();
         mnemonicsButtonOnClickListener();
