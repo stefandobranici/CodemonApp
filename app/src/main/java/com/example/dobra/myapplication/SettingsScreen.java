@@ -22,11 +22,11 @@ public class SettingsScreen extends AppCompatActivity {
 
     private ImageView logoutBtn, changeModeBtn, changeNameBtn;
 
-    private TextView nameChangerButton, closeNameChangeLayout;
+    private TextView nameChangerButton, closeNameChangeLayout, modeChangeWarningButton, closeModeChangeWarningLayout;
 
     private EditText userNameChangeField;
 
-    LinearLayout nameChangerLayout;
+    LinearLayout nameChangerLayout, changeModeWarningLayout;
 
     private static final String FILE_NAME = "currentuser.txt";
 
@@ -38,9 +38,13 @@ public class SettingsScreen extends AppCompatActivity {
 
         setLogoutBtnOnClickListener();
 
-        setChangeGameModeBtnOnClickListener();
+        setModeChangeWarningButtonOnClickListener();
+
+        setChangeModeBtnOnClickListener();
 
         setChangeNameBtnOnClickListener();
+
+        setCloseModeChangeWarningLayoutOnClickListener();
 
     }
 
@@ -59,15 +63,43 @@ public class SettingsScreen extends AppCompatActivity {
         });
     }
 
-    private void setChangeGameModeBtnOnClickListener(){
+    private void setChangeModeBtnOnClickListener(){
         changeModeBtn = (ImageView) findViewById(R.id.changeModeButton);
+
+        changeModeWarningLayout = (LinearLayout) findViewById(R.id.changeModeWarningLayout);
 
         changeModeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                changeModeWarningLayout.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void setModeChangeWarningButtonOnClickListener(){
+
+        modeChangeWarningButton = (TextView) findViewById(R.id.modeChangeWarningButton);
+
+        modeChangeWarningButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                CurrentUserInformation.getInstance().deleteProgress();
+
                 Intent changeGameMode = new Intent("android.intent.action.ModeSelectorActivity");
                 startActivity(changeGameMode);
                 finish();
+            }
+        });
+    }
+
+    private void setCloseModeChangeWarningLayoutOnClickListener(){
+        closeModeChangeWarningLayout = (TextView) findViewById(R.id.closeModeChangeWarningLayout);
+
+        closeModeChangeWarningLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeModeWarningLayout.setVisibility(View.GONE);
             }
         });
     }

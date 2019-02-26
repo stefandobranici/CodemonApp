@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -56,6 +58,8 @@ public class FriendsView extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    private FirebaseStorage mStorage;
+
     private boolean friendAdded;
 
     int currentPosition;
@@ -88,21 +92,13 @@ public class FriendsView extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        mStorage = FirebaseStorage.getInstance();
         userFriendList = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("FriendList");
 
         setUpButtons();
 
         initFriendList();
 
-
-/*        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                initFriendList();
-                handler.postDelayed(this, 2000);
-            }
-        }, 4000);*/
     }
 
     private void initFriendList() {
@@ -130,7 +126,8 @@ public class FriendsView extends AppCompatActivity {
 
                         mFriends.get(thisFriendPosition).setFriendActivity("1 Minute Ago");
 
-                        mFriends.get(thisFriendPosition).setFriendImage("https://cdn.vox-cdn.com/thumbor/QarshUMW7yZODSRUrWmtPdfsKns=/0x0:1280x960/1220x813/filters:focal(538x378:742x582):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/57601275/60861120_1280x960.0.0.jpg");
+                        mFriends.get(thisFriendPosition).setFriendImage("https://firebasestorage.googleapis.com/v0/b/myapplication-9586f.appspot.com/o/Profile%2Fprofilepic.png?alt=media&token=1d0d0f95-4d1c-475a-bc36-4ddb79b49955");
+
 
                         String UID = dataSnapshot1.getValue(String.class);
 
@@ -211,11 +208,11 @@ public class FriendsView extends AppCompatActivity {
                                     Integer diffMin = (int) (diffInTime / (60 * 1000));
 
                                     if (diffDays > 0) {
-                                        mFriends.get(thisFriendPosition).setFriendActivity(diffDays.toString() + " Days Ago");
+                                        mFriends.get(thisFriendPosition).setFriendActivity(diffDays.toString() + " Day(s) Ago");
                                     } else if (diffHours > 0) {
-                                        mFriends.get(thisFriendPosition).setFriendActivity(diffHours.toString() + " Hours Ago");
+                                        mFriends.get(thisFriendPosition).setFriendActivity(diffHours.toString() + " Hour(s) Ago");
                                     } else if (diffMin >= 0) {
-                                        mFriends.get(thisFriendPosition).setFriendActivity(diffMin.toString() + " Minutes Ago");
+                                        mFriends.get(thisFriendPosition).setFriendActivity(diffMin.toString() + " Minute(s) Ago");
                                     } else {
                                         mFriends.get(thisFriendPosition).setFriendActivity("N/A/N");
                                     }

@@ -524,4 +524,9 @@ public class CurrentUserInformation {
     public Integer getUserCoins() {
         return userCoins;
     }
+
+    public void deleteProgress(){
+        DatabaseReference userChapterProgress = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression");
+        userChapterProgress.setValue(null);
+    }
 }

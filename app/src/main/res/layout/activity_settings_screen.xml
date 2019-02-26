@@ -160,4 +160,93 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/changeModeWarningLayout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:background="@drawable/popupbackground"
+        android:weightSum="4">
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="2"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="17dp"
+            android:text="Warning!\nAll progress will\nbe lost!!!"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#DC143C"
+            android:textSize="30sp" />
+
+        <TextView
+
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="0.3"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text=""
+            android:layout_gravity="center_horizontal" />
+
+
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="0.5"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text=""
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <TextView
+                android:id="@+id/modeChangeWarningButton"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1.3"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="Accept"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#DC143C"
+                android:textSize="30sp"
+                android:background="@drawable/plain"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text=""
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/closeModeChangeWarningLayout"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1.3"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="Close"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/colorAccent"
+                android:textSize="30sp"
+                android:background="@drawable/plain"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 </RelativeLayout>

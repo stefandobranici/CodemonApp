@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.d(TAG, "onBindViewHolder: called.");
 
         Glide.with(mContext).asBitmap().load(mFriends.get(i).getFriendImage()).into(viewHolder.friendImage);
+
+        //Picasso.with(mContext).load(mFriends.get(i).getFriendImage()).into(viewHolder.friendImage);
 
         viewHolder.friendName.setText(mFriends.get(i).getFriendName());
         viewHolder.friendLevel.setText(mFriends.get(i).getFriendLevel());
