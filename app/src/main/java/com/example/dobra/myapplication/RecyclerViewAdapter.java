@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,10 +25,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private List<Friend> mFriends = new ArrayList<>();
     private Context mContext;
+    private LinearLayout removeFriendLayout;
 
-    public RecyclerViewAdapter(Context mContext, List<Friend> mFriends) {
+    public RecyclerViewAdapter(Context mContext, List<Friend> mFriends,LinearLayout removeFriendLayout) {
         this.mFriends = mFriends;
         this.mContext = mContext;
+        this.removeFriendLayout = removeFriendLayout;
     }
 
     @NonNull
@@ -46,6 +49,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         //Picasso.with(mContext).load(mFriends.get(i).getFriendImage()).into(viewHolder.friendImage);
 
+        final int currentPos = i;
+
         viewHolder.friendName.setText(mFriends.get(i).getFriendName());
         viewHolder.friendLevel.setText(mFriends.get(i).getFriendLevel());
         viewHolder.friendProgress.setText(mFriends.get(i).getFriendProgress());
@@ -53,7 +58,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "This is a work in progress! You will be able to remove users in a bit...", Toast.LENGTH_SHORT).show();
+                removeFriendLayout.setVisibility(View.VISIBLE);
+                CurrentUserInformation.getInstance().setFriendSelectedForRemove(mFriends.get(currentPos).getFriendID());
             }
         });
     }

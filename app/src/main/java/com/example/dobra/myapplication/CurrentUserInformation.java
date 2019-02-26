@@ -51,6 +51,8 @@ public class CurrentUserInformation {
 
     private List<Appearance> availableAppearances;
 
+    private String friendSelectedForRemove;
+
     private CurrentUserInformation() {
 
         //Initiate arrays
@@ -76,6 +78,7 @@ public class CurrentUserInformation {
         userLevel = 0;
         userXp = 0;
         userCoins = 0;
+        friendSelectedForRemove = "";
 
         //Initiate instance of firebase auth and database;
         mAuth = FirebaseAuth.getInstance();
@@ -523,6 +526,14 @@ public class CurrentUserInformation {
 
     public Integer getUserCoins() {
         return userCoins;
+    }
+
+    public String getFriendSelectedForRemove(){
+        return friendSelectedForRemove;
+    }
+
+    public void setFriendSelectedForRemove(String friendSelectedForRemove){
+        this.friendSelectedForRemove = friendSelectedForRemove;
     }
 
     public void deleteProgress(){

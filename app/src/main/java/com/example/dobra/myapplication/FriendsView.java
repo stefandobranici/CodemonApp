@@ -43,10 +43,10 @@ public class FriendsView extends AppCompatActivity {
 
     private List<Friend> mFriends = new ArrayList<>();
 
-    private LinearLayout addFriendLayout;
+    private LinearLayout addFriendLayout, removeFriendLayout;
 
 
-    private TextView addFriendButton, closeAddFriendLayout, openAddFriendLayout;
+    private TextView addFriendButton, closeAddFriendLayout, openAddFriendLayout, removeFriendButton, closeRemoveFriendLayout;
 
     private EditText addFriendField;
 
@@ -86,6 +86,13 @@ public class FriendsView extends AppCompatActivity {
 
         addFriendField = (EditText) findViewById(R.id.addFriendField);
 
+        removeFriendLayout = (LinearLayout) findViewById(R.id.removeFriendLayout);
+
+        removeFriendButton = (TextView) findViewById(R.id.removeFriendButton);
+
+        closeRemoveFriendLayout = (TextView) findViewById(R.id.closeRemoveFriendLayout);
+
+
         loadingAnimation = (GifImageView) findViewById(R.id.loadingAnimation);
 
         currentPosition = 0;
@@ -102,6 +109,10 @@ public class FriendsView extends AppCompatActivity {
     }
 
     private void initFriendList() {
+
+        mFriends.clear();
+
+
 
         loadingAnimation.setVisibility(View.VISIBLE);
 
@@ -127,6 +138,9 @@ public class FriendsView extends AppCompatActivity {
                         mFriends.get(thisFriendPosition).setFriendActivity("1 Minute Ago");
 
                         mFriends.get(thisFriendPosition).setFriendImage("https://firebasestorage.googleapis.com/v0/b/myapplication-9586f.appspot.com/o/Profile%2Fprofilepic.png?alt=media&token=1d0d0f95-4d1c-475a-bc36-4ddb79b49955");
+
+                        mFriends.get(thisFriendPosition).setFriendID("");
+
 
 
                         String UID = dataSnapshot1.getValue(String.class);
@@ -159,6 +173,23 @@ public class FriendsView extends AppCompatActivity {
                                     mFriends.get(thisFriendPosition).setFriendLevel("Lv. "+dataSnapshot.getValue(Integer.class).toString());
                                 }
                                 currentUserLevelRef.removeEventListener(this);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        final DatabaseReference currentUserIDRef = currentUserRef.child("User Information").child("User ID");
+
+                        currentUserIDRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    mFriends.get(thisFriendPosition).setFriendID(dataSnapshot.getValue(String.class));
+                                }
+                                currentUserIDRef.removeEventListener(this);
                             }
 
                             @Override
@@ -251,21 +282,13 @@ public class FriendsView extends AppCompatActivity {
 
     private void initRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.friendsRecyclerView);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getApplicationContext(), mFriends);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(getApplicationContext(), mFriends, removeFriendLayout);
+        recyclerView.removeAllViewsInLayout();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
     }
 
-    private void setStoryModeButtonOnClickListener() {
-        storyModeButton = (ImageView) findViewById(R.id.storybutton);
-        storyModeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent storyMode = new Intent("android.intent.action.ChapterSelectorActivity");
-                startActivity(storyMode);
-            }
-        });
-    }
+    //Add friend functionality
 
     private void openFriendLayoutSetOnClickListener() {
         openAddFriendLayout.setOnClickListener(new View.OnClickListener() {
@@ -317,6 +340,8 @@ public class FriendsView extends AppCompatActivity {
                                     if (newFriendId.equals(dataSnapshot.getValue(String.class))) {
                                         loadingAnimation.setVisibility(View.GONE);
                                         Toast.makeText(getApplicationContext(), "Friend Added!", Toast.LENGTH_SHORT).show();
+                                        addFriendLayout.setVisibility(View.GONE);
+                                        initFriendList();
                                         friendAdded = true;
                                         userFriendList.child(friendID).setValue(UID);
                                     }
@@ -334,6 +359,8 @@ public class FriendsView extends AppCompatActivity {
                         if(friendAdded){
                             loadingAnimation.setVisibility(View.GONE);
                             friendAdded = false;
+
+                            initFriendList();
                         }
                         userList.removeEventListener(this);
                     }
@@ -356,6 +383,59 @@ public class FriendsView extends AppCompatActivity {
                         }
                     }
                 }, 1500);
+            }
+        });
+    }
+
+    //Remove friend functionality
+
+    private void closeRemoveFriendSetOnClickListener(){
+        closeRemoveFriendLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeFriendLayout.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void setRemoveFriendButton(){
+        removeFriendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String friendToBeDeletedBruteID = CurrentUserInformation.getInstance().getFriendSelectedForRemove();
+
+                int positionWhereEmailStarts = 0;
+
+                for(int i = 0 ; i < friendToBeDeletedBruteID.length(); i++){
+                    if(friendToBeDeletedBruteID.charAt(i) == '@'){
+                        positionWhereEmailStarts = i;
+                    }
+                }
+
+                DatabaseReference friendToBeDeleted = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("FriendList").child(friendToBeDeletedBruteID.substring(0,positionWhereEmailStarts));
+
+                friendToBeDeleted.setValue(null);
+
+                Toast.makeText(getApplicationContext(), "Friend was removed!", Toast.LENGTH_SHORT).show();
+
+                removeFriendLayout.setVisibility(View.GONE);
+
+                initFriendList();
+
+                //Toast.makeText(getApplicationContext(), "This is a work in progress! You will be able to remove users in a bit...", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //Set submenu button click listeners
+
+    private void setStoryModeButtonOnClickListener() {
+        storyModeButton = (ImageView) findViewById(R.id.storybutton);
+        storyModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent storyMode = new Intent("android.intent.action.ChapterSelectorActivity");
+                startActivity(storyMode);
             }
         });
     }
@@ -455,8 +535,13 @@ public class FriendsView extends AppCompatActivity {
         setSettingsButtonOnClickListener();
         setBackButtonOnClickListener();
 
+        //Set add friend buttons
         openFriendLayoutSetOnClickListener();
         closeAddFriendLayoutSetOnClickListener();
         addFriendButtonSetOnClickListener();
+
+        //Set remove friend buttons
+        closeRemoveFriendSetOnClickListener();
+        setRemoveFriendButton();
     }
 }
