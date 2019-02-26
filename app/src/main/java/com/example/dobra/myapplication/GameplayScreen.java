@@ -76,7 +76,7 @@ public class GameplayScreen extends AppCompatActivity {
             drawScreenBoss();
         }
 
-        loadContent();
+        /*loadContent();*/
 
         setUpSkillBar();
 

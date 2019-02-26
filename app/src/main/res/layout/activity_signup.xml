@@ -7,31 +7,199 @@
     android:background="@drawable/background"
     tools:context=".SignupActivity">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.35" />
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/signuplayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.3"
+            android:orientation="vertical"
+            android:weightSum="9">
+
+            <pl.droidsonroids.gif.GifImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.15"
+                android:src="@drawable/logintext" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.20" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.65"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="Enter User ID"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"/>
+
+            <EditText
+                android:id="@+id/loginCredentialsID"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.7"
+                android:fontFamily="@font/cyberverse"
+                android:textSize="25sp"
+                android:textAlignment="center"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:background="@drawable/credentialsbox" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.35" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.65"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="Enter Password"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"/>
+
+            <EditText
+                android:id="@+id/loginCredentialsPassword"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.7"
+                android:inputType="textPassword"
+                android:fontFamily="@font/cyberverse"
+                android:textSize="25sp"
+                android:textAlignment="center"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:background="@drawable/credentialsbox"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.35" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.65"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="Confirm Password"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp"/>
+
+            <EditText
+                android:id="@+id/loginCredentialsConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.7"
+                android:inputType="textPassword"
+                android:fontFamily="@font/cyberverse"
+                android:textSize="25sp"
+                android:textAlignment="center"
+                android:textColor="@color/common_google_signin_btn_text_dark_default"
+                android:background="@drawable/credentialsbox" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.7" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2.2"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25">
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:id="@+id/signUserUpButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="0.35"
+                        android:background="@drawable/window"
+                        android:fontFamily="@font/cyberverse"
+                        android:paddingTop="7dp"
+                        android:text="Signup"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="30sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2" />
+
+                    <TextView
+                        android:id="@+id/goToLogInScreen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="0.35"
+                        android:background="@drawable/window"
+                        android:fontFamily="@font/cyberverse"
+                        android:paddingTop="7dp"
+                        android:text="Login"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="30sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.25">
+
+                </LinearLayout>
+
+            </LinearLayout>
+
 
         </LinearLayout>
-    </ScrollView>
 
-    <ImageButton
-        android:id="@+id/settingsbutton"
-        android:layout_width="44dp"
-        android:layout_height="40dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="0dp"
-        android:layout_marginBottom="0dp"
-        android:background="@drawable/settingsicon"
-        android:visibility="invisible" />
+    </LinearLayout>
+
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/loadingAnimation"
@@ -40,5 +208,5 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@drawable/loadinganimation"
-        android:visibility="invisible" />
+        android:visibility="gone" />
 </RelativeLayout>

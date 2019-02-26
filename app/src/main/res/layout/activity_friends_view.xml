@@ -38,13 +38,37 @@
             </LinearLayout>
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/openAddFriendLayout"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0.75"
-            android:paddingTop="5dp"
-            android:src="@drawable/addfriendbutton"/>
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:weightSum="1">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"/>
+
+            <TextView
+                android:id="@+id/openAddFriendLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/window"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="Add Friend"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"/>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/menubar"
@@ -163,7 +187,7 @@
             android:inputType="textPersonName"
             android:fontFamily="@font/cyberverse"
             android:textSize="25sp"
-            android:text="\@bathspa.ac.uk"
+            android:text=""
             android:textAlignment="center"
             android:textColor="@android:color/darker_gray"
             android:background="@drawable/credentialsbox"/>
@@ -223,5 +247,14 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/loadingAnimation"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/loadinganimation"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -49,6 +49,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import pl.droidsonroids.gif.GifImageView;
 
@@ -174,7 +177,7 @@ public class MainScreenActivity extends AppCompatActivity {
                         if(task.isSuccessful()){
                             loginSuccessful();
                         } else {
-                            loadingAnimation.setVisibility(View.INVISIBLE);
+                            loadingAnimation.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
@@ -190,6 +193,13 @@ public class MainScreenActivity extends AppCompatActivity {
 
         String currentUser = mAuth.getCurrentUser().getUid();
 
+        DatabaseReference lastLoggedInRef = mDatabase.getReference("Users").child(currentUser).child("User Information").child("LastLoggedIn");
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+
+        lastLoggedInRef.setValue(dateFormat.format(date));
+
         modeSelectorReference = mDatabase.getReference("Users").child(currentUser).child("User Information").child("Mode");
 
         modeSelectorReference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -201,12 +211,12 @@ public class MainScreenActivity extends AppCompatActivity {
                 if(!TextUtils.isEmpty(modeSelected)){
                     Intent gamemode_intent = new Intent("android.intent.action.MenuScreenActivity");
                     startActivity(gamemode_intent);
-                    loadingAnimation.setVisibility(View.INVISIBLE);
+                    loadingAnimation.setVisibility(View.GONE);
                     finish();
                 } else {
                     Intent mode_selector = new Intent("android.intent.action.ModeSelectorActivity");
                     startActivity(mode_selector);
-                    loadingAnimation.setVisibility(View.INVISIBLE);
+                    loadingAnimation.setVisibility(View.GONE);
                     finish();
                 }
 

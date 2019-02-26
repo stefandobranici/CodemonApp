@@ -13,6 +13,8 @@ public class UserLevel {
     private UserLevel(){
         xpPerLevel = new HashMap<>();
 
+        maxHealthPerLevel = new HashMap<>();
+
         xpPerLevel.put(0, 0);
         xpPerLevel.put(1, 100);
         xpPerLevel.put(2, 250);
@@ -43,9 +45,7 @@ public class UserLevel {
     }
 
     public Integer getXpNeedForCurrentLevel(Integer userCurrentLevel){
-        if(xpPerLevel.containsKey(userCurrentLevel)) {
-            return xpPerLevel.get(userCurrentLevel);
-        } else return -1;
+        return xpPerLevel.get(userCurrentLevel);
     }
 
     public boolean canUserLevelUp(Integer level, Integer currentXp, Integer newXp){

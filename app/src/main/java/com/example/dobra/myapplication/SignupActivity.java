@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,23 +43,21 @@ import static android.graphics.Color.WHITE;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private LinearLayout screenLayout;
+    private EditText loginCredentialsID, loginCredentialsPassword, loginCredentialsConfirmPassword;
 
-    private float scale;
+    private TextView signUserUpButton, goToLogInScreen;
 
     private FirebaseAuth mAuth;
 
     private FirebaseDatabase mDatabase;
 
-    private Typeface cyberFont;
-
-    private ImageButton settingsBtn;
-
     private GifImageView loadingAnimation;
 
-    private String userID, userPW;
+    private String userID, userPW, confirmPassword;
 
     private static final String FILE_NAME = "currentuser.txt";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,229 +68,109 @@ public class SignupActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
 
-        screenLayout = (LinearLayout) findViewById(R.id.signuplayout);
-
-        scale = getResources().getDisplayMetrics().density;
-
-        cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
-
         loadingAnimation = (GifImageView) findViewById(R.id.loadingAnimation);
 
-        generateScreenElements();
+        initScreenElements();
     }
 
 
-    private void generateScreenElements(){
-        //Set gif on top of screen
-        GifImageView credentialsText = new GifImageView(this);
-        credentialsText.setImageResource(R.drawable.logintext);
+    private void initScreenElements(){
 
-        int dpWidthInPx = (int) (360 * scale);
-        int dpHeightInPx = (int) (150 * scale);
+        loginCredentialsID = (EditText) findViewById(R.id.loginCredentialsID);
 
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        credentialsText.setLayoutParams(layoutParams);
+        loginCredentialsPassword = (EditText) findViewById(R.id.loginCredentialsPassword);
 
-        screenLayout.addView(credentialsText);
+        loginCredentialsConfirmPassword = (EditText) findViewById(R.id.loginCredentialsConfirmPassword);
 
-        //Show USER ID text
-        ImageView userIdTxt = new ImageView(this);
-        userIdTxt.setImageResource(R.drawable.useridtxt);
+        signUserUpButton = (TextView) findViewById(R.id.signUserUpButton);
 
-        dpWidthInPx = (int) (140 * scale);
-        dpHeightInPx = (int) (20 * scale);
-
-        layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        userIdTxt.setLayoutParams(layoutParams);
-
-        screenLayout.addView(userIdTxt);
+        goToLogInScreen = (TextView) findViewById(R.id.goToLogInScreen);
 
 
-        //Place for user to enter user ID
-        final EditText userIdBox = new EditText(this);
-        userIdBox.setBackgroundResource(R.drawable.credentialsbox);
+        setSignUserUpButtonOnClickListener();
 
-        userIdBox.setTypeface(cyberFont);
-        userIdBox.setTextSize(24);
-        userIdBox.setTextColor(WHITE);
-        userIdBox.setPadding(10,5,0,5);
+        setGoToLogInScreenOnClickListener();
 
+    }
 
-        dpWidthInPx = (int) (200 * scale);
-        dpHeightInPx = (int) (45 * scale);
-
-        layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-        layoutParams.setMargins(0, dpHeightInPx/2, 0, dpHeightInPx/2);
-        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        userIdBox.setLayoutParams(layoutParams);
-
-        screenLayout.addView(userIdBox);
-
-        //Show Password text field
-        ImageView passwordTxt = new ImageView(this);
-        passwordTxt.setImageResource(R.drawable.passwordtxt);
-
-        dpWidthInPx = (int) (160 * scale);
-        dpHeightInPx = (int) (20 * scale);
-
-        layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        passwordTxt.setLayoutParams(layoutParams);
-
-        screenLayout.addView(passwordTxt);
-
-        //Place for user to insert password
-        final EditText passwordBox = new EditText(this);
-        passwordBox.setBackgroundResource(R.drawable.credentialsbox);
-
-        passwordBox.setTextSize(24);
-        passwordBox.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        passwordBox.setTextColor(WHITE);
-        passwordBox.setTypeface(cyberFont);
-        passwordBox.setPadding(10,5,0,5);
-
-        dpWidthInPx = (int) (200 * scale);
-        dpHeightInPx = (int) (45 * scale);
-
-        layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        layoutParams.setMargins(0, dpHeightInPx/2, 0, dpHeightInPx/2);
-        passwordBox.setLayoutParams(layoutParams);
-
-        screenLayout.addView(passwordBox);
-
-        //Show Password text field
-        ImageView passwordTxt2 = new ImageView(this);
-        passwordTxt2.setImageResource(R.drawable.confirmtxt);
-
-        dpWidthInPx = (int) (260 * scale);
-        dpHeightInPx = (int) (20 * scale);
-
-        layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        passwordTxt2.setLayoutParams(layoutParams);
-
-        screenLayout.addView(passwordTxt2);
-
-        //Place for user to insert password
-        final EditText passwordBox2 = new EditText(this);
-        passwordBox2.setBackgroundResource(R.drawable.credentialsbox);
-
-        passwordBox2.setTextSize(24);
-        passwordBox2.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        passwordBox2.setTextColor(WHITE);
-        passwordBox2.setTypeface(cyberFont);
-        passwordBox2.setPadding(10,5,0,5);
-
-        dpWidthInPx = (int) (200 * scale);
-        dpHeightInPx = (int) (45 * scale);
-
-        layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        layoutParams.setMargins(0, dpHeightInPx/2, 0, 0);
-        passwordBox2.setLayoutParams(layoutParams);
-
-        screenLayout.addView(passwordBox2);
-
-        //Signup button
-        ImageButton signupBtn = new ImageButton(this);
-
-        signupBtn.setBackgroundResource(R.drawable.signupbtn);
-        dpWidthInPx = (int) (130 * scale);
-        dpHeightInPx = (int) (40 * scale);
-
-        layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        layoutParams.setMargins(0, dpHeightInPx, 0, 0);
-        signupBtn.setLayoutParams(layoutParams);
-
-        signupBtn.setOnClickListener(new View.OnClickListener() {
+    private void setSignUserUpButtonOnClickListener(){
+        signUserUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadingAnimation.setVisibility(View.VISIBLE);
 
-                userID = userIdBox.getText().toString().trim();
-                userPW = passwordBox.getText().toString().trim();
-                String confirmPassword = passwordBox2.getText().toString().trim();
+                userID = loginCredentialsID.getText().toString().trim();
+                userPW = loginCredentialsPassword.getText().toString().trim();
+                confirmPassword = loginCredentialsConfirmPassword.getText().toString().trim();
 
-                if(TextUtils.isEmpty(userID)){
-                    Toast.makeText(getApplicationContext(), "ID Field cannot be empty!", Toast.LENGTH_SHORT).show();
-                    loadingAnimation.setVisibility(View.INVISIBLE);
-                    return;
-                }
+                if(checkUserInput()) {
 
-                if(userID.length() < 4){
-                    Toast.makeText(getApplicationContext(), "ID must be at least four characters long!", Toast.LENGTH_SHORT).show();
-                    loadingAnimation.setVisibility(View.INVISIBLE);
-                    return;
-                }
+                    userID = userID + "@bathspa.ac.uk";
 
-                if(TextUtils.isEmpty(userPW) || TextUtils.isEmpty(confirmPassword)){
-                    Toast.makeText(getApplicationContext(), "Password Fields cannot be empty!", Toast.LENGTH_SHORT).show();
-                    loadingAnimation.setVisibility(View.INVISIBLE);
-                    return;
-                }
+                    mAuth.createUserWithEmailAndPassword(userID, userPW).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Signed Up Successfully! Logging " + userID + " ID in...", Toast.LENGTH_SHORT).show();
 
-                if(userPW.length() < 6){
-                    Toast.makeText(getApplicationContext(), "Password must be at least six characters long!", Toast.LENGTH_SHORT).show();
-                    loadingAnimation.setVisibility(View.INVISIBLE);
-                    return;
-                }
-
-                if(!userPW.equals(confirmPassword)){
-                    Toast.makeText(getApplicationContext(), "Confirmation password does not match!", Toast.LENGTH_SHORT).show();
-                    loadingAnimation.setVisibility(View.INVISIBLE);
-                    return;
-                }
-
-                userID = userID+"@bathspa.ac.uk";
-
-                mAuth.createUserWithEmailAndPassword(userID, userPW).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(getApplicationContext(), "Signed Up Successfully! Logging " + userID+" ID in...", Toast.LENGTH_SHORT).show();
-
-                            logUserIn();
-                        } else {
-                            if(task.getException() instanceof FirebaseAuthException){
-                                loadingAnimation.setVisibility(View.INVISIBLE);
-                                Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                logUserIn();
+                            } else {
+                                if (task.getException() instanceof FirebaseAuthException) {
+                                    loadingAnimation.setVisibility(View.GONE);
+                                    Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
                             }
                         }
-                    }
-                });
-
-
+                    });
+                }
             }
         });
-        screenLayout.addView(signupBtn);
+    }
 
-
-        ImageButton loginBtn = new ImageButton(this);
-
-        loginBtn.setBackgroundResource(R.drawable.loginbtn2);
-        dpWidthInPx = (int) (130 * scale);
-        dpHeightInPx = (int) (40 * scale);
-
-        layoutParams = new LinearLayout.LayoutParams(dpWidthInPx, dpHeightInPx);
-        layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        layoutParams.setMargins(0, dpHeightInPx, 0, 0);
-        loginBtn.setLayoutParams(layoutParams);
-
-        loginBtn.setOnClickListener(new View.OnClickListener() {
+    private void setGoToLogInScreenOnClickListener(){
+        goToLogInScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent login_intent = new Intent("android.intent.action.LoginActivity");
+                Intent goToLogIn = new Intent("android.intent.action.LoginActivity");
                 LoginActivity.loginActivity.finish();
-                startActivity(login_intent);
+                startActivity(goToLogIn);
                 finish();
             }
         });
+    }
 
-        screenLayout.addView(loginBtn);
+    private boolean checkUserInput(){
+        if(TextUtils.isEmpty(userID)){
+            Toast.makeText(getApplicationContext(), "ID Field cannot be empty!", Toast.LENGTH_SHORT).show();
+            loadingAnimation.setVisibility(View.GONE);
+            return false;
+        }
+
+        if(userID.length() < 4){
+            Toast.makeText(getApplicationContext(), "ID must be at least four characters long!", Toast.LENGTH_SHORT).show();
+            loadingAnimation.setVisibility(View.GONE);
+            return false;
+        }
+
+        if(TextUtils.isEmpty(userPW) || TextUtils.isEmpty(confirmPassword)){
+            Toast.makeText(getApplicationContext(), "Password Fields cannot be empty!", Toast.LENGTH_SHORT).show();
+            loadingAnimation.setVisibility(View.GONE);
+            return false;
+        }
+
+        if(userPW.length() < 6){
+            Toast.makeText(getApplicationContext(), "Password must be at least six characters long!", Toast.LENGTH_SHORT).show();
+            loadingAnimation.setVisibility(View.GONE);
+            return false;
+        }
+
+        if(!userPW.equals(confirmPassword)){
+            Toast.makeText(getApplicationContext(), "Confirmation password does not match!", Toast.LENGTH_SHORT).show();
+            loadingAnimation.setVisibility(View.GONE);
+            return false;
+        }
+
+        return true;
     }
 
     private void writeData(String data){
@@ -322,7 +201,7 @@ public class SignupActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     loginSuccessful();
                 } else {
-                    loadingAnimation.setVisibility(View.INVISIBLE);
+                    loadingAnimation.setVisibility(View.GONE);
                     Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
@@ -342,22 +221,10 @@ public class SignupActivity extends AppCompatActivity {
 
         MainScreenActivity.mainActivity.finish();
 
-        loadingAnimation.setVisibility(View.INVISIBLE);
+        loadingAnimation.setVisibility(View.GONE);
 
         startActivity(login_intent);
 
         finish();
-    }
-
-
-    private void setSettingsBtnOnClickListener(){
-        settingsBtn = (ImageButton) findViewById(R.id.settingsbutton);
-        settingsBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent settings_intent = new Intent("android.intent.action.SettingsScreen");
-                startActivity(settings_intent);
-            }
-        });
     }
 }

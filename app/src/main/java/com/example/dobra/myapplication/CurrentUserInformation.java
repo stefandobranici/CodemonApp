@@ -467,6 +467,46 @@ public class CurrentUserInformation {
         userName.setValue(newUserName);
     }
 
+    //Add a friend to the database;
+
+    public boolean addFriend(final String friendID){
+        final DatabaseReference userFriendList = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("FriendList");
+
+        DatabaseReference usersFromDb = mDatabase.getReference("Users");
+
+        usersFromDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                final String userUID = dataSnapshot.getKey();
+                DatabaseReference getChildUserInformation = mDatabase.getReference("Users").child(userUID).child("User Information").child("User ID");
+
+                getChildUserInformation.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        String thisUserId = dataSnapshot.getValue(String.class);
+
+                        if(thisUserId.equals(friendID)){
+                            DatabaseReference newFriendRef = userFriendList.child(friendID);
+                            newFriendRef.setValue(userUID);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        return false;
+    }
+
     //Getters for userInfo
 
     public String getUserName() {
