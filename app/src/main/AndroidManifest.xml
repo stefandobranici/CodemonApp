@@ -16,7 +16,8 @@
             android:name=".MusicService"
             android:enabled="true" />
 
-        <activity android:name=".FriendsView">
+        <activity android:name=".FriendsView"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.FriendsView" />
 
@@ -100,7 +101,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SettingsScreen">
+        <activity android:name=".SettingsScreen"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SettingsScreen" />
 

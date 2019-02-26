@@ -172,37 +172,7 @@ public class MainScreenActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            CurrentUserInformation.getInstance().getUserProgressionStatus();
-
-                            String currentUser = mAuth.getCurrentUser().getUid();
-
-                            modeSelectorReference = mDatabase.getReference("Users").child(currentUser).child("User Information").child("Mode");
-
-                            modeSelectorReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    String modeSelected = dataSnapshot.getValue(String.class);
-
-
-                                    if(!TextUtils.isEmpty(modeSelected)){
-                                        Intent gamemode_intent = new Intent("android.intent.action.MenuScreenActivity");
-                                        startActivity(gamemode_intent);
-                                        loadingAnimation.setVisibility(View.INVISIBLE);
-                                        finish();
-                                    } else {
-                                        Intent mode_selector = new Intent("android.intent.action.ModeSelectorActivity");
-                                        startActivity(mode_selector);
-                                        loadingAnimation.setVisibility(View.INVISIBLE);
-                                        finish();
-                                    }
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
+                            loginSuccessful();
                         } else {
                             loadingAnimation.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -212,6 +182,41 @@ public class MainScreenActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void loginSuccessful(){
+
+        CurrentUserInformation.getInstance().getUserProgressionStatus();
+
+        String currentUser = mAuth.getCurrentUser().getUid();
+
+        modeSelectorReference = mDatabase.getReference("Users").child(currentUser).child("User Information").child("Mode");
+
+        modeSelectorReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String modeSelected = dataSnapshot.getValue(String.class);
+
+
+                if(!TextUtils.isEmpty(modeSelected)){
+                    Intent gamemode_intent = new Intent("android.intent.action.MenuScreenActivity");
+                    startActivity(gamemode_intent);
+                    loadingAnimation.setVisibility(View.INVISIBLE);
+                    finish();
+                } else {
+                    Intent mode_selector = new Intent("android.intent.action.ModeSelectorActivity");
+                    startActivity(mode_selector);
+                    loadingAnimation.setVisibility(View.INVISIBLE);
+                    finish();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void setSettingsBtnOnClickListener(){

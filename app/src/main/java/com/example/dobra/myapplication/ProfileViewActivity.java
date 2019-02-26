@@ -1,22 +1,43 @@
 package com.example.dobra.myapplication;
 
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import static android.graphics.Color.WHITE;
 
 public class ProfileViewActivity extends AppCompatActivity {
 
     private ImageView storyModeButton, multiplayerModeButton, practiceModeButton,  profileModeButton, friendsModeButton, inventoryModeButton, shopModeButton, settingsModeButton, backButton;
+
+    private TextView userName, userLevel, userXp, userCoins;
+
+    private Typeface cyberFont;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_view);
 
+        cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
+
         setUpButtons();
+        setUpTextViews();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateTextViews();
+                handler.postDelayed(this, 2000);
+            }
+        }, 1500);
     }
 
     private void setStoryModeButtonOnClickListener(){
@@ -125,6 +146,39 @@ public class ProfileViewActivity extends AppCompatActivity {
         setShopModeButtonOnClickListener();
         setSettingsButtonOnClickListener();
         setBackButtonOnClickListener();
+    }
+
+    private void setUpTextViews(){
+        userName = (TextView) findViewById(R.id.userSetName);
+        userLevel = (TextView) findViewById(R.id.userSetLevel);
+        userXp = (TextView) findViewById(R.id.userSetXp);
+        userCoins = (TextView) findViewById(R.id.userSetCoins);
+
+        userName.setTypeface(cyberFont);
+        userLevel.setTypeface(cyberFont);
+        userXp.setTypeface(cyberFont);
+        userCoins.setTypeface(cyberFont);
+
+        userName.setTextSize(18);
+        userLevel.setTextSize(18);
+        userXp.setTextSize(18);
+        userCoins.setTextSize(18);
+
+        //userName.setTextColor(getResources().getColor(R.color.colorAccent));
+
+        userName.setText(CurrentUserInformation.getInstance().getUserName());
+        userLevel.setText("Lv.  "+String.format(CurrentUserInformation.getInstance().getUserLevel().toString()));
+        userXp.setText("XP:  "+String.format(CurrentUserInformation.getInstance().getUserXp().toString() +" / "+ UserLevel.getInstance().getXpNeedForCurrentLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+        userCoins.setText("Cyber Coins:  "  +String.format(CurrentUserInformation.getInstance().getUserCoins().toString()));
+
+
+    }
+
+    private void updateTextViews(){
+        userName.setText(CurrentUserInformation.getInstance().getUserName());
+        userLevel.setText("Lv.  "+String.format(CurrentUserInformation.getInstance().getUserLevel().toString()));
+        userXp.setText("XP:  "+String.format(CurrentUserInformation.getInstance().getUserXp().toString() +" / "+ UserLevel.getInstance().getXpNeedForCurrentLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+        userCoins.setText("Cyber Coins:  "  +String.format(CurrentUserInformation.getInstance().getUserCoins().toString()));
     }
 
 }

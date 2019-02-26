@@ -17,28 +17,43 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:src="@drawable/friendstopscreen"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:src="@drawable/friendstopscreen" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8"
-            android:orientation="vertical">
-            <ImageView
+            android:layout_weight="7.25">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/friendsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/chiuplus"/>
-        </LinearLayout>
+                android:background="@drawable/windowborder">
 
+            </LinearLayout>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/openAddFriendLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.75"
+            android:paddingTop="5dp"
+            android:src="@drawable/addfriendbutton"/>
 
         <LinearLayout
+            android:id="@+id/menubar"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
             android:layout_weight="1"
-            android:weightSum="8"
-            android:id="@+id/menubar">
+            android:orientation="horizontal"
+            android:weightSum="8">
+
             <ImageView
                 android:id="@+id/storybutton"
                 android:layout_width="0dp"
@@ -72,8 +87,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:visibility="gone"
-                android:src="@drawable/friendsbutton" />
+                android:src="@drawable/friendsbutton"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/itemsbutton"
@@ -103,6 +118,108 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/backbutton" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/addFriendLayout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:background="@drawable/popupbackground"
+        android:weightSum="4">
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text="Enter friend ID"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorAccent"
+            android:textSize="30sp" />
+
+        <TextView
+
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="0.3"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text=""
+            android:layout_gravity="center_horizontal" />
+
+        <EditText
+            android:id="@+id/addFriendField"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:fontFamily="@font/cyberverse"
+            android:textSize="25sp"
+            android:text="\@bathspa.ac.uk"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:background="@drawable/credentialsbox"/>
+
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="0.5"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text=""
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <TextView
+                android:id="@+id/addFriendButton"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1.3"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="Add"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/colorAccent"
+                android:textSize="30sp"
+                android:background="@drawable/plain"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text=""
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/closeAddFriendLayout"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1.3"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="Close"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/colorAccent"
+                android:textSize="30sp"
+                android:background="@drawable/plain"/>
+
         </LinearLayout>
 
     </LinearLayout>

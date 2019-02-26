@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/friendParentLayout"
+    android:layout_width="match_parent" android:layout_height="80dp"
+    android:background="@drawable/window">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="5"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+
+            android:layout_weight="0.5"
+            android:id="@+id/friendImage"
+            android:src="@drawable/profile"/>
+
+        <LinearLayout
+            android:paddingTop="5dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.25"
+            android:weightSum="2"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/friendName"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="ChiuPlus"
+                android:fontFamily="@font/cyberverse"
+                android:layout_gravity="center_horizontal"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textColor="@color/colorAccent"/>
+
+            <TextView
+                android:id="@+id/friendLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
+                android:text="ChiuPlus"
+                android:fontFamily="@font/cyberverse"
+                android:textAlignment="center"
+                android:textSize="15sp"
+                android:textColor="@color/colorAccent"/>
+        </LinearLayout>
+
+    <LinearLayout
+        android:paddingTop="5dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2.25"
+        android:weightSum="2"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/friendProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.75"
+
+            android:fontFamily="@font/cyberverse"
+            android:text="ChiuPlus"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/friendActivity"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1.25"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/cyberverse"
+            android:text="ChiuPlus"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:background="@drawable/windowborder"/>
+
+</RelativeLayout>

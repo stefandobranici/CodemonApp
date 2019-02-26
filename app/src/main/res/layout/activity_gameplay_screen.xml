@@ -14,89 +14,156 @@
         android:orientation="vertical"
         android:weightSum="10">
 
-        <LinearLayout
-            android:id="@+id/topScreenLayout"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:layout_weight="3">
 
             <LinearLayout
-                android:id="@+id/topScreenLayoutFirstHalf"
+                android:id="@+id/topScreenLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:background="@drawable/fightscene"
+                android:orientation="horizontal"
+                android:weightSum="3">
 
-                <RelativeLayout
-                    android:id="@+id/codemonName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="15dp">
+                <LinearLayout
+                    android:id="@+id/topScreenLayoutFirstHalf"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.25"
+                    android:orientation="vertical"
+                    android:paddingTop="5dp"
+                    android:weightSum="3">
 
-                </RelativeLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/characterinformation"
+                        android:orientation="vertical"
+                        android:weightSum="3">
 
-                <RelativeLayout
-                    android:id="@+id/codemonHealth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:paddingLeft="20dp">
+                        <TextView
+                            android:id="@+id/gameScreenPlayerName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
 
-                </RelativeLayout>
+                            android:fontFamily="@font/cyberverse"
+                            android:text="Name"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="15sp" />
 
-                <RelativeLayout
-                    android:id="@+id/codemonSpot"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_gravity="left"
-                    android:paddingLeft="20dp">
+                        <TextView
+                            android:id="@+id/gameScreenPlayerLevel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
 
-                </RelativeLayout>
+                            android:fontFamily="@font/cyberverse"
+                            android:text="Lv."
+                            android:textAlignment="center"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/gameScreenPlayerHealth"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+
+                            android:fontFamily="@font/cyberverse"
+                            android:text="HP"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/gameScreenPlayerImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5">
+
+                </TextView>
+
+                <LinearLayout
+                    android:id="@+id/topScreenLayoutSecondHalf"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.25"
+                    android:orientation="vertical"
+                    android:weightSum="3">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/characterinformation"
+                        android:orientation="vertical"
+                        android:weightSum="3"
+                        android:paddingBottom="10dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+
+                            android:fontFamily="@font/cyberverse"
+                            android:text="Name"
+                            android:textAlignment="center"
+                            android:textColor="#DC143C"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+
+                            android:fontFamily="@font/cyberverse"
+                            android:text="Lv."
+                            android:textAlignment="center"
+                            android:textColor="#DC143C"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_weight="1"
+
+                            android:fontFamily="@font/cyberverse"
+                            android:text="HP"
+                            android:textAlignment="center"
+                            android:textColor="#DC143C"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/topScreenLayoutSecondHalf"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:id="@+id/enemySpot"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_gravity="right"
-                    android:paddingTop="15dp"
-                    android:paddingRight="20dp">
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/enemyName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:paddingRight="20dp">
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:id="@+id/enemyHealth"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:paddingRight="20dp">
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-        </LinearLayout>
+        </RelativeLayout>
 
         <ScrollView
 
@@ -108,6 +175,7 @@
                 android:id="@+id/middleScreenLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/textscreenbg"
                 android:orientation="vertical">
 
             </LinearLayout>
@@ -125,6 +193,7 @@
                 android:id="@+id/bottomScreenLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/window"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
@@ -163,7 +232,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:background="@drawable/window"
+            android:background="@drawable/windowborder"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -174,7 +243,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5"
-            android:background="@drawable/window">
+            android:background="@drawable/windowborder">
 
         </ScrollView>
 
@@ -184,8 +253,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:background="@drawable/window">
-        </ScrollView>
+            android:background="@drawable/windowborder"></ScrollView>
 
     </LinearLayout>
 </RelativeLayout>

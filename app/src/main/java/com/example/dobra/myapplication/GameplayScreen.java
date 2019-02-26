@@ -92,20 +92,20 @@ public class GameplayScreen extends AppCompatActivity {
     }
 
     private void drawScreenTraining(){
-        setPlayerDetailsOnScreen();
+        /*setPlayerDetailsOnScreen();*/
 
-        setEnemyDetailsOnScreen(ENEMY_CODEBUG);
+        /*setEnemyDetailsOnScreen(ENEMY_CODEBUG);*/
 
     }
 
     private void drawScreenBoss(){
-        setPlayerDetailsOnScreen();
+        /*setPlayerDetailsOnScreen();*/
 
-        setEnemyDetailsOnScreen(ENEMY_CODEBOSS);
+        /*setEnemyDetailsOnScreen(ENEMY_CODEBOSS);*/
 
     }
 
-    private void setPlayerDetailsOnScreen(){
+    /*private void setPlayerDetailsOnScreen(){
         RelativeLayout codemonImageLayout = (RelativeLayout) findViewById(R.id.codemonSpot);
 
         RelativeLayout codemonNameLayout = (RelativeLayout) findViewById(R.id.codemonName);
@@ -146,9 +146,9 @@ public class GameplayScreen extends AppCompatActivity {
         chiuplus.setPadding(0, 0, 0, 20);
 
         codemonImageLayout.addView(chiuplus);
-    }
+    }*/
 
-    private void setEnemyDetailsOnScreen(String enemy){
+   /* private void setEnemyDetailsOnScreen(String enemy){
         RelativeLayout enemyImageLayout = (RelativeLayout) findViewById(R.id.enemySpot);
 
         RelativeLayout enemyNameLayout = (RelativeLayout) findViewById(R.id.enemyName);
@@ -193,7 +193,7 @@ public class GameplayScreen extends AppCompatActivity {
         }
 
         enemyImageLayout.addView(enemyImage);
-    }
+    }*/
 
     private void loadContent(){
         List<ContentParser.ContentType> contentWords = ContentParser.getInstance().processedWords(level);
