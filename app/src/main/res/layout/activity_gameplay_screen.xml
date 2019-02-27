@@ -109,6 +109,7 @@
                     android:weightSum="3">
 
                     <ImageView
+                        android:id="@+id/gameScreenEnemyImage"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="2" />
@@ -119,10 +120,11 @@
                         android:layout_weight="1"
                         android:background="@drawable/characterinformation"
                         android:orientation="vertical"
-                        android:weightSum="3"
-                        android:paddingBottom="10dp">
+                        android:paddingBottom="10dp"
+                        android:weightSum="3">
 
                         <TextView
+                            android:id="@+id/gameScreenEnemyName"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center_horizontal"
@@ -135,6 +137,7 @@
                             android:textSize="15sp" />
 
                         <TextView
+                            android:id="@+id/gameScreenEnemyLevel"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center_horizontal"
@@ -147,6 +150,7 @@
                             android:textSize="15sp" />
 
                         <TextView
+                            android:id="@+id/gameScreenEnemyHealth"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:layout_gravity="center_horizontal"
@@ -163,6 +167,19 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/chiuplusattackanimation"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/enemyattackanimation"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
         </RelativeLayout>
 
         <ScrollView
@@ -183,41 +200,539 @@
         </ScrollView>
 
 
-        <ScrollView
-
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2">
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:weightSum="2">
 
             <LinearLayout
-                android:id="@+id/bottomScreenLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/window"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <LinearLayout
-                    android:id="@+id/firstHalfBottomScreenLayout"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Skills"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/secondHalfBottomScreenLayout"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:orientation="vertical">
-
-                </LinearLayout>
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Items"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
-        </ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Notebook"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Run away"
+                    android:textAlignment="center"
+                    android:textColor="#DC143C"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Variables"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Conditionals"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Loops"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Back"
+                    android:textAlignment="center"
+                    android:textColor="#DC143C"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="int"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="char"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="float"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="double"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="string"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="array"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="2d array"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="19sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Back"
+                    android:textAlignment="center"
+                    android:textColor="#DC143C"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Health Potion"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Revealing Potion"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Fixer Elixer"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Back"
+                    android:textAlignment="center"
+                    android:textColor="#DC143C"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="If"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Else"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Else if"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Back"
+                    android:textAlignment="center"
+                    android:textColor="#DC143C"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="while"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="do"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="for"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/plain"
+                    android:fontFamily="@font/cyberverse"
+                    android:paddingTop="7dp"
+                    android:text="Back"
+                    android:textAlignment="center"
+                    android:textColor="#DC143C"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
@@ -253,7 +768,36 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:background="@drawable/windowborder"></ScrollView>
+            android:background="@drawable/windowborder">
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <ScrollView
+
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/textscreenbg">
+
+        <LinearLayout
+            android:id="@+id/fullScreenReading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/fullScreenBorder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/windowborder"
+        android:orientation="vertical">
 
     </LinearLayout>
 </RelativeLayout>

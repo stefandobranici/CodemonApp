@@ -99,19 +99,30 @@ public class ContentParser {
 
                     contentWords.add(new ContentType(newWord, TYPE_KEYWORD));
 
-                } else if(content.charAt(i) == '^' && !newWordFound) {
+                } else if(content.charAt(i) != ' '&& content.charAt(i) != '/' && !newWordFound) {
                     newWordFound = true;
 
-                    beginningPositionOfWord = i+1;
-                } else if(content.charAt(i) == '^' && newWordFound) {
+                    beginningPositionOfWord = i;
+                } else if(content.charAt(i) == ' ' && newWordFound) {
                     newWordFound = false;
 
                     newWord = content.substring(beginningPositionOfWord, i);
 
                     contentWords.add(new ContentType(newWord));
-                } else if(content.charAt(i) == '/'){
+                } else if(content.charAt(i) == '/'&&!newWordFound){
 
                     contentWords.add(new ContentType(TYPE_NEWLINE));
+                } else if(content.charAt(i) == '/' && newWordFound){
+                    newWordFound = false;
+                    newWord = content.substring(beginningPositionOfWord, i);
+                    contentWords.add(new ContentType(newWord));
+                    contentWords.add(new ContentType(TYPE_NEWLINE));
+                } else if(i==content.length()-1 && newWordFound){
+                    newWordFound = false;
+
+                    newWord = content.substring(beginningPositionOfWord, i+1);
+
+                    contentWords.add(new ContentType(newWord));
                 }
             }
             
@@ -156,76 +167,79 @@ public class ContentParser {
 
                     contentWords.add(new ContentType(newCorrectWord, TYPE_KEYWORD));
 
-                } else if(content.charAt(i) == '^' && !newCorrectWordFound) {
+                } else if(content.charAt(i) != ' ' && content.charAt(i) != '/' && !newCorrectWordFound) {
                     newCorrectWordFound = true;
 
-                    beginningPositionOfCorrectWord = i+1;
-                } else if(content.charAt(i) == '^' && newCorrectWordFound) {
+                    beginningPositionOfCorrectWord = i;
+                } else if(content.charAt(i) == ' ' && newCorrectWordFound) {
                     newCorrectWordFound = false;
 
                     newCorrectWord = content.substring(beginningPositionOfCorrectWord, i);
 
                     contentWords.add(new ContentType(newCorrectWord));
-                } else if(content.charAt(i) == '/'){
+                } else if(content.charAt(i) == '/' && !newCorrectWordFound){
 
                     contentWords.add(new ContentType(TYPE_NEWLINE));
+                } else if(content.charAt(i) == '/' && newCorrectWordFound){
+                    newCorrectWordFound = false;
+
+                    newCorrectWord = content.substring(beginningPositionOfCorrectWord, i);
+
+                    contentWords.add(new ContentType(newCorrectWord));
+                    contentWords.add(new ContentType(TYPE_NEWLINE));
+                } else if(i==content.length()-1 && newCorrectWordFound){
+                    newCorrectWordFound = false;
+
+                    newCorrectWord = content.substring(beginningPositionOfCorrectWord, i+1);
+
+                    contentWords.add(new ContentType(newCorrectWord));
                 }
             }
         } else if (level.isRed()){
-
             boolean newCorrectWordFound = false;
-
-            boolean newWrongWordFound = false;
 
             String newCorrectWord = "";
 
-            String newWrongWord = "";
-
             int beginningPositionOfCorrectWord = 0;
-            int beginningPositionOfWrongWord = 0;
-
             for(int i = 0; i < content.length(); i++){
                 if(content.charAt(i) == '*' && !newCorrectWordFound){
                     newCorrectWordFound = true;
 
                     beginningPositionOfCorrectWord = i+1;
 
-                } else if(content.charAt(i) == '&'){
-                    newWrongWordFound = true;
-
-                    beginningPositionOfWrongWord = i+1;
-
-                    newCorrectWord = content.substring(beginningPositionOfCorrectWord,i);
-
-                } else if(content.charAt(i) == '*' && newCorrectWordFound && newWrongWordFound){
-                    newCorrectWordFound = false;
-
-                    newWrongWordFound = false;
-
-                    newWrongWord = content.substring(beginningPositionOfWrongWord, i);
-
-                    contentWords.add(new ContentType(newCorrectWord, newWrongWord, TYPE_KEYWORD));
-
-                } else if(content.charAt(i) == '*' && newCorrectWordFound && !newWrongWordFound){
+                } else if(content.charAt(i) == '*' && newCorrectWordFound ){
                     newCorrectWordFound = false;
 
                     newCorrectWord = content.substring(beginningPositionOfCorrectWord, i);
 
-                    contentWords.add(new ContentType(newCorrectWord, TYPE_KEYWORD));
+                    contentWords.add(new ContentType(newCorrectWord, "____", TYPE_KEYWORD));
 
-                } else if(content.charAt(i) == '^' && !newCorrectWordFound) {
+                } else if(content.charAt(i) != ' ' && content.charAt(i) != '/' && !newCorrectWordFound) {
                     newCorrectWordFound = true;
 
-                    beginningPositionOfCorrectWord = i+1;
-                } else if(content.charAt(i) == '^' && newCorrectWordFound) {
+                    beginningPositionOfCorrectWord = i;
+                } else if(content.charAt(i) == ' ' && newCorrectWordFound) {
                     newCorrectWordFound = false;
 
                     newCorrectWord = content.substring(beginningPositionOfCorrectWord, i);
 
                     contentWords.add(new ContentType(newCorrectWord));
-                } else if(content.charAt(i) == '/'){
+                } else if(content.charAt(i) == '/' && !newCorrectWordFound){
 
                     contentWords.add(new ContentType(TYPE_NEWLINE));
+                } else if(content.charAt(i) == '/' && newCorrectWordFound){
+                    newCorrectWordFound = false;
+
+                    newCorrectWord = content.substring(beginningPositionOfCorrectWord, i);
+
+                    contentWords.add(new ContentType(newCorrectWord));
+                    contentWords.add(new ContentType(TYPE_NEWLINE));
+                } else if(i==content.length()-1 && newCorrectWordFound){
+                    newCorrectWordFound = false;
+
+                    newCorrectWord = content.substring(beginningPositionOfCorrectWord, i+1);
+
+                    contentWords.add(new ContentType(newCorrectWord));
                 }
             }
         }

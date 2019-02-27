@@ -41,7 +41,7 @@ public class CurrentUserInformation {
 
     private String userName;
 
-    private Integer userLevel, userXp, userCoins;
+    private Integer userLevel, userXp, userCoins, userHealth;
 
     private List<Skill> availableSkills;
 
@@ -78,6 +78,7 @@ public class CurrentUserInformation {
         userLevel = 0;
         userXp = 0;
         userCoins = 0;
+        userHealth = 0;
         friendSelectedForRemove = "";
 
         //Initiate instance of firebase auth and database;
@@ -247,9 +248,9 @@ public class CurrentUserInformation {
             }
         });
 
-        DatabaseReference useXpRef = userInformation.child("XP");
+        DatabaseReference userXpRef = userInformation.child("XP");
 
-        useXpRef.addValueEventListener(new ValueEventListener() {
+        userXpRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userXp = dataSnapshot.getValue(Integer.class);
@@ -267,6 +268,20 @@ public class CurrentUserInformation {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userCoins = dataSnapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference userHpRef = userInformation.child("HP");
+
+        userHpRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                userHealth = dataSnapshot.getValue(Integer.class);
             }
 
             @Override
@@ -350,6 +365,10 @@ public class CurrentUserInformation {
         DatabaseReference userXP= userInformation.child("XP");
 
         userXP.setValue(0);
+
+        DatabaseReference userHP= userInformation.child("HP");
+
+        userXP.setValue(10);
 
 
         userSkills = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Skills");
@@ -470,46 +489,6 @@ public class CurrentUserInformation {
         userName.setValue(newUserName);
     }
 
-    //Add a friend to the database;
-
-    public boolean addFriend(final String friendID){
-        final DatabaseReference userFriendList = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("FriendList");
-
-        DatabaseReference usersFromDb = mDatabase.getReference("Users");
-
-        usersFromDb.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                final String userUID = dataSnapshot.getKey();
-                DatabaseReference getChildUserInformation = mDatabase.getReference("Users").child(userUID).child("User Information").child("User ID");
-
-                getChildUserInformation.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        String thisUserId = dataSnapshot.getValue(String.class);
-
-                        if(thisUserId.equals(friendID)){
-                            DatabaseReference newFriendRef = userFriendList.child(friendID);
-                            newFriendRef.setValue(userUID);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        return false;
-    }
-
     //Getters for userInfo
 
     public String getUserName() {
@@ -527,6 +506,8 @@ public class CurrentUserInformation {
     public Integer getUserCoins() {
         return userCoins;
     }
+
+    public Integer getUserHealth(){return userHealth; }
 
     public String getFriendSelectedForRemove(){
         return friendSelectedForRemove;

@@ -27,17 +27,17 @@ public class UserLevel {
         xpPerLevel.put(9, 10000);
         xpPerLevel.put(10,15000);
 
-        maxHealthPerLevel.put(0, 10);
-        maxHealthPerLevel.put(1, 11);
-        maxHealthPerLevel.put(2, 12);
-        maxHealthPerLevel.put(3, 13);
-        maxHealthPerLevel.put(4, 14);
-        maxHealthPerLevel.put(5, 15);
-        maxHealthPerLevel.put(6, 16);
-        maxHealthPerLevel.put(7, 17);
-        maxHealthPerLevel.put(8, 18);
-        maxHealthPerLevel.put(9, 19);
-        maxHealthPerLevel.put(10, 20);
+        maxHealthPerLevel.put(0, 0);
+        maxHealthPerLevel.put(1, 10);
+        maxHealthPerLevel.put(2, 11);
+        maxHealthPerLevel.put(3, 12);
+        maxHealthPerLevel.put(4, 13);
+        maxHealthPerLevel.put(5, 14);
+        maxHealthPerLevel.put(6, 15);
+        maxHealthPerLevel.put(7, 16);
+        maxHealthPerLevel.put(8, 17);
+        maxHealthPerLevel.put(9, 18);
+        maxHealthPerLevel.put(10, 19);
     }
 
     public static UserLevel getInstance() {

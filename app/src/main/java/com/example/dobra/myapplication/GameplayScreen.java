@@ -1,6 +1,8 @@
 package com.example.dobra.myapplication;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.ArrayMap;
@@ -13,8 +15,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import pl.droidsonroids.gif.GifImageView;
 
 import static android.graphics.Color.BLUE;
 import static android.graphics.Color.GREEN;
@@ -28,13 +35,20 @@ public class GameplayScreen extends AppCompatActivity {
 
     private final String ENEMY_CODEBOSS = "Fatal Error";
 
-    private Typeface cyberFont, consolasFont;
+    private Typeface consolasFont;
 
-    private LinearLayout topLayout, firstHalfTopLayout, secondHalfTopLayout, middleLayout, bottomLayout,  firstHalfBottomLayout, secondHalfBottomLayout;
+    private LinearLayout topScreenLayout, middleScreenLayout;
 
-    private GameplayManager gameplayManager;
+    private ImageView gameScreenPlayerImage, gameScreenEnemyImage;
 
-    private TextView currentTextViewSelected;
+    private TextView gameScreenPlayerHealth, gameScreenPlayerLevel, gameScreenPlayerName, gameScreenEnemyName, gameScreenEnemyLevel, gameScreenEnemyHealth;
+
+    private GifImageView chiuplusattackanimation, enemyattackanimation;
+
+    private TextView currentTextViewClicked;
+
+    private ContentParser.ContentType currentContentTypeProcessed;
+
 
 
     @Override
@@ -42,395 +56,198 @@ public class GameplayScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gameplay_screen);
 
-
-
-        topLayout = (LinearLayout) findViewById(R.id.topScreenLayout);
-
-        firstHalfTopLayout = (LinearLayout) findViewById(R.id.topScreenLayoutFirstHalf);
-
-        secondHalfTopLayout = (LinearLayout) findViewById(R.id.topScreenLayoutSecondHalf);
-
-        middleLayout = (LinearLayout) findViewById(R.id.middleScreenLayout);
-
-        bottomLayout = (LinearLayout) findViewById(R.id.bottomScreenLayout);
-
-        firstHalfBottomLayout = (LinearLayout) findViewById(R.id.firstHalfBottomScreenLayout);
-
-        secondHalfBottomLayout = (LinearLayout) findViewById(R.id.secondHalfBottomScreenLayout);
-
         level = CurrentUserInformation.getInstance().getLevelSelectedForPlay();
-
-        cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
 
         consolasFont = Typeface.createFromAsset(getAssets(), "font/Consolas.ttf");
 
-        gameplayManager = new GameplayManager();
+        currentTextViewClicked = null;
 
-        currentTextViewSelected = null;
+        currentContentTypeProcessed = null;
 
         if(level.isGreen()){
-            drawScreenLearning();
-        } else if(level.isViolette()) {
-            drawScreenTraining();
-        } else if(level.isRed()) {
-            drawScreenBoss();
+            setLearningScreenOn();
+        } else if(level.isViolette()){
+            setTrainingScreenOn();
+        } else if(level.isRed()){
+            setBossScreenOn();
         }
+    }
 
-        /*loadContent();*/
+    private void setLearningScreenOn(){
+        topScreenLayout = (LinearLayout) findViewById(R.id.topScreenLayout);
 
-        setUpSkillBar();
+        ImageView trainerImage = new ImageView(getApplicationContext());
 
+        trainerImage.setImageResource(R.drawable.trainer);
+
+        topScreenLayout.addView(trainerImage);
+
+        loadContentOnScreen();
+    }
+
+    private void setTrainingScreenOn(){
+        setUserInformationOnScreen();
+
+        setEnemyInformationOnScreen(ENEMY_CODEBUG);
+
+        loadContentOnScreen();
 
     }
 
-    private void drawScreenLearning(){
-        ImageView trainer = new ImageView(this);
+    private void setBossScreenOn(){
+        setUserInformationOnScreen();
 
-        trainer.setImageResource(R.drawable.trainer);
+        setEnemyInformationOnScreen(ENEMY_CODEBOSS);
 
-        topLayout.addView(trainer);
+        loadContentOnScreen();
     }
 
-    private void drawScreenTraining(){
-        /*setPlayerDetailsOnScreen();*/
+    private void setUserInformationOnScreen(){
+        gameScreenPlayerImage = (ImageView) findViewById(R.id.gameScreenPlayerImage);
 
-        /*setEnemyDetailsOnScreen(ENEMY_CODEBUG);*/
+        gameScreenPlayerImage.setImageResource(R.drawable.chiuplusback);
 
+        gameScreenPlayerHealth = (TextView) findViewById(R.id.gameScreenPlayerHealth);
+
+        gameScreenPlayerLevel = (TextView) findViewById(R.id.gameScreenPlayerLevel);
+
+        gameScreenPlayerName = (TextView) findViewById(R.id.gameScreenPlayerName);
+
+        chiuplusattackanimation = (GifImageView) findViewById(R.id.chiuplusattackanimation);
+
+        gameScreenPlayerHealth.setText("HP  "+String.format(CurrentUserInformation.getInstance().getUserHealth().toString())+"/"+String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+        gameScreenPlayerName.setText(CurrentUserInformation.getInstance().getUserName());
+
+        gameScreenPlayerLevel.setText("Lv. "+String.format(CurrentUserInformation.getInstance().getUserLevel().toString()));
     }
 
-    private void drawScreenBoss(){
-        /*setPlayerDetailsOnScreen();*/
+    private void setEnemyInformationOnScreen(String enemy){
+        gameScreenEnemyImage = (ImageView) findViewById(R.id.gameScreenEnemyImage);
 
-        /*setEnemyDetailsOnScreen(ENEMY_CODEBOSS);*/
+        gameScreenEnemyName = (TextView) findViewById(R.id.gameScreenEnemyName);
 
-    }
+        gameScreenEnemyLevel = (TextView) findViewById(R.id.gameScreenEnemyLevel);
 
-    /*private void setPlayerDetailsOnScreen(){
-        RelativeLayout codemonImageLayout = (RelativeLayout) findViewById(R.id.codemonSpot);
+        gameScreenEnemyHealth = (TextView) findViewById(R.id.gameScreenEnemyHealth);
 
-        RelativeLayout codemonNameLayout = (RelativeLayout) findViewById(R.id.codemonName);
+        enemyattackanimation = (GifImageView) findViewById(R.id.enemyattackanimation);
 
-        RelativeLayout codemonHealthLayout = (RelativeLayout) findViewById(R.id.codemonHealth);
+        gameScreenEnemyName.setText(enemy);
 
-        TextView playerName = new TextView(this);
+        gameScreenEnemyLevel.setText("Lv.  "+String.format(level.getLevel().toString()));
 
-        playerName.setText("ChiuPlus");
+        gameScreenEnemyHealth.setText("HP  10/10");
 
-        playerName.setTextColor(WHITE);
-
-        playerName.setTypeface(cyberFont);
-
-        playerName.setGravity(View.TEXT_ALIGNMENT_CENTER);
-
-        playerName.setTextSize(12);
-
-        codemonNameLayout.addView(playerName);
-
-        TextView playerHealth = new TextView(this);
-
-
-        playerHealth.setText("10/10 H P");
-
-        playerHealth.setTextColor(WHITE);
-
-        playerHealth.setTypeface(cyberFont);
-
-        playerHealth.setTextSize(12);
-
-        codemonHealthLayout.addView(playerHealth);
-
-        ImageView chiuplus = new ImageView(this);
-
-        chiuplus.setImageResource(R.drawable.chiuplusback);
-
-        chiuplus.setPadding(0, 0, 0, 20);
-
-        codemonImageLayout.addView(chiuplus);
-    }*/
-
-   /* private void setEnemyDetailsOnScreen(String enemy){
-        RelativeLayout enemyImageLayout = (RelativeLayout) findViewById(R.id.enemySpot);
-
-        RelativeLayout enemyNameLayout = (RelativeLayout) findViewById(R.id.enemyName);
-
-        RelativeLayout enemyHealthLayout = (RelativeLayout) findViewById(R.id.enemyHealth);
-
-        TextView enemyName = new TextView(this);
-
-        TextView enemyHealth = new TextView(this);
-
-        enemyName.setText(ENEMY_CODEBUG);
-
-        enemyName.setTextColor(WHITE);
-
-        enemyName.setTypeface(cyberFont);
-
-        enemyName.setTextSize(12);
-
-        enemyNameLayout.addView(enemyName);
-
-        enemyHealth.setText("10/10 H P");
-
-        enemyHealth.setTextColor(WHITE);
-
-        enemyHealth.setTypeface(cyberFont);
-
-        enemyHealth.setTextSize(12);
-
-        enemyHealthLayout.addView(enemyHealth);
-
-        ImageView enemyImage = new ImageView(this);
-
-        if(enemy.equals(ENEMY_CODEBUG)) {
-
-
-            enemyImage.setImageResource(R.drawable.codebug);
-
-        } else if(enemy.equals(ENEMY_CODEBOSS)) {
-
-            enemyImage.setImageResource(R.drawable.boss);
-
-        }
-
-        enemyImageLayout.addView(enemyImage);
-    }*/
-
-    private void loadContent(){
-        List<ContentParser.ContentType> contentWords = ContentParser.getInstance().processedWords(level);
-
-        LinearLayout currentLine = new LinearLayout(getApplicationContext());
-        currentLine.setOrientation(LinearLayout.HORIZONTAL);
-        currentLine.setPadding(100,0,0,0);
-
-        for(ContentParser.ContentType entry:contentWords){
-            if(entry.isNewLine()){
-                middleLayout.addView(currentLine);
-
-                currentLine = new LinearLayout(getApplicationContext());
-                currentLine.setOrientation(LinearLayout.HORIZONTAL);
-                currentLine.setPadding(100,0,0,0);
-
-            } else {
-                addNewView(entry, currentLine);
-            }
+        if(enemy.equals(ENEMY_CODEBUG)){
+            gameScreenEnemyImage.setImageResource(R.drawable.codebug);
+        } else if(enemy.equals(ENEMY_CODEBOSS)){
+            gameScreenEnemyImage.setImageResource(R.drawable.boss);
         }
     }
 
     private void setUpSkillBar(){
 
-        Button skills = new Button(getApplicationContext());
-
-        skills.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearSkillBar();
-
-                setUserSkillBar();
-            }
-        });
-
-        skills.setText("Skills");
-
-        Button items = new Button(getApplicationContext());
-
-        items.setText("Items");
-
-        Button notes = new Button(getApplicationContext());
-
-        notes.setText("Notebook");
-
-        Button run = new Button(getApplicationContext());
-
-        run.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        run.setText("Run away");
-
-        firstHalfBottomLayout.addView(skills);
-        firstHalfBottomLayout.addView(notes);
-
-        secondHalfBottomLayout.addView(items);
-        secondHalfBottomLayout.addView(run);
     }
 
-    private void setUserSkillBar(){
-        Button variables = new Button(getApplicationContext());
+    private void loadContentOnScreen(){
+        middleScreenLayout = (LinearLayout) findViewById(R.id.middleScreenLayout);
 
-        variables.setText("Variables");
+        LinearLayout lineOfWords = new LinearLayout(getApplicationContext());
 
-        variables.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearSkillBar();
+        lineOfWords.setPadding(15, 15, 0, 0);
 
-                setVariablesSkillBar();
+        List<ContentParser.ContentType> listOfWords = ContentParser.getInstance().processedWords(level);
 
-            }
-        });
+        for(final ContentParser.ContentType contentType:listOfWords){
+            final TextView currentProcessedWord = new TextView(getApplicationContext());
 
-        Button flowControl = new Button(getApplicationContext());
+            currentProcessedWord.setTypeface(consolasFont);
 
-        flowControl.setText("Flow Control");
+            currentProcessedWord.setTextSize(16);
 
-        Button methodsAndClasses = new Button(getApplicationContext());
+            if(contentType.isKeyword()){
+                currentProcessedWord.setTextColor(getResources().getColor(R.color.colorAccent));
 
-        methodsAndClasses.setText("Methods and Classes");
+                currentProcessedWord.setText(contentType.wordContent);
 
-        Button back = new Button(getApplicationContext());
+                currentProcessedWord.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(currentTextViewClicked!=null) {
+                            if(currentTextViewClicked == currentProcessedWord){
+                                enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                enemyattackanimation.clearAnimation();
 
-        back.setText("Back");
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearSkillBar();
+                                enemyattackanimation.setVisibility(View.VISIBLE);
 
-                setUpSkillBar();
-            }
-        });
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        enemyattackanimation.setVisibility(View.GONE);
+                                        enemyattackanimation.clearAnimation();
+                                    }
+                                }, 2000);
 
-        firstHalfBottomLayout.addView(variables);
-        firstHalfBottomLayout.addView(methodsAndClasses);
+                                currentTextViewClicked = currentProcessedWord;
+                                currentContentTypeProcessed = contentType;
+                                currentProcessedWord.setTextColor(Color.parseColor("#FF4500"));
 
-        secondHalfBottomLayout.addView(flowControl);
-        secondHalfBottomLayout.addView(back);
-    }
 
-    private void setVariablesSkillBar(){
-        final Button intBtn = new Button(getApplicationContext());
-
-        intBtn.setText("int");
-
-        intBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(currentTextViewSelected!=null) {
-                    if (gameplayManager.getKeywordAnswer().contentEquals(intBtn.getText())) {
-                        Toast.makeText(getApplicationContext(), "Correct", Toast.LENGTH_SHORT).show();
-                        currentTextViewSelected.setTextColor(GREEN);
-                        currentTextViewSelected.setText(intBtn.getText());
-                        currentTextViewSelected.setOnClickListener(null);
-                        currentTextViewSelected = null;
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Wrong", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-
-        final Button charBtn = new Button(getApplicationContext());
-
-        charBtn.setText("char");
-
-        charBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(currentTextViewSelected!=null) {
-                    if (gameplayManager.getKeywordAnswer().contentEquals(charBtn.getText())) {
-                        Toast.makeText(getApplicationContext(), "Correct", Toast.LENGTH_SHORT).show();
-                        currentTextViewSelected.setTextColor(GREEN);
-                        currentTextViewSelected.setText(charBtn.getText());
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Wrong", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-
-        final Button doubleBtn = new Button(getApplicationContext());
-
-        doubleBtn.setText("double");
-
-        doubleBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(currentTextViewSelected!=null) {
-                    if (gameplayManager.getKeywordAnswer().contentEquals(doubleBtn.getText())) {
-                        Toast.makeText(getApplicationContext(), "Correct", Toast.LENGTH_SHORT).show();
-                        currentTextViewSelected.setTextColor(GREEN);
-                        currentTextViewSelected.setText(doubleBtn.getText());
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Wrong", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-
-        Button back = new Button(getApplicationContext());
-
-        back.setText("Back");
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                clearSkillBar();
-
-                setUserSkillBar();
-            }
-        });
-
-        firstHalfBottomLayout.addView(intBtn);
-        firstHalfBottomLayout.addView(charBtn);
-
-        secondHalfBottomLayout.addView(doubleBtn);
-        secondHalfBottomLayout.addView(back);
-    }
-
-    private void clearSkillBar(){
-        firstHalfBottomLayout.removeAllViewsInLayout();
-        secondHalfBottomLayout.removeAllViewsInLayout();
-    }
-
-    @Override
-    public void onBackPressed() {
-        clearSkillBar();
-        setUpSkillBar();
-    }
-
-    private void addNewView(final ContentParser.ContentType content, LinearLayout currentLayout){
-        final TextView newWord = new TextView(this);
-
-        newWord.setTextColor(WHITE);
-
-        newWord.setTypeface(consolasFont);
-
-        newWord.setPadding(10, 10, 10, 10);
-
-        newWord.setGravity(View.TEXT_ALIGNMENT_CENTER);
-
-        newWord.setTextSize(16);
-
-        newWord.setText(content.wordContent);
-
-        if(content.isKeyword()) {
-
-            newWord.setTextColor(BLUE);
-
-            newWord.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(gameplayManager.isKeyWordSelected()){
-                        if(newWord.getCurrentTextColor() == RED){
-                            newWord.setTextColor(BLUE);
-                            currentTextViewSelected = null;
-                            gameplayManager.clear();
+                                currentProcessedWord.setTextColor(getResources().getColor(R.color.colorAccent));
+                                currentTextViewClicked = null;
+                                currentContentTypeProcessed = null;
+                            } else {
+                                currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                currentTextViewClicked = currentProcessedWord;
+                                currentContentTypeProcessed = contentType;
+                                currentProcessedWord.setTextColor(Color.parseColor("#FF4500"));
+                            }
                         } else {
-                            Toast.makeText(getApplicationContext(), "Keyword is already selected!", Toast.LENGTH_SHORT).show();
+                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                            chiuplusattackanimation.clearAnimation();
+
+
+                            chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                    chiuplusattackanimation.clearAnimation();
+                                }
+                            }, 2000);
+
+                            currentTextViewClicked = currentProcessedWord;
+                            currentContentTypeProcessed = contentType;
+                            currentProcessedWord.setTextColor(Color.parseColor("#FF4500"));
+
+
                         }
-                    } else {
-                        currentTextViewSelected = newWord;
-                        gameplayManager.setKeywordSelected(content.wordContent);
-                        gameplayManager.setKeywordAnswer(content.correctWord);
-                        newWord.setTextColor(RED);
                     }
-                }
-            });
+                });
+
+                currentProcessedWord.setPadding(0, 0,20,0);
+
+                lineOfWords.addView(currentProcessedWord);
+
+            } else if(contentType.isRegularWord()){
+                currentProcessedWord.setTextColor(WHITE);
+
+                currentProcessedWord.setText(contentType.wordContent);
+
+                currentProcessedWord.setPadding(0, 0,20,0);
+
+                lineOfWords.addView(currentProcessedWord);
+            } else if(contentType.isNewLine()){
+                middleScreenLayout.addView(lineOfWords);
+
+                lineOfWords = new LinearLayout(getApplicationContext());
+
+                lineOfWords.setPadding(15, 15, 0, 0);
+            }
         }
 
-        currentLayout.addView(newWord);
     }
 }
