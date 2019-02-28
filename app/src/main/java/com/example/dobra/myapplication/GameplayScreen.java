@@ -43,6 +43,28 @@ public class GameplayScreen extends AppCompatActivity {
 
     private TextView gameScreenPlayerHealth, gameScreenPlayerLevel, gameScreenPlayerName, gameScreenEnemyName, gameScreenEnemyLevel, gameScreenEnemyHealth;
 
+    //All menu layouts from third part of the screen
+    private LinearLayout mainMenuBarLayout, mainSkillBarLayout, variablesSkillBarLayout, conditionalsSkillBarLayout, loopsSkillBarLayout, itemsSkillBarLayout;
+
+    //Main menu bar buttons;
+    private TextView openSkillsBarButton, openItemsBarButton, openNotebookButton, runAwayButton;
+
+    //Skill menu buttons;
+    private TextView openVariablesBarButton, openConditionalsBarButton, openLoopsBarButton, goBackToMainMenuButtonFromSkillsBar;
+
+    //Variables skill bar buttons;
+    private TextView intButton, charButton, floatButton, doubleButton, stringButton, toArrayButton, to2dArrayButton, goBackToSkillBarButtonFromVariables;
+
+    //Conditionals skill bar buttons;
+    private TextView ifButton, elseButton, elseIfButton, goBackToSkillBarButtonFromConditionals;
+
+    //Loops skill bar buttons;
+    private TextView whileButton, doButton, forButton, goBackToSkillBarButtonFromLoops;
+
+    //Items bar buttons;
+    private TextView useHealthPotionButton, useRevealingPotionButton, useFixerElixirButton, goBackToMainMenuButtonFromItemsBar;
+
+    //Attack animations
     private GifImageView chiuplusattackanimation, enemyattackanimation;
 
     private TextView currentTextViewClicked;
@@ -146,10 +168,6 @@ public class GameplayScreen extends AppCompatActivity {
         }
     }
 
-    private void setUpSkillBar(){
-
-    }
-
     private void loadContentOnScreen(){
         middleScreenLayout = (LinearLayout) findViewById(R.id.middleScreenLayout);
 
@@ -249,5 +267,199 @@ public class GameplayScreen extends AppCompatActivity {
             }
         }
 
+    }
+
+    private void setUpSkillBar(){
+        setUpMainMenuBarLayout();
+        setUpMainSkillBarLayout();
+        setUpVariablesSkillBarLayout();
+        setUpConditionalsSkillBarLayout();
+        setUpLoopsSkillBarLayout();
+        setUpItemsSkillBarLayout();
+    }
+
+    private void setUpMainMenuBarLayout(){
+        mainMenuBarLayout = (LinearLayout) findViewById(R.id.mainMenuBarLayout);
+        mainMenuBarLayout.setVisibility(View.VISIBLE);
+
+        setOpenSkillsBarButtonOnClickListener();
+        setOpenItemsBarButtonOnClickListener();
+        setOpenNotebookButtonOnClickListener();
+        setRunAwayButtonOnClickListener();
+    }
+
+    private void setUpMainSkillBarLayout(){
+        mainSkillBarLayout = (LinearLayout) findViewById(R.id.mainSkillBarLayout);
+        mainSkillBarLayout.setVisibility(View.GONE);
+
+        setOpenVariablesBarButtonOnClickListener();
+        setOpenConditionalsBarButtonOnClickListener();
+        setOpenLoopsBarButtonOnClickListener();
+        setGoBackToMainMenuButtonFromSkillsBaOnClickListener();
+    }
+
+    private void setUpVariablesSkillBarLayout(){
+        variablesSkillBarLayout = (LinearLayout) findViewById(R.id.variablesSkillBarLayout);
+        variablesSkillBarLayout.setVisibility(View.GONE);
+
+        setIntButtonOnClickListener();
+        setCharButtonOnClickListener();
+        setFloatButtonOnClickListener();
+        setDoubleButtonOnClickListener();
+        setStringButtonOnClickListener();
+        setToArrayButtonOnClickListener();
+        setTo2dArrayButtonOnClickListener();
+        setGoBackToSkillBarButtonFromVariablesOnClickListener();
+    }
+
+    private void setUpConditionalsSkillBarLayout(){
+        conditionalsSkillBarLayout = (LinearLayout) findViewById(R.id.conditionalsSkillBarLayout);
+        conditionalsSkillBarLayout.setVisibility(View.GONE);
+
+        setIfButtonOnClickListener();
+        setElseButtonOnClickListener();
+        setElseIfButtonOnClickListener();
+        setGoBackToSkillBarButtonFromConditionals();
+    }
+
+    private void setUpLoopsSkillBarLayout(){
+        loopsSkillBarLayout = (LinearLayout) findViewById(R.id.loopsSkillBarLayout);
+        loopsSkillBarLayout.setVisibility(View.GONE);
+
+        setWhileButtonOnClickListener();
+        setDoButtonOnClickListener();
+        setForButtonOnClickListener();
+        setGoBackToSkillBarButtonFromLoops();
+    }
+
+    private void setUpItemsSkillBarLayout(){
+        itemsSkillBarLayout = (LinearLayout) findViewById(R.id.itemsSkillBarLayout);
+        itemsSkillBarLayout.setVisibility(View.GONE);
+
+        setUseHealthPotionButtonOnClickListener();
+        setUseRevealingPotionButtonOnClickListener();
+        setUseFixerElixirButtonOnClickListener();
+        setGoBackToMainMenuButtonFromItemsBar();
+    }
+
+
+    //Main menu buttons on click listeners; openSkillsBarButton, openItemsBarButton, openNotebookButton, runAwayButton
+    private void setOpenSkillsBarButtonOnClickListener(){
+        openSkillsBarButton = (TextView) findViewById(R.id.openSkillsBarButton);
+    }
+
+    private void setOpenItemsBarButtonOnClickListener(){
+        openItemsBarButton = (TextView) findViewById(R.id.openItemsBarButton);
+    }
+
+    private void setOpenNotebookButtonOnClickListener(){
+        openNotebookButton = (TextView) findViewById(R.id.openNotebookButton);
+    }
+
+    private void setRunAwayButtonOnClickListener(){
+        runAwayButton = (TextView) findViewById(R.id.runAwayButton);
+    }
+
+    //Main skills bar menu buttons on click listeners; openVariablesBarButton, openConditionalsBarButton, openLoopsBarButton, goBackToMainMenuButtonFromSkillsBar;
+    private void setOpenVariablesBarButtonOnClickListener(){
+        openVariablesBarButton = (TextView) findViewById(R.id.openVariablesBarButton);
+    }
+
+    private void setOpenConditionalsBarButtonOnClickListener(){
+        openConditionalsBarButton = (TextView) findViewById(R.id.openConditionalsBarButton);
+    }
+
+    private void setOpenLoopsBarButtonOnClickListener(){
+        openLoopsBarButton = (TextView) findViewById(R.id.openLoopsBarButton);
+    }
+
+    private void setGoBackToMainMenuButtonFromSkillsBaOnClickListener(){
+        goBackToMainMenuButtonFromSkillsBar = (TextView) findViewById(R.id.goBackToMainMenuButtonFromSkillsBar);
+    }
+
+    //Variables bar menu buttons on click listener;  intButton, charButton, floatButton, doubleButton, stringButton, toArrayButton, to2dArrayButton, goBackToSkillBarButtonFromVariables;
+
+    private void setIntButtonOnClickListener(){
+        intButton = (TextView) findViewById(R.id.intButton);
+    }
+
+    private void setCharButtonOnClickListener(){
+        charButton = (TextView) findViewById(R.id.charButton);
+    }
+
+    private void setFloatButtonOnClickListener(){
+        floatButton = (TextView) findViewById(R.id.floatButton);
+    }
+
+    private void setDoubleButtonOnClickListener(){
+        doubleButton = (TextView) findViewById(R.id.doubleButton);
+    }
+
+    private void setStringButtonOnClickListener(){
+        stringButton = (TextView) findViewById(R.id.stringButton);
+    }
+
+    private void setToArrayButtonOnClickListener(){
+        toArrayButton = (TextView) findViewById(R.id.toArrayButton);
+    }
+
+    private void setTo2dArrayButtonOnClickListener(){
+        to2dArrayButton = (TextView) findViewById(R.id.to2dArrayButton);
+    }
+
+    private void setGoBackToSkillBarButtonFromVariablesOnClickListener(){
+        goBackToSkillBarButtonFromVariables = (TextView) findViewById(R.id.goBackToSkillBarButtonFromVariables);
+    }
+    //Conditionals bar menu buttons on click listener; ifButton, elseButton, elseIfButton, goBackToSkillBarButtonFromConditionals;
+    private void setIfButtonOnClickListener(){
+        ifButton = (TextView) findViewById(R.id.ifButton);
+    }
+
+    private void setElseButtonOnClickListener(){
+        elseButton = (TextView) findViewById(R.id.elseButton);
+    }
+
+    private void setElseIfButtonOnClickListener(){
+        elseIfButton = (TextView) findViewById(R.id.elseIfButton);
+    }
+
+    private void setGoBackToSkillBarButtonFromConditionals(){
+        goBackToSkillBarButtonFromConditionals = (TextView) findViewById(R.id.goBackToSkillBarButtonFromConditionals);
+    }
+
+    //Loops bar menu buttons on click listener; whileButton, doButton, forButton, goBackToSkillBarButtonFromLoops;
+
+    private void setWhileButtonOnClickListener(){
+        whileButton = (TextView) findViewById(R.id.whileButton);
+    }
+
+    private void setDoButtonOnClickListener(){
+        doButton = (TextView) findViewById(R.id.doButton);
+    }
+
+    private void setForButtonOnClickListener(){
+        forButton = (TextView) findViewById(R.id.forButton);
+    }
+
+    private void setGoBackToSkillBarButtonFromLoops(){
+        goBackToSkillBarButtonFromLoops = (TextView) findViewById(R.id.goBackToSkillBarButtonFromLoops);
+    }
+
+    //Items bar menu buttons on click listener; useHealthPotionButton, useRevealingPotionButton, useFixerElixirButton, goBackToMainMenuButtonFromItemsBar;
+
+    private void setUseHealthPotionButtonOnClickListener(){
+        useHealthPotionButton = (TextView) findViewById(R.id.useHealthPotionButton);
+    }
+
+    private void setUseRevealingPotionButtonOnClickListener(){
+        useRevealingPotionButton = (TextView) findViewById(R.id.useRevealingPotionButton);
+    }
+
+    private void setUseFixerElixirButtonOnClickListener(){
+        useFixerElixirButton = (TextView) findViewById(R.id.useFixerElixirButton);
+    }
+
+    private void setGoBackToMainMenuButtonFromItemsBar(){
+        goBackToMainMenuButtonFromItemsBar = (TextView) findViewById(R.id.goBackToMainMenuButtonFromItemsBar);
     }
 }

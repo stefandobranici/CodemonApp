@@ -201,6 +201,7 @@
 
 
         <LinearLayout
+            android:id="@+id/mainMenuBarLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -216,6 +217,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/openSkillsBarButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -229,6 +231,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/openItemsBarButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -251,6 +254,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/openNotebookButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -264,6 +268,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/runAwayButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -281,6 +286,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/mainSkillBarLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -296,6 +302,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/openVariablesBarButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -309,6 +316,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/openConditionalsBarButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -331,6 +339,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/openLoopsBarButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -344,6 +353,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/goBackToMainMenuButtonFromSkillsBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -361,6 +371,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/variablesSkillBarLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -376,6 +387,7 @@
                 android:weightSum="4">
 
                 <TextView
+                    android:id="@+id/intButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -389,6 +401,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/charButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -403,6 +416,7 @@
 
 
                 <TextView
+                    android:id="@+id/floatButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -416,6 +430,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/doubleButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -438,6 +453,7 @@
                 android:weightSum="4">
 
                 <TextView
+                    android:id="@+id/stringButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -451,6 +467,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/toArrayButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -464,6 +481,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/to2dArrayButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -477,6 +495,7 @@
                     android:textSize="19sp" />
 
                 <TextView
+                    android:id="@+id/goBackToSkillBarButtonFromVariables"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -494,6 +513,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/itemsSkillBarLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -509,6 +529,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/useHealthPotionButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -522,6 +543,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/useRevealingPotionButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -544,6 +566,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/useFixerElixirButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -557,6 +580,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/goBackToMainMenuButtonFromItemsBar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -574,6 +598,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/conditionalsSkillBarLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -589,6 +614,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/ifButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -596,12 +622,13 @@
                     android:background="@drawable/plain"
                     android:fontFamily="@font/cyberverse"
                     android:paddingTop="7dp"
-                    android:text="If"
+                    android:text="if"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/elseButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -609,7 +636,7 @@
                     android:background="@drawable/plain"
                     android:fontFamily="@font/cyberverse"
                     android:paddingTop="7dp"
-                    android:text="Else"
+                    android:text="else"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
                     android:textSize="20sp" />
@@ -624,6 +651,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/elseIfButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -631,12 +659,13 @@
                     android:background="@drawable/plain"
                     android:fontFamily="@font/cyberverse"
                     android:paddingTop="7dp"
-                    android:text="Else if"
+                    android:text="else if"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/goBackToSkillBarButtonFromConditionals"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -654,6 +683,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/loopsSkillBarLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
@@ -669,6 +699,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/whileButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -682,6 +713,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/doButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -704,6 +736,7 @@
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/forButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -717,6 +750,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/goBackToSkillBarButtonFromLoops"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
