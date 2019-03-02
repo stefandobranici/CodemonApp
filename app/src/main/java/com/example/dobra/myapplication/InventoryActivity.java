@@ -56,7 +56,11 @@ public class InventoryActivity extends AppCompatActivity {
         loadingAnimation.setVisibility(View.VISIBLE);
 
         for(Map.Entry entry: CurrentUserInformation.getInstance().userAppearancesCollection.entrySet()){
-            userInventoryAppearances.add((Appearance) entry.getValue());
+            Appearance appearance = (Appearance) entry.getValue();
+
+            if(appearance.getUnlocked()) {
+                userInventoryAppearances.add((Appearance) entry.getValue());
+            }
         }
 
         for(Map.Entry entry: CurrentUserInformation.getInstance().userConsumablesCollection.entrySet()){
