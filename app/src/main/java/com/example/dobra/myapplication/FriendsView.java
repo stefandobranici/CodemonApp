@@ -444,8 +444,6 @@ public class FriendsView extends AppCompatActivity {
                 removeFriendLayout.setVisibility(View.GONE);
 
                 initFriendList();
-
-                //Toast.makeText(getApplicationContext(), "This is a work in progress! You will be able to remove users in a bit...", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -510,7 +508,8 @@ public class FriendsView extends AppCompatActivity {
         inventoryModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
+                Intent inventory_intent = new Intent("android.intent.action.InventoryActivity");
+                startActivity(inventory_intent);
             }
         });
     }
@@ -520,7 +519,8 @@ public class FriendsView extends AppCompatActivity {
         shopModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
+                Intent shop_intent = new Intent("android.intent.action.ShopActivity");
+                startActivity(shop_intent);
             }
         });
     }

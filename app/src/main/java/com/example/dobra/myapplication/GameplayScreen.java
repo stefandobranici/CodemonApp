@@ -11,6 +11,7 @@ import android.util.ArrayMap;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -102,6 +103,12 @@ public class GameplayScreen extends AppCompatActivity {
 
     private TextView skillUnlocked;
 
+    private LinearLayout notepadLayout;
+
+    private EditText notepadContent;
+
+    private TextView saveNotepadContentButton, closeNotepadButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,12 +138,15 @@ public class GameplayScreen extends AppCompatActivity {
         }
     }
 
+    //Set screens on based on level type
     private void setLearningScreenOn() {
         ImageView trainerView = (ImageView) findViewById(R.id.trainerView);
 
         trainerView.setVisibility(View.VISIBLE);
 
         loadLearningContentOnScreen();
+
+        setUpNotepad();
 
         setUpSkillBar();
     }
@@ -156,6 +166,8 @@ public class GameplayScreen extends AppCompatActivity {
         loadContentOnScreen();
 
         setEnemyInformationOnScreen(ENEMY_CODEBUG);
+
+        setUpNotepad();
 
         setUpSkillBar();
 
@@ -177,9 +189,12 @@ public class GameplayScreen extends AppCompatActivity {
 
         setEnemyInformationOnScreen(ENEMY_CODEBOSS);
 
+        setUpNotepad();
+
         setUpSkillBar();
     }
 
+    //Set infromation to be displayed on the top part of the screen
     private void setUserInformationOnScreen() {
         gameScreenPlayerImage = (ImageView) findViewById(R.id.gameScreenPlayerImage);
 
@@ -224,6 +239,93 @@ public class GameplayScreen extends AppCompatActivity {
         } else if (enemy.equals(ENEMY_CODEBOSS)) {
             gameScreenEnemyImage.setImageResource(R.drawable.boss);
         }
+    }
+
+    //Load content
+    private void loadContentOnScreen() {
+        int paddingLeft = 15;
+        boolean closedBracket = false;
+        middleScreenLayout = (LinearLayout) findViewById(R.id.middleScreenLayout);
+
+        LinearLayout lineOfWords = new LinearLayout(getApplicationContext());
+
+        lineOfWords.setPadding(paddingLeft, 15, 0, 0);
+
+        for (final ContentParser.ContentType contentType : listOfWords) {
+            final TextView currentProcessedWord = new TextView(getApplicationContext());
+
+            currentProcessedWord.setTypeface(consolasFont);
+
+            currentProcessedWord.setTextSize(16);
+
+            if (contentType.isKeyword()) {
+                currentProcessedWord.setTextColor(getResources().getColor(R.color.colorAccent));
+
+                currentProcessedWord.setText(contentType.wordContent);
+
+                currentProcessedWord.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentTextViewClicked == currentProcessedWord) {
+                                currentProcessedWord.setTextColor(getResources().getColor(R.color.colorAccent));
+                                currentTextViewClicked = null;
+                                currentContentTypeProcessed = null;
+                            } else {
+                                currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                currentTextViewClicked = currentProcessedWord;
+                                currentContentTypeProcessed = contentType;
+                                currentTextViewClicked.setTextColor(Color.parseColor("#FF4500"));
+                            }
+                        } else {
+
+                            currentTextViewClicked = currentProcessedWord;
+                            currentContentTypeProcessed = contentType;
+                            currentTextViewClicked.setTextColor(Color.parseColor("#FF4500"));
+
+
+                        }
+                    }
+                });
+
+                currentProcessedWord.setPadding(0, 0, 20, 0);
+
+                if (contentType.isSecretWord()) {
+                    allErrorsInContent.add(currentProcessedWord);
+                    errorsInContent.add(contentType);
+                }
+
+                lineOfWords.addView(currentProcessedWord);
+
+            } else if (contentType.isRegularWord()) {
+                if(contentType.wordContent.contains("{")){
+                    paddingLeft += 50;
+                } else if(contentType.wordContent.contains("}")) {
+                    paddingLeft -= 50;
+                    closedBracket = true;
+                }
+
+                currentProcessedWord.setTextColor(WHITE);
+
+                currentProcessedWord.setText(contentType.wordContent);
+
+                currentProcessedWord.setPadding(0, 0, 20, 0);
+
+                lineOfWords.addView(currentProcessedWord);
+            } else if (contentType.isNewLine()) {
+                if(closedBracket){
+                    lineOfWords.setPadding(paddingLeft, 15, 0 ,0);
+                    closedBracket = false;
+                }
+
+                middleScreenLayout.addView(lineOfWords);
+
+                lineOfWords = new LinearLayout(getApplicationContext());
+
+                lineOfWords.setPadding(paddingLeft, 15, 0, 0);
+            }
+        }
+
     }
 
     private void loadLearningContentOnScreen() {
@@ -360,6 +462,37 @@ public class GameplayScreen extends AppCompatActivity {
     }
 
 
+    //Setup notepad
+
+    private void setUpNotepad(){
+        notepadLayout = (LinearLayout) findViewById(R.id.notepadLayout);
+        notepadContent = (EditText) findViewById(R.id.notepadContent);
+        saveNotepadContentButton = (TextView) findViewById(R.id.saveNotepadContentButton);
+        closeNotepadButton = (TextView) findViewById(R.id.closeNotepadButton);
+
+        saveNotepadContentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CurrentUserInformation.getInstance().setUserNotepadContent(notepadContent.getText().toString());
+                Toast.makeText(getApplicationContext(), "Your notes have been saved!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        closeNotepadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notepadLayout.setVisibility(View.GONE);
+            }
+        });
+
+    }
+
+    private void openNotepad(){
+        notepadContent.setText(CurrentUserInformation.getInstance().getUserNotepadContent());
+
+        notepadLayout.setVisibility(View.VISIBLE);
+    }
+
     //Endgame Functionality
     private void endGameScreenVictory() {
         if (!level.isCompleted()) {
@@ -392,6 +525,10 @@ public class GameplayScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     firstChestRewards();
+
+                    chestBoxOne.setOnClickListener(null);
+                    chestBoxTwo.setOnClickListener(null);
+                    chestBoxThree.setOnClickListener(null);
                 }
             });
 
@@ -399,6 +536,10 @@ public class GameplayScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     secondChestRewards();
+
+                    chestBoxOne.setOnClickListener(null);
+                    chestBoxTwo.setOnClickListener(null);
+                    chestBoxThree.setOnClickListener(null);
                 }
             });
 
@@ -406,6 +547,10 @@ public class GameplayScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     thirdChestRewards();
+
+                    chestBoxOne.setOnClickListener(null);
+                    chestBoxTwo.setOnClickListener(null);
+                    chestBoxThree.setOnClickListener(null);
                 }
             });
 
@@ -2498,78 +2643,6 @@ public class GameplayScreen extends AppCompatActivity {
         }
     }
 
-    //Load content
-    private void loadContentOnScreen() {
-        middleScreenLayout = (LinearLayout) findViewById(R.id.middleScreenLayout);
-
-        LinearLayout lineOfWords = new LinearLayout(getApplicationContext());
-
-        lineOfWords.setPadding(15, 15, 0, 0);
-
-        for (final ContentParser.ContentType contentType : listOfWords) {
-            final TextView currentProcessedWord = new TextView(getApplicationContext());
-
-            currentProcessedWord.setTypeface(consolasFont);
-
-            currentProcessedWord.setTextSize(16);
-
-            if (contentType.isKeyword()) {
-                currentProcessedWord.setTextColor(getResources().getColor(R.color.colorAccent));
-
-                currentProcessedWord.setText(contentType.wordContent);
-
-                currentProcessedWord.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (currentTextViewClicked != null) {
-                            if (currentTextViewClicked == currentProcessedWord) {
-                                currentProcessedWord.setTextColor(getResources().getColor(R.color.colorAccent));
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
-                            } else {
-                                currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                                currentTextViewClicked = currentProcessedWord;
-                                currentContentTypeProcessed = contentType;
-                                currentTextViewClicked.setTextColor(Color.parseColor("#FF4500"));
-                            }
-                        } else {
-
-                            currentTextViewClicked = currentProcessedWord;
-                            currentContentTypeProcessed = contentType;
-                            currentTextViewClicked.setTextColor(Color.parseColor("#FF4500"));
-
-
-                        }
-                    }
-                });
-
-                currentProcessedWord.setPadding(0, 0, 20, 0);
-
-                if (contentType.isSecretWord()) {
-                    allErrorsInContent.add(currentProcessedWord);
-                    errorsInContent.add(contentType);
-                }
-
-                lineOfWords.addView(currentProcessedWord);
-
-            } else if (contentType.isRegularWord()) {
-                currentProcessedWord.setTextColor(WHITE);
-
-                currentProcessedWord.setText(contentType.wordContent);
-
-                currentProcessedWord.setPadding(0, 0, 20, 0);
-
-                lineOfWords.addView(currentProcessedWord);
-            } else if (contentType.isNewLine()) {
-                middleScreenLayout.addView(lineOfWords);
-
-                lineOfWords = new LinearLayout(getApplicationContext());
-
-                lineOfWords.setPadding(15, 15, 0, 0);
-            }
-        }
-
-    }
 
     //Setup bars
 
@@ -2676,7 +2749,7 @@ public class GameplayScreen extends AppCompatActivity {
         openNotebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Notebook not yet implemented!", Toast.LENGTH_SHORT).show();
+                openNotepad();
             }
         });
     }

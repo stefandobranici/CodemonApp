@@ -16,7 +16,24 @@
             android:name=".MusicService"
             android:enabled="true" />
 
-        <activity android:name=".FriendsView"
+        <activity android:name=".ShopActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.ShopActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".InventoryActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.InventoryActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".FriendsView"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.FriendsView" />
@@ -24,7 +41,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MenuScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MenuScreenActivity" />
@@ -32,7 +48,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ProfileViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.ProfileViewActivity" />
@@ -40,7 +55,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,7 +62,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ModeSelectorActivity">
             <intent-filter>
                 <action android:name="android.intent.action.ModeSelectorActivity" />
@@ -56,7 +69,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ChapterSelectorActivity">
             <intent-filter>
                 <action android:name="android.intent.action.ChapterSelectorActivity" />
@@ -64,7 +76,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MapViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MapViewActivity" />
@@ -72,7 +83,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity android:name=".GameplayScreen">
             <intent-filter>
                 <action android:name="android.intent.action.GameplayScreen" />
@@ -80,7 +90,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".LoginActivity"
             android:windowSoftInputMode="adjustPan">
@@ -90,7 +99,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".SignupActivity"
             android:windowSoftInputMode="adjustPan">
@@ -100,8 +108,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".SettingsScreen"
+        <activity
+            android:name=".SettingsScreen"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SettingsScreen" />
@@ -109,7 +117,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity android:name=".MainScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MainScreenActivity" />

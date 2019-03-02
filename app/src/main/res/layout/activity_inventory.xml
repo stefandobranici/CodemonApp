@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".InventoryActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:weightSum="10">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/friendstopscreen" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8.30">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/itemsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/windowborder">
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/menubar"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.70"
+            android:background="@drawable/windowborder"
+            android:orientation="horizontal"
+            android:weightSum="8">
+
+            <ImageView
+                android:id="@+id/storybutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/storybutton" />
+
+            <ImageView
+                android:id="@+id/multiplayerbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/multiplayerbutton" />
+
+            <ImageView
+                android:id="@+id/practicebutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/practicebutton" />
+
+            <ImageView
+                android:id="@+id/profilebutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/profile" />
+
+            <ImageView
+                android:id="@+id/friendsbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/friendsbutton"
+                android:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/itemsbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/itemsbutton"
+                android:visibility="gone" />
+
+
+            <ImageView
+                android:id="@+id/shopbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/shopbutton" />
+
+            <ImageView
+                android:id="@+id/settingsbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/settingsicon" />
+
+            <ImageView
+                android:id="@+id/backbutton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/backbutton" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/equipItemLayout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/popupbackground"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="4">
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.3"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text="" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text="Equip this item?"
+            android:textColor="@color/colorAccent"
+            android:textSize="30sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.8"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text="" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/equipItemButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1.3"
+                android:background="@drawable/plain"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="Yes"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.4"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/closeEquipItemLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1.3"
+                android:background="@drawable/plain"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="No"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/loadingAnimation"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/loadinganimation"
+        android:visibility="gone" />
+
+</RelativeLayout>

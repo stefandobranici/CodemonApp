@@ -85,7 +85,8 @@ public class MenuScreenActivity extends AppCompatActivity {
         itemsMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
+                Intent inventory_intent = new Intent("android.intent.action.InventoryActivity");
+                startActivity(inventory_intent);
             }
         });
     }
@@ -96,7 +97,8 @@ public class MenuScreenActivity extends AppCompatActivity {
         shopMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
+                Intent shop_intent = new Intent("android.intent.action.ShopActivity");
+                startActivity(shop_intent);
             }
         });
     }
@@ -118,12 +120,12 @@ public class MenuScreenActivity extends AppCompatActivity {
         setProfileModeOnClickListener();
         setFriendsModeOnClickListener();
         setSettingsModeOnClickListener();
+        setShopModeOnClickListener();
+        setItemsModeOnClickListener();
 
 
         //Work in progress
         setMultiplayerModeOnClickListener();
         setPracticeModeOnClickListener();
-        setShopModeOnClickListener();
-        setItemsModeOnClickListener();
     }
 }

@@ -106,11 +106,23 @@ public class ContentParser {
 
                     beginningPositionOfWord = i;
                 } else if(content.charAt(i) == ' ' && newWordFound) {
-                    newWordFound = false;
+                    if(content.substring(beginningPositionOfWord, i).equals("else") && i<content.length()-2){
+                            if(content.substring(i+1,i+3).equals("if")){
+                                //do nothing
+                            } else {
+                                newWordFound = false;
 
-                    newWord = content.substring(beginningPositionOfWord, i);
+                                newWord = content.substring(beginningPositionOfWord, i);
 
-                    contentWords.add(new ContentType(newWord));
+                                contentWords.add(new ContentType(newWord));
+                            }
+                    } else {
+                        newWordFound = false;
+
+                        newWord = content.substring(beginningPositionOfWord, i);
+
+                        contentWords.add(new ContentType(newWord));
+                    }
                 } else if(content.charAt(i) == '/'&&!newWordFound){
 
                     contentWords.add(new ContentType(TYPE_NEWLINE));

@@ -27,6 +27,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Context mContext;
     private LinearLayout removeFriendLayout;
 
+
+
     public RecyclerViewAdapter(Context mContext, List<Friend> mFriends,LinearLayout removeFriendLayout) {
         this.mFriends = mFriends;
         this.mContext = mContext;

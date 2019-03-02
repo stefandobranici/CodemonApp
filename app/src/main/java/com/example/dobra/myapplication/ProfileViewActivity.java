@@ -2,6 +2,7 @@ package com.example.dobra.myapplication;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import static android.graphics.Color.WHITE;
 
@@ -20,12 +23,16 @@ public class ProfileViewActivity extends AppCompatActivity {
 
     private Typeface cyberFont;
 
+    private ImageView poseView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_view);
 
         cyberFont = Typeface.createFromAsset(getAssets(), "font/Cyberverse.otf");
+
+        poseView = (ImageView) findViewById(R.id.poseView);
 
         setUpButtons();
         setUpTextViews();
@@ -98,7 +105,8 @@ public class ProfileViewActivity extends AppCompatActivity {
         inventoryModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
+                Intent inventory_intent = new Intent("android.intent.action.InventoryActivity");
+                startActivity(inventory_intent);
             }
         });
     }
@@ -108,7 +116,8 @@ public class ProfileViewActivity extends AppCompatActivity {
         shopModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
+                Intent shop_intent = new Intent("android.intent.action.ShopActivity");
+                startActivity(shop_intent);
             }
         });
     }
@@ -171,6 +180,8 @@ public class ProfileViewActivity extends AppCompatActivity {
         userXp.setText("XP:  "+String.format(CurrentUserInformation.getInstance().getUserXp().toString() +" / "+ UserLevel.getInstance().getXpNeedForCurrentLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
         userCoins.setText("Cyber Coins:  "  +String.format(CurrentUserInformation.getInstance().getUserCoins().toString()));
 
+        updateProfilePicture();
+
 
     }
 
@@ -179,6 +190,12 @@ public class ProfileViewActivity extends AppCompatActivity {
         userLevel.setText("Lv.  "+String.format(CurrentUserInformation.getInstance().getUserLevel().toString()));
         userXp.setText("XP:  "+String.format(CurrentUserInformation.getInstance().getUserXp().toString() +" / "+ UserLevel.getInstance().getXpNeedForCurrentLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
         userCoins.setText("Cyber Coins:  "  +String.format(CurrentUserInformation.getInstance().getUserCoins().toString()));
+
+        updateProfilePicture();
+    }
+
+    private void updateProfilePicture(){
+        Glide.with(getApplicationContext()).asBitmap().load(CurrentUserInformation.getInstance().getUserPosePictureURL()).into(poseView);
     }
 
 }

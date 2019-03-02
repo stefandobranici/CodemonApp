@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +25,7 @@ public class CurrentUserInformation {
 
     private DatabaseReference mChaptersReference;
 
-    private DatabaseReference userCurrentActiveChapter, userCurrentActiveLevel, userInformation, userNameRef, userInnerIDRef, userLevelRef, userXpRef, userCoinsRef, userHpRef, userImgUrl;
+    private DatabaseReference userCurrentActiveChapter, userCurrentActiveLevel, userInformation, userNameRef, userInnerIDRef, userLevelRef, userXpRef, userCoinsRef, userHpRef, userImgUrl, userCurrentNotepadContent, userCurrentEquippedItem;
 
     private DatabaseReference userItemsAppearances, userItemsMedals, userItemsConsumables, userSkills, skillsRef, consumablesRef, medalsRef, appearancesRef;
 
@@ -50,7 +49,7 @@ public class CurrentUserInformation {
 
     private Level levelSelectedForPlay;
 
-    private String userName, userImageURL, userPersonalID;
+    private String userName, userProfilePictureURL, userPosePictureURL, userPersonalID;
 
     private Integer userLevel, userXp, userCoins, userHealth;
 
@@ -63,6 +62,10 @@ public class CurrentUserInformation {
     private List<Appearance> availableAppearances;
 
     private String friendSelectedForRemove;
+
+    private String userNotepadContent;
+
+    private String currentEquippedItem, itemToBeEquipped;
 
     private CurrentUserInformation() {
 
@@ -100,9 +103,13 @@ public class CurrentUserInformation {
         userHealth = 0;
         friendSelectedForRemove = "";
         userPersonalID = "";
-        userImageURL = "https://firebasestorage.googleapis.com/v0/b/myapplication-9586f.appspot.com/o/Profile%2Fprofilepic.png?alt=media&token=1d0d0f95-4d1c-475a-bc36-4ddb79b49955";
+        userProfilePictureURL = "https://firebasestorage.googleapis.com/v0/b/myapplication-9586f.appspot.com/o/Profile%2Fprofilepic.png?alt=media&token=1d0d0f95-4d1c-475a-bc36-4ddb79b49955";
+        userPosePictureURL = "https://firebasestorage.googleapis.com/v0/b/myapplication-9586f.appspot.com/o/Poses%2Fchiuplusbasic.png?alt=media&token=1514f5cb-50be-4e1e-ae49-ae177853104b";
         currentActiveLevel = 0;
         currentActiveChapter = 0;
+        userNotepadContent = "Write your notes here!";
+        currentEquippedItem = "Basic";
+        itemToBeEquipped = "";
 
         //Initiate instance of firebase auth and database;
         mAuth = FirebaseAuth.getInstance();
@@ -277,22 +284,6 @@ public class CurrentUserInformation {
             }
         });
 
-        userImgUrl = userInformation.child("Profile Picture");
-
-        userImgUrl.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    userImageURL = dataSnapshot.getValue(String.class);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
         userCurrentActiveChapter = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Game Status").child("Current Chapter");
 
         userCurrentActiveChapter.addValueEventListener(new ValueEventListener() {
@@ -315,6 +306,84 @@ public class CurrentUserInformation {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     currentActiveLevel = dataSnapshot.getValue(Integer.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        userCurrentNotepadContent = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Notepad").child("Content");
+
+        userCurrentNotepadContent.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    userNotepadContent = dataSnapshot.getValue(String.class);
+                } else {
+                    userCurrentNotepadContent.setValue(userNotepadContent);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        userCurrentEquippedItem = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("EquippedItem");
+
+        userCurrentEquippedItem.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    currentEquippedItem = dataSnapshot.getValue(String.class);
+
+                    DatabaseReference profilePictureStorageLocation = mDatabase.getReference("Items").child("ProfilePictures").child(currentEquippedItem).child("ImageURL");
+
+                    profilePictureStorageLocation.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()){
+                                userProfilePictureURL = dataSnapshot.getValue(String.class);
+                                DatabaseReference userProfilePictureInDbrRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Profile Picture");
+
+                                userProfilePictureInDbrRef.setValue(userProfilePictureURL);
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    DatabaseReference posePictureStorageLocation = mDatabase.getReference("Items").child("PosesPictures").child(currentEquippedItem).child("ImageURL");
+
+                    posePictureStorageLocation.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if(dataSnapshot.exists()){
+                                userPosePictureURL = dataSnapshot.getValue(String.class);
+
+                                DatabaseReference userPosePictureInDbrRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Pose Picture");
+
+                                userPosePictureInDbrRef.setValue(userProfilePictureURL);
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                } else {
+                    userCurrentEquippedItem.setValue(currentEquippedItem);
                 }
             }
 
@@ -466,9 +535,9 @@ public class CurrentUserInformation {
     }
 
     public void setUserCoins(Integer newCoins) {
-        DatabaseReference userCoins = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Cybercoins");
+        DatabaseReference userCoinsRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Cybercoins");
 
-        userCoins.setValue(getUserCoins()+newCoins);
+        userCoinsRef.setValue(userCoins+newCoins);
     }
 
     public Integer getUserHealth() {
@@ -487,14 +556,44 @@ public class CurrentUserInformation {
         userHealth.setValue(getUserHealth()+newHealth);
     }
 
-    public String getUserImageURL() {
-        return userImageURL;
+    public String getUserProfilePictureURL() {
+        return userProfilePictureURL;
     }
 
-    public void setUserImageURL(String newImgUrl) {
-        DatabaseReference userImgURL = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Profile Picture");
+    public String getUserPosePictureURL() {
+        return userPosePictureURL;
+    }
 
-        userImgURL.setValue(newImgUrl);
+    public String getCurrentEquippedItem(){
+        return currentEquippedItem;
+    }
+
+    public void setItemToBeEquipped(String itemToEquip){
+        itemToBeEquipped = itemToEquip;
+    }
+
+    public String getItemToBeEquipped(){
+        return itemToBeEquipped;
+    }
+
+    public void setUserCurrentEquippedItem(String newItem){
+        DatabaseReference userCurrentEquippedItemRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("EquippedItem");
+        if(currentEquippedItem.equals(newItem)){
+            userCurrentEquippedItemRef.setValue("Basic");
+            currentEquippedItem = "Basic";
+        } else {
+            userCurrentEquippedItemRef.setValue(newItem);
+            currentEquippedItem = newItem;
+        }
+    }
+
+    public String getUserNotepadContent(){
+        return userNotepadContent;
+    }
+
+    public void setUserNotepadContent(String newContent){
+        DatabaseReference currentNodepadContentFromDbRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Notepad").child("Content");
+        currentNodepadContentFromDbRef.setValue(newContent);
     }
 
     public void updateConsumableQuantity(String consumableName, Integer quantityUpdater){
@@ -624,6 +723,10 @@ public class CurrentUserInformation {
         DatabaseReference userProfilePicture = userInformation.child("Profile Picture");
 
         userProfilePicture.setValue("https://firebasestorage.googleapis.com/v0/b/myapplication-9586f.appspot.com/o/Profile%2Fprofilepic.png?alt=media&token=1d0d0f95-4d1c-475a-bc36-4ddb79b49955");
+
+        DatabaseReference userCurrentlyEquippedItemRef = userInformation.child("EquippedItem");
+
+        userCurrentlyEquippedItemRef.setValue("Basic");
 
         userCurrentActiveChapter = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Game Status").child("Current Chapter");
 
