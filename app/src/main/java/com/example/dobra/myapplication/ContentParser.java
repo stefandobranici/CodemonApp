@@ -89,13 +89,15 @@ public class ContentParser {
             int beginningPositionOfWord = 0;
 
             for(int i = 0; i < content.length(); i++){
-                if(content.charAt(i) == '*' && !newWordFound){
+                if(content.charAt(i) == '`' && !newWordFound){
                     newWordFound = true;
 
                     beginningPositionOfWord = i+1;
 
-                } else if(content.charAt(i) == '*' && newWordFound){
+                } else if(content.charAt(i) == '`' && newWordFound){
                     newWordFound = false;
+
+                    newWord = content.substring(beginningPositionOfWord, i);
 
                     contentWords.add(new ContentType(newWord, TYPE_KEYWORD));
 
@@ -131,27 +133,42 @@ public class ContentParser {
 
             boolean newWrongWordFound = false;
 
+            boolean newRegularWordFound = false;
+
             String newCorrectWord = "";
 
             String newWrongWord = "";
 
+            String newRegularWord = "";
+
             int beginningPositionOfCorrectWord = 0;
             int beginningPositionOfWrongWord = 0;
+            int beginningPositionOfRegularWord = 0;
 
             for(int i = 0; i < content.length(); i++){
-                if(content.charAt(i) == '*' && !newCorrectWordFound){
+                if(content.charAt(i) == '`' && !newCorrectWordFound && !newRegularWordFound){
                     newCorrectWordFound = true;
 
                     beginningPositionOfCorrectWord = i+1;
 
-                } else if(content.charAt(i) == '&'){
+                } else if(content.charAt(i) == '`' && !newCorrectWordFound && newRegularWordFound){
+                    newRegularWordFound = false;
+
+                    newRegularWord = content.substring(beginningPositionOfRegularWord, i);
+
+                    contentWords.add(new ContentType(newRegularWord));
+
+                    newCorrectWordFound = true;
+
+                    beginningPositionOfCorrectWord = i+1;
+                } else if(content.charAt(i) == '@'){
                     newWrongWordFound = true;
 
                     beginningPositionOfWrongWord = i+1;
 
                     newCorrectWord = content.substring(beginningPositionOfCorrectWord,i);
 
-                } else if(content.charAt(i) == '*' && newCorrectWordFound && newWrongWordFound){
+                } else if(content.charAt(i) == '`' && newCorrectWordFound && newWrongWordFound){
                     newCorrectWordFound = false;
 
                     newWrongWordFound = false;
@@ -160,86 +177,139 @@ public class ContentParser {
 
                     contentWords.add(new ContentType(newCorrectWord, newWrongWord, TYPE_KEYWORD));
 
-                } else if(content.charAt(i) == '*' && newCorrectWordFound && !newWrongWordFound){
+                } else if(content.charAt(i) == '`' && newCorrectWordFound && !newWrongWordFound){
                     newCorrectWordFound = false;
 
                     newCorrectWord = content.substring(beginningPositionOfCorrectWord, i);
 
                     contentWords.add(new ContentType(newCorrectWord, TYPE_KEYWORD));
 
-                } else if(content.charAt(i) != ' ' && content.charAt(i) != '/' && !newCorrectWordFound) {
-                    newCorrectWordFound = true;
+                } else if(content.charAt(i) != ' ' && content.charAt(i) != '/' && !newCorrectWordFound && !newRegularWordFound) {
+                    newRegularWordFound = true;
 
-                    beginningPositionOfCorrectWord = i;
-                } else if(content.charAt(i) == ' ' && newCorrectWordFound) {
-                    newCorrectWordFound = false;
+                    beginningPositionOfRegularWord = i;
+                } else if(content.charAt(i) == ' ' && newRegularWordFound) {
+                    newRegularWordFound = false;
 
-                    newCorrectWord = content.substring(beginningPositionOfCorrectWord, i);
+                    newRegularWord = content.substring(beginningPositionOfRegularWord, i);
 
-                    contentWords.add(new ContentType(newCorrectWord));
-                } else if(content.charAt(i) == '/' && !newCorrectWordFound){
+                    contentWords.add(new ContentType(newRegularWord));
+                } else if(content.charAt(i) == '/' && !newRegularWordFound){
 
                     contentWords.add(new ContentType(TYPE_NEWLINE));
-                } else if(content.charAt(i) == '/' && newCorrectWordFound){
-                    newCorrectWordFound = false;
+                } else if(content.charAt(i) == '/' && newRegularWordFound){
+                    newRegularWordFound = false;
 
-                    newCorrectWord = content.substring(beginningPositionOfCorrectWord, i);
+                    newRegularWord = content.substring(beginningPositionOfRegularWord, i);
 
-                    contentWords.add(new ContentType(newCorrectWord));
+                    contentWords.add(new ContentType(newRegularWord));
                     contentWords.add(new ContentType(TYPE_NEWLINE));
-                } else if(i==content.length()-1 && newCorrectWordFound){
-                    newCorrectWordFound = false;
+                } else if(i==content.length()-1 && newRegularWordFound){
+                    newRegularWordFound = false;
 
-                    newCorrectWord = content.substring(beginningPositionOfCorrectWord, i+1);
+                    newRegularWord = content.substring(beginningPositionOfRegularWord, i+1);
 
-                    contentWords.add(new ContentType(newCorrectWord));
+                    contentWords.add(new ContentType(newRegularWord));
                 }
             }
         } else if (level.isRed()){
             boolean newCorrectWordFound = false;
 
+            boolean newWrongWordFound = false;
+
+            boolean newRegularWordFound = false;
+
+            boolean newEmptyWordFound = false;
+
             String newCorrectWord = "";
 
+            String newWrongWord = "";
+
+            String newEmptyWord = "____";
+
+            String newRegularWord = "";
+
             int beginningPositionOfCorrectWord = 0;
+            int beginningPositionOfWrongWord = 0;
+            int beginningPositionOfRegularWord = 0;
+
             for(int i = 0; i < content.length(); i++){
-                if(content.charAt(i) == '*' && !newCorrectWordFound){
+                if(content.charAt(i) == '`' && !newCorrectWordFound && !newRegularWordFound){
                     newCorrectWordFound = true;
 
                     beginningPositionOfCorrectWord = i+1;
 
-                } else if(content.charAt(i) == '*' && newCorrectWordFound ){
-                    newCorrectWordFound = false;
+                }else if(content.charAt(i) == '`' && !newCorrectWordFound && newRegularWordFound){
+                    newRegularWordFound = false;
 
-                    newCorrectWord = content.substring(beginningPositionOfCorrectWord, i);
+                    newRegularWord = content.substring(beginningPositionOfRegularWord, i);
 
-                    contentWords.add(new ContentType(newCorrectWord, "____", TYPE_KEYWORD));
+                    contentWords.add(new ContentType(newRegularWord));
 
-                } else if(content.charAt(i) != ' ' && content.charAt(i) != '/' && !newCorrectWordFound) {
                     newCorrectWordFound = true;
 
-                    beginningPositionOfCorrectWord = i;
-                } else if(content.charAt(i) == ' ' && newCorrectWordFound) {
+                    beginningPositionOfCorrectWord = i+1;
+                } else if(content.charAt(i) == '@'){
+                    newWrongWordFound = true;
+
+                    beginningPositionOfWrongWord = i+1;
+
+                    newCorrectWord = content.substring(beginningPositionOfCorrectWord,i);
+
+                } else if(content.charAt(i) == '$'){
+                    newEmptyWordFound = true;
+
+                    newCorrectWord = content.substring(beginningPositionOfCorrectWord,i);
+
+                } else if(content.charAt(i) == '`' && newCorrectWordFound && newWrongWordFound){
+                    newCorrectWordFound = false;
+
+                    newWrongWordFound = false;
+
+                    newWrongWord = content.substring(beginningPositionOfWrongWord, i);
+
+                    contentWords.add(new ContentType(newCorrectWord, newWrongWord, TYPE_KEYWORD));
+
+                } else if(content.charAt(i) == '`' && newCorrectWordFound && newEmptyWordFound){
+                    newCorrectWordFound = false;
+
+                    newEmptyWordFound = false;
+
+                    contentWords.add(new ContentType(newCorrectWord, newEmptyWord, TYPE_KEYWORD));
+
+                } else if(content.charAt(i) == '`' && newCorrectWordFound && !newWrongWordFound && !newEmptyWordFound){
                     newCorrectWordFound = false;
 
                     newCorrectWord = content.substring(beginningPositionOfCorrectWord, i);
 
-                    contentWords.add(new ContentType(newCorrectWord));
-                } else if(content.charAt(i) == '/' && !newCorrectWordFound){
+                    contentWords.add(new ContentType(newCorrectWord, TYPE_KEYWORD));
+
+                } else if(content.charAt(i) != ' ' && content.charAt(i) != '/' && !newCorrectWordFound &&  !newRegularWordFound) {
+                    newRegularWordFound = true;
+
+                    beginningPositionOfRegularWord = i;
+                } else if(content.charAt(i) == ' ' && newRegularWordFound) {
+                    newRegularWordFound = false;
+
+                    newRegularWord = content.substring(beginningPositionOfRegularWord, i);
+
+                    contentWords.add(new ContentType(newRegularWord));
+                } else if(content.charAt(i) == '/' && !newRegularWordFound){
 
                     contentWords.add(new ContentType(TYPE_NEWLINE));
-                } else if(content.charAt(i) == '/' && newCorrectWordFound){
-                    newCorrectWordFound = false;
+                } else if(content.charAt(i) == '/' && newRegularWordFound){
+                    newRegularWordFound = false;
 
-                    newCorrectWord = content.substring(beginningPositionOfCorrectWord, i);
+                    newRegularWord = content.substring(beginningPositionOfRegularWord, i);
 
-                    contentWords.add(new ContentType(newCorrectWord));
+                    contentWords.add(new ContentType(newRegularWord));
                     contentWords.add(new ContentType(TYPE_NEWLINE));
-                } else if(i==content.length()-1 && newCorrectWordFound){
-                    newCorrectWordFound = false;
+                } else if(i==content.length()-1 && newRegularWordFound){
+                    newRegularWordFound = false;
 
-                    newCorrectWord = content.substring(beginningPositionOfCorrectWord, i+1);
+                    newRegularWord = content.substring(beginningPositionOfRegularWord, i+1);
 
-                    contentWords.add(new ContentType(newCorrectWord));
+                    contentWords.add(new ContentType(newRegularWord));
                 }
             }
         }

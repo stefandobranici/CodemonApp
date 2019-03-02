@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,8 @@ public class MapViewActivity extends AppCompatActivity {
     private Context context;
 
     private ImageView storyModeButton, multiplayerModeButton, practiceModeButton,  profileModeButton, friendsModeButton, inventoryModeButton, shopModeButton, settingsModeButton, backButton;
+
+    public static MapViewActivity mapViewActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +71,7 @@ public class MapViewActivity extends AppCompatActivity {
             }
         });
 
-
-
+        mapViewActivity = this;
     }
 
     private void setStoryModeButtonOnClickListener(){

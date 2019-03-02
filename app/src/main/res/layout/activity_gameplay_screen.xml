@@ -27,7 +27,16 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
+                <ImageView
+                    android:visibility="gone"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/trainerView"
+                    android:layout_weight="3"
+                    android:src="@drawable/trainer"/>
+
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/topScreenLayoutFirstHalf"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -101,6 +110,7 @@
                 </TextView>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:id="@+id/topScreenLayoutSecondHalf"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -184,7 +194,7 @@
 
         <ScrollView
 
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="5">
 
@@ -228,7 +238,7 @@
                     android:text="Skills"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/openItemsBarButton"
@@ -242,7 +252,7 @@
                     android:text="Items"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -265,7 +275,7 @@
                     android:text="Notebook"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/runAwayButton"
@@ -279,7 +289,7 @@
                     android:text="Run away"
                     android:textAlignment="center"
                     android:textColor="#DC143C"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -313,7 +323,7 @@
                     android:text="Variables"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/openConditionalsBarButton"
@@ -327,7 +337,7 @@
                     android:text="Conditionals"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -350,7 +360,7 @@
                     android:text="Loops"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/goBackToMainMenuButtonFromSkillsBar"
@@ -364,7 +374,7 @@
                     android:text="Back"
                     android:textAlignment="center"
                     android:textColor="#DC143C"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -398,7 +408,7 @@
                     android:text="int"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/charButton"
@@ -412,7 +422,7 @@
                     android:text="char"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
 
                 <TextView
@@ -427,7 +437,7 @@
                     android:text="float"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/doubleButton"
@@ -441,7 +451,7 @@
                     android:text="double"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -464,7 +474,7 @@
                     android:text="string"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/toArrayButton"
@@ -478,7 +488,7 @@
                     android:text="array"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/to2dArrayButton"
@@ -492,7 +502,7 @@
                     android:text="2d array"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="19sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/goBackToSkillBarButtonFromVariables"
@@ -506,7 +516,7 @@
                     android:text="Back"
                     android:textAlignment="center"
                     android:textColor="#DC143C"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -540,7 +550,7 @@
                     android:text="Health Potion"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/useRevealingPotionButton"
@@ -554,7 +564,7 @@
                     android:text="Revealing Potion"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -577,7 +587,7 @@
                     android:text="Fixer Elixer"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/goBackToMainMenuButtonFromItemsBar"
@@ -591,7 +601,7 @@
                     android:text="Back"
                     android:textAlignment="center"
                     android:textColor="#DC143C"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -625,7 +635,7 @@
                     android:text="if"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/elseButton"
@@ -639,7 +649,7 @@
                     android:text="else"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -662,7 +672,7 @@
                     android:text="else if"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/goBackToSkillBarButtonFromConditionals"
@@ -676,7 +686,7 @@
                     android:text="Back"
                     android:textAlignment="center"
                     android:textColor="#DC143C"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -710,7 +720,7 @@
                     android:text="while"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/doButton"
@@ -724,7 +734,7 @@
                     android:text="do"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -747,7 +757,7 @@
                     android:text="for"
                     android:textAlignment="center"
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/goBackToSkillBarButtonFromLoops"
@@ -761,7 +771,7 @@
                     android:text="Back"
                     android:textAlignment="center"
                     android:textColor="#DC143C"
-                    android:textSize="20sp" />
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -787,14 +797,36 @@
 
         </LinearLayout>
 
-        <ScrollView
+        <RelativeLayout
 
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="5"
             android:background="@drawable/windowborder">
 
-        </ScrollView>
+
+            <ImageView
+                android:id="@+id/forwardButtonForText"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:paddingBottom="14dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:src = "@drawable/forwardbutton"/>
+
+            <ImageView
+                android:id="@+id/backButtonForText"
+                android:visibility="gone"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:paddingBottom="14dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:src = "@drawable/backbutton"/>
+
+
+        </RelativeLayout>
 
 
         <ScrollView
@@ -834,4 +866,410 @@
         android:orientation="vertical">
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pickTheRewardLayout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:background="@drawable/popupbackground"
+        android:weightSum="4">
+
+
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.6"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text="Victory!"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorAccent"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/firstClearRewardText"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.6"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text="First clear reward!"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp" />
+
+
+        <LinearLayout
+            android:id="@+id/chestBoxesLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/chestBoxOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/chest2"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+                    <ImageView
+                        android:id="@+id/chestBoxOneReward"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3" />
+
+                    <TextView
+                        android:id="@+id/chestBoxOneRewardText"
+                        android:visibility="gone"
+                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_weight="0.7"
+                        android:fontFamily="@font/cyberverse"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/chestBoxTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/chest2"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+                    <ImageView
+                        android:id="@+id/chestBoxTwoReward"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3" />
+
+                    <TextView
+                        android:id="@+id/chestBoxTwoRewardText"
+                        android:visibility="gone"
+                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_weight="0.7"
+                        android:fontFamily="@font/cyberverse"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+                <ImageView
+                    android:id="@+id/chestBoxThree"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/chest2"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="2">
+                    <ImageView
+                        android:id="@+id/chestBoxThreeReward"
+                        android:visibility="gone"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1.3" />
+
+
+                    <TextView
+                        android:id="@+id/chestBoxThreeRewardText"
+                        android:visibility="gone"
+                        android:layout_height="0dp"
+                        android:layout_width="match_parent"
+                        android:layout_weight="0.7"
+                        android:fontFamily="@font/cyberverse"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:layout_gravity="center_vertical"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="0.2"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text=""
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text=""
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/continueToMapView"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1.6"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="Continue"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/colorAccent"
+                android:textSize="30sp"
+                android:background="@drawable/plain"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/secondRewardPage"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:background="@drawable/popupbackground"
+        android:weightSum="4">
+
+
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.6"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text="Congratulations!"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorAccent"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="0.4"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text=""
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:weightSum="3">
+            <TextView
+                android:id="@+id/xpGained"
+                android:visibility="visible"
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/cyberverse"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
+            <TextView
+                android:id="@+id/leveledUp"
+                android:visibility="visible"
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/cyberverse"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/skillUnlocked"
+                android:visibility="visible"
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:fontFamily="@font/cyberverse"
+                android:text=""
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="0.4"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text=""
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text=""
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:visibility="visible"
+                android:id="@+id/acceptRewards"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="OK"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/colorAccent"
+                android:textSize="30sp"
+                android:background="@drawable/plain"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/defeatPopupLayout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:background="@drawable/popupbackground"
+        android:weightSum="4">
+
+
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.6"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text="Defeat!"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#DC143C"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="0.4"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text=""
+            android:layout_gravity="center_horizontal" />
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.6"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text="You will go back 2 spots!"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#DC143C"
+            android:textSize="16sp" />
+
+
+        <TextView
+            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_weight="0.5"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="7dp"
+            android:text=""
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.9"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text=""
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:visibility="visible"
+                android:id="@+id/acceptDefeat"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text="OK"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#DC143C"
+                android:textSize="30sp"
+                android:background="@drawable/plain"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 </RelativeLayout>

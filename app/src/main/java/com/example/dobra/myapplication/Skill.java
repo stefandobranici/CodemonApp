@@ -1,6 +1,7 @@
 package com.example.dobra.myapplication;
 
 public class Skill {
+    private String ImageURL;
     private String Skillname;
     private Integer UnlockableAtLevel;
     private Boolean Unlocked;
@@ -8,10 +9,11 @@ public class Skill {
     public Skill() {
     }
 
-    public Skill(String skillname, Integer unlockableAtLevel, Boolean unlocked) {
+    public Skill(String imageURL, String skillname, Integer unlockableAtLevel, Boolean unlocked) {
         Skillname = skillname;
         UnlockableAtLevel = unlockableAtLevel;
         Unlocked = unlocked;
+        ImageURL = imageURL;
     }
 
     public String getSkillname() {
@@ -36,5 +38,13 @@ public class Skill {
 
     public void setUnlocked(Boolean unlocked) {
         Unlocked = unlocked;
+    }
+
+    public String getImageURL() {
+        return ImageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        ImageURL = imageURL;
     }
 }

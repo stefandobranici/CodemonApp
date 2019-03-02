@@ -50,7 +50,7 @@ public class UserLevel {
 
     public boolean canUserLevelUp(Integer level, Integer currentXp, Integer newXp){
         if(xpPerLevel.containsKey(level)) {
-            return (xpPerLevel.get(level) >= (currentXp + newXp));
+            return (xpPerLevel.get(level) <= (currentXp + newXp));
         } else return false;
     }
 

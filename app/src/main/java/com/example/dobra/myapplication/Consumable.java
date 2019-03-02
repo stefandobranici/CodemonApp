@@ -1,6 +1,7 @@
 package com.example.dobra.myapplication;
 
 public class Consumable {
+    private String ImageURL;
     private Integer Cost;
     private String Name;
     private Integer Quantity;
@@ -8,10 +9,11 @@ public class Consumable {
     public Consumable() {
     }
 
-    public Consumable(Integer cost, String name, Integer quantity) {
+    public Consumable(String imageURL, Integer cost, String name, Integer quantity) {
         Cost = cost;
         Name = name;
         Quantity = quantity;
+        ImageURL = imageURL;
     }
 
     public Integer getCost() {
@@ -36,5 +38,13 @@ public class Consumable {
 
     public void setQuantity(Integer quantity) {
         Quantity = quantity;
+    }
+
+    public String getImageURL() {
+        return ImageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        ImageURL = imageURL;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.dobra.myapplication;
 
 public class Medal {
+    private String ImageURL;
     private String Name;
     private Boolean Unlocked;
 
@@ -8,9 +9,10 @@ public class Medal {
 
     }
 
-    public Medal(String name, Boolean unlocked) {
+    public Medal(String imageURL, String name, Boolean unlocked) {
         Name = name;
         Unlocked = unlocked;
+        ImageURL = imageURL;
     }
 
     public String getName() {
@@ -27,5 +29,13 @@ public class Medal {
 
     public void setUnlocked(Boolean unlocked) {
         Unlocked = unlocked;
+    }
+
+    public String getImageURL() {
+        return ImageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        ImageURL = imageURL;
     }
 }

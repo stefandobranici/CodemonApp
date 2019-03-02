@@ -54,7 +54,7 @@
                         android:text="0/21"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
@@ -83,7 +83,7 @@
                         android:text="0/21"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
@@ -111,7 +111,7 @@
                         android:text="0/21"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
@@ -140,7 +140,7 @@
                         android:text="0/21"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
@@ -169,7 +169,7 @@
                         android:text="0/21"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
@@ -198,7 +198,7 @@
                         android:text="0/21"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 
@@ -227,7 +227,7 @@
                         android:text="0/21"
                         android:textAlignment="center"
                         android:textColor="@color/colorAccent"
-                        android:textSize="20sp" />
+                        android:textSize="18sp" />
 
                 </LinearLayout>
 

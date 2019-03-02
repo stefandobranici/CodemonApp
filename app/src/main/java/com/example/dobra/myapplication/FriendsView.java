@@ -62,7 +62,8 @@ public class FriendsView extends AppCompatActivity {
 
     private boolean friendAdded;
 
-    int currentPosition;
+    private int currentPosition, TIMEOUT_DELAY;
+
 
 
     private Typeface cyberFont;
@@ -118,11 +119,14 @@ public class FriendsView extends AppCompatActivity {
 
         currentPosition = 0;
 
+        TIMEOUT_DELAY = 1000;
+
         userFriendList.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChildren()) {
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        TIMEOUT_DELAY += 1000;
                         final Friend currentFriend = new Friend();
 
                         mFriends.add(currentFriend);
@@ -156,6 +160,23 @@ public class FriendsView extends AppCompatActivity {
                                     mFriends.get(thisFriendPosition).setFriendName(dataSnapshot.getValue(String.class));
                                 }
                                 currentUserNameRef.removeEventListener(this);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+
+                        final DatabaseReference currentUserProfilePicRef = currentUserRef.child("User Information").child("Profile Picture");
+
+                        currentUserProfilePicRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    mFriends.get(thisFriendPosition).setFriendImage(dataSnapshot.getValue(String.class));
+                                }
+                                currentUserProfilePicRef.removeEventListener(this);
                             }
 
                             @Override
@@ -204,7 +225,7 @@ public class FriendsView extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
-                                    mFriends.get(thisFriendPosition).setFriendProgress(dataSnapshot.getValue(Integer.class).toString() + "/144");
+                                    mFriends.get(thisFriendPosition).setFriendProgress(dataSnapshot.getValue(Integer.class).toString() + "/" + CurrentUserInformation.getInstance().getTotalLevelsAvailableForPlay().toString());
                                 }
                                 currentUserProgressRef.removeEventListener(this);
                             }
@@ -277,7 +298,7 @@ public class FriendsView extends AppCompatActivity {
                 initRecyclerView();
                 loadingAnimation.setVisibility(View.GONE);
             }
-        }, 2000);
+        }, TIMEOUT_DELAY);
     }
 
     private void initRecyclerView() {
@@ -312,6 +333,7 @@ public class FriendsView extends AppCompatActivity {
         addFriendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TIMEOUT_DELAY = 1000;
 
                 loadingAnimation.setVisibility(View.VISIBLE);
 
@@ -325,6 +347,7 @@ public class FriendsView extends AppCompatActivity {
 
                         for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()) {
 
+                            TIMEOUT_DELAY += 250;
                             if (friendAdded) {
                                 break;
                             }
@@ -382,7 +405,7 @@ public class FriendsView extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "User ID was not found!", Toast.LENGTH_SHORT).show();
                         }
                     }
-                }, 1500);
+                }, TIMEOUT_DELAY);
             }
         });
     }

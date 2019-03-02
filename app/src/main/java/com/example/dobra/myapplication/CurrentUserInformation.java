@@ -1,6 +1,7 @@
 package com.example.dobra.myapplication;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,9 +26,19 @@ public class CurrentUserInformation {
 
     private DatabaseReference mChaptersReference;
 
-    private DatabaseReference userCurrentActiveChapter, userCurrentActiveLevel;
+    private DatabaseReference userCurrentActiveChapter, userCurrentActiveLevel, userInformation, userNameRef, userInnerIDRef, userLevelRef, userXpRef, userCoinsRef, userHpRef, userImgUrl;
 
     private DatabaseReference userItemsAppearances, userItemsMedals, userItemsConsumables, userSkills, skillsRef, consumablesRef, medalsRef, appearancesRef;
+
+    private DatabaseReference userSkillsFromDbRef, userItemsMedalsFromDbRef, userItemsConsumablesFromDbRef, userItemsAppearanceFromDbRef;
+
+    public Map<String, Skill> userSkillsCollection;
+
+    public Map<String, Consumable> userConsumablesCollection;
+
+    public Map<String, Appearance> userAppearancesCollection;
+
+    public Map<String, Medal> userMedalsCollection;
 
     public Map<Integer, Integer> progressionOfChapters;
 
@@ -39,7 +50,7 @@ public class CurrentUserInformation {
 
     private Level levelSelectedForPlay;
 
-    private String userName;
+    private String userName, userImageURL, userPersonalID;
 
     private Integer userLevel, userXp, userCoins, userHealth;
 
@@ -60,6 +71,14 @@ public class CurrentUserInformation {
 
         numberOfMissionsInChapter = new HashMap<>();
 
+        userConsumablesCollection = new HashMap<>();
+
+        userSkillsCollection = new HashMap<>();
+
+        userAppearancesCollection = new HashMap<>();
+
+        userMedalsCollection = new HashMap<>();
+
         availableSkills = new ArrayList<>();
 
         availableAppearances = new ArrayList<>();
@@ -68,9 +87,9 @@ public class CurrentUserInformation {
 
         availableConsumables = new ArrayList<>();
 
-        for(int i = 1; i < 8; i++){
-            numberOfMissionsInChapter.put(i,0);
-            progressionOfChapters.put(i,0);
+        for (int i = 1; i < 8; i++) {
+            numberOfMissionsInChapter.put(i, 0);
+            progressionOfChapters.put(i, 0);
         }
 
         //Setup some initial variables to avoid null pointers;
@@ -80,6 +99,10 @@ public class CurrentUserInformation {
         userCoins = 0;
         userHealth = 0;
         friendSelectedForRemove = "";
+        userPersonalID = "";
+        userImageURL = "https://firebasestorage.googleapis.com/v0/b/myapplication-9586f.appspot.com/o/Profile%2Fprofilepic.png?alt=media&token=1d0d0f95-4d1c-475a-bc36-4ddb79b49955";
+        currentActiveLevel = 0;
+        currentActiveChapter = 0;
 
         //Initiate instance of firebase auth and database;
         mAuth = FirebaseAuth.getInstance();
@@ -93,79 +116,43 @@ public class CurrentUserInformation {
     }
 
 
-    public Integer getCurrentActiveChapter(){
-        return currentActiveChapter;
-    }
-
-    //Dont remember what this does to be honest
-    public Integer getCurrentActiveLevel(){
-        return currentActiveLevel;
-    }
-
-    //Dont remember what this does to be honest
-    public Integer getChapterSelected(){
-        return chapterSelected;
-    }
-
-    //Dont remember what this does to be honest
-    public Level getLevelSelectedForPlay(){
-        return levelSelectedForPlay;
-    }
-
-    ///Dont remember what this does to be honest
-    public void setCurrentActiveChapter(int updatedChapter){
-        currentActiveChapter = updatedChapter;
-    }
-
-    //Dont remember what this does to be honest
-    public void setCurrentActiveLevel(int updatedLevel){
-        currentActiveLevel = updatedLevel;
-    }
-
-    //This method sets the current chapter in progress;
-    public void setChapterSelected(Integer chapterSelected){
-        this.chapterSelected = chapterSelected;
-    }
-
-    //This method sets the current level in progress;
-    public void setLevelSelectedForPlay(Level level){
-        levelSelectedForPlay = level;
-    }
-
-
     //This is the main method that will add listeners to references to pull important information from the database used later in the app;
     //This is done upon logging in or signing up;
-    public void getUserProgressionStatus(){
+    public void getUserProgressionStatus() {
 
         getChapterProgressionInformation();
 
         getUserInformation();
+
+        getUserSkills();
+
+        getUserInvetoryStatus();
     }
 
 
     //This adds listeners to retrieve chapter information from the db;
-    private void getChapterProgressionInformation(){
+    private void getChapterProgressionInformation() {
 
         mChaptersReference = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression");
 
         mChaptersReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChildren()){
+                if (dataSnapshot.hasChildren()) {
                     progressionOfChapters.clear();
                     numberOfMissionsInChapter.clear();
-                    for(DataSnapshot keyNode:dataSnapshot.getChildren()){
-                        for(DataSnapshot keyNode2:keyNode.getChildren()){
+                    for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                        for (DataSnapshot keyNode2 : keyNode.getChildren()) {
                             Level level = keyNode2.getValue(Level.class);
-                            if(level.isCompleted()) {
-                                if(progressionOfChapters.containsKey(level.getChapter())) {
+                            if (level.isCompleted()) {
+                                if (progressionOfChapters.containsKey(level.getChapter())) {
                                     progressionOfChapters.put(level.getChapter(), progressionOfChapters.get(level.getChapter()) + 1);
                                 } else {
                                     progressionOfChapters.put(level.getChapter(), 1);
                                 }
                             }
 
-                            if(numberOfMissionsInChapter.containsKey(level.getChapter())){
+                            if (numberOfMissionsInChapter.containsKey(level.getChapter())) {
                                 numberOfMissionsInChapter.put(level.getChapter(), numberOfMissionsInChapter.get(level.getChapter()) + 1);
                             } else {
                                 numberOfMissionsInChapter.put(level.getChapter(), 1);
@@ -173,39 +160,6 @@ public class CurrentUserInformation {
 
                         }
                     }
-                } else {
-                    new FirebaseDatabaseHelper().generateUserLevels(new FirebaseDatabaseHelper.DataStatus() {
-                        @Override
-                        public void DataIsLoaded(List<Level> levels, List<String> keys) {
-                            Integer levelId = 1;
-                            for(Level level:levels){
-                                if(levelId == 22) {
-                                    levelId = 1;
-                                }
-                                Integer chapterId = level.getChapter();
-                                DatabaseReference currentLevelReference = mChaptersReference.child(chapterId.toString()).child(levelId.toString());
-                                currentLevelReference.setValue(level);
-
-                                levelId++;
-                            }
-                        }
-
-
-                        @Override
-                        public void DataIsInserted() {
-
-                        }
-
-                        @Override
-                        public void DataIsUpdated() {
-
-                        }
-
-                        @Override
-                        public void DataIsDeleted() {
-
-                        }
-                    });
                 }
             }
 
@@ -217,15 +171,17 @@ public class CurrentUserInformation {
     }
 
     //This adds listeners to retrieve user information such as current username, userlevel, userxp, usercoins, user currentlevel, user currentchapter, etc from the db;
-    private void getUserInformation(){
-        DatabaseReference userInformation = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information");
+    private void getUserInformation() {
+        userInformation = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information");
 
-        DatabaseReference userNameRef = userInformation.child("Name");
+        userNameRef = userInformation.child("Name");
 
         userNameRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userName = dataSnapshot.getValue(String.class);
+                if (dataSnapshot.exists()) {
+                    userName = dataSnapshot.getValue(String.class);
+                }
             }
 
             @Override
@@ -234,12 +190,37 @@ public class CurrentUserInformation {
             }
         });
 
-        DatabaseReference userLevelRef = userInformation.child("Level");
+        userInnerIDRef = userInformation.child("User ID");
+
+        userInnerIDRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if(!TextUtils.isEmpty(dataSnapshot.getValue(String.class))) {
+                        userPersonalID = dataSnapshot.getValue(String.class);
+                    }
+
+                    if(userPersonalID!="") {
+                        userInnerIDRef.removeEventListener(this);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        userLevelRef = userInformation.child("Level");
 
         userLevelRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userLevel = dataSnapshot.getValue(Integer.class);
+                if (dataSnapshot.exists()) {
+                    userLevel = dataSnapshot.getValue(Integer.class);
+                }
             }
 
             @Override
@@ -248,12 +229,14 @@ public class CurrentUserInformation {
             }
         });
 
-        DatabaseReference userXpRef = userInformation.child("XP");
+        userXpRef = userInformation.child("XP");
 
         userXpRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userXp = dataSnapshot.getValue(Integer.class);
+                if (dataSnapshot.exists()) {
+                    userXp = dataSnapshot.getValue(Integer.class);
+                }
             }
 
             @Override
@@ -262,12 +245,14 @@ public class CurrentUserInformation {
             }
         });
 
-        DatabaseReference userCoinsRef = userInformation.child("Cybercoins");
+        userCoinsRef = userInformation.child("Cybercoins");
 
         userCoinsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userCoins = dataSnapshot.getValue(Integer.class);
+                if (dataSnapshot.exists()) {
+                    userCoins = dataSnapshot.getValue(Integer.class);
+                }
             }
 
             @Override
@@ -276,12 +261,30 @@ public class CurrentUserInformation {
             }
         });
 
-        DatabaseReference userHpRef = userInformation.child("HP");
+        userHpRef = userInformation.child("HP");
 
         userHpRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userHealth = dataSnapshot.getValue(Integer.class);
+                if (dataSnapshot.exists()) {
+                    userHealth = dataSnapshot.getValue(Integer.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        userImgUrl = userInformation.child("Profile Picture");
+
+        userImgUrl.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    userImageURL = dataSnapshot.getValue(String.class);
+                }
             }
 
             @Override
@@ -295,12 +298,8 @@ public class CurrentUserInformation {
         userCurrentActiveChapter.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    setCurrentActiveChapter(dataSnapshot.getValue(Integer.class));
-                } else {
-                    userCurrentActiveChapter.setValue(1);
-
-                    setCurrentActiveChapter(1);
+                if (dataSnapshot.exists()) {
+                    currentActiveChapter = dataSnapshot.getValue(Integer.class);
                 }
             }
 
@@ -314,12 +313,8 @@ public class CurrentUserInformation {
         userCurrentActiveLevel.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    setCurrentActiveLevel(dataSnapshot.getValue(Integer.class));
-                } else {
-                    userCurrentActiveLevel.setValue(1);
-
-                    setCurrentActiveLevel(1);
+                if (dataSnapshot.exists()) {
+                    currentActiveLevel = dataSnapshot.getValue(Integer.class);
                 }
             }
 
@@ -330,20 +325,276 @@ public class CurrentUserInformation {
         });
     }
 
-    private void getUserInvetoryStatus(){
-        DatabaseReference userItemsMedals = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Medals");
+    private void getUserInvetoryStatus() {
+        userItemsMedalsFromDbRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Medals");
 
-        DatabaseReference userItemsConsumables = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Consumables");
+        userItemsConsumablesFromDbRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Consumables");
 
-        DatabaseReference userItemsAppearance = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Appearance");
+        userItemsAppearanceFromDbRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Appearance");
+
+
+        userItemsMedalsFromDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChildren()) {
+                        userMedalsCollection.clear();
+                        for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                            Medal medal = keyNode.getValue(Medal.class);
+                            userMedalsCollection.put(medal.getName(), medal);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        userItemsConsumablesFromDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChildren()) {
+                        userConsumablesCollection.clear();
+                        for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                            Consumable consumable = keyNode.getValue(Consumable.class);
+                            userConsumablesCollection.put(consumable.getName(), consumable);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        userItemsAppearanceFromDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChildren()) {
+                        userAppearancesCollection.clear();
+                        for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                            Appearance appearance = keyNode.getValue(Appearance.class);
+                            userAppearancesCollection.put(appearance.getName(), appearance);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
     }
 
-    private void getUserSkills(){
+    private void getUserSkills() {
+        userSkillsFromDbRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Skills");
 
+        userSkillsFromDbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    if (dataSnapshot.hasChildren()) {
+                        userSkillsCollection.clear();
+                        for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
+                            Skill skill = keyNode.getValue(Skill.class);
+                            userSkillsCollection.put(skill.getSkillname(), skill);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
+    //Getters for userInfo
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setNewUserName(String newUserName) {
+        DatabaseReference userName = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Name");
+
+        userName.setValue(newUserName);
+    }
+
+    public Integer getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(Integer newLvl) {
+        DatabaseReference userLevel = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Level");
+
+        userLevel.setValue(newLvl);
+    }
+
+    public Integer getUserXp() {
+        return userXp;
+    }
+
+    public void setUserXp(Integer newXp) {
+        DatabaseReference userXp = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("XP");
+
+        userXp.setValue(newXp);
+    }
+
+    public void increaseUserXp(Integer newXp) {
+        DatabaseReference userXp = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("XP");
+
+        userXp.setValue(getUserXp() + newXp);
+    }
+
+    public Integer getUserCoins() {
+        return userCoins;
+    }
+
+    public void setUserCoins(Integer newCoins) {
+        DatabaseReference userCoins = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Cybercoins");
+
+        userCoins.setValue(getUserCoins()+newCoins);
+    }
+
+    public Integer getUserHealth() {
+        return userHealth;
+    }
+
+    public void setUserHealth(Integer newHealth) {
+        DatabaseReference userHealth = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("HP");
+
+        userHealth.setValue(newHealth);
+    }
+
+    public void increaseUserHealth(Integer newHealth) {
+        DatabaseReference userHealth = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("HP");
+
+        userHealth.setValue(getUserHealth()+newHealth);
+    }
+
+    public String getUserImageURL() {
+        return userImageURL;
+    }
+
+    public void setUserImageURL(String newImgUrl) {
+        DatabaseReference userImgURL = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Profile Picture");
+
+        userImgURL.setValue(newImgUrl);
+    }
+
+    public void updateConsumableQuantity(String consumableName, Integer quantityUpdater){
+        DatabaseReference consumableToBeUpdated = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Consumables").child(consumableName).child("quantity");
+
+        consumableToBeUpdated.setValue(userConsumablesCollection.get(consumableName).getQuantity()+quantityUpdater);
+
+
+    }
+
+    public String getFriendSelectedForRemove() {
+        return friendSelectedForRemove;
+    }
+
+    public void setFriendSelectedForRemove(String friendSelectedForRemove) {
+        this.friendSelectedForRemove = friendSelectedForRemove;
+    }
+
+    public Integer getCurrentActiveChapter() {
+        return currentActiveChapter;
+    }
+
+    //Dont remember what this does to be honest
+    public Integer getCurrentActiveLevel() {
+        return currentActiveLevel;
+    }
+
+    //Dont remember what this does to be honest
+    public Integer getChapterSelected() {
+        return chapterSelected;
+    }
+
+    //Dont remember what this does to be honest
+    public Level getLevelSelectedForPlay() {
+        return levelSelectedForPlay;
+    }
+
+    ///Dont remember what this does to be honest
+    public void setCurrentActiveChapter(Integer updatedChapter) {
+        DatabaseReference currentActiveChapterRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Game Status").child("Current Chapter");
+        currentActiveChapterRef.setValue(updatedChapter);
+    }
+
+    //Dont remember what this does to be honest
+    public void setCurrentActiveLevel(Integer updatedLevel) {
+        DatabaseReference currentActiveLevelRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Game Status").child("Current Level");
+        currentActiveLevelRef.setValue(updatedLevel);
+    }
+
+    //This method sets the current chapter in progress;
+    public void setChapterSelected(Integer chapterSelected) {
+        this.chapterSelected = chapterSelected;
+    }
+
+    //This method sets the current level in progress;
+    public void setLevelSelectedForPlay(Level level) {
+        levelSelectedForPlay = level;
+    }
+
+    public Integer getTotalLevelsAvailableForPlay() {
+        Integer totalLevelsAvailable = 0;
+
+        for (Map.Entry missionsInCurrentChapter : numberOfMissionsInChapter.entrySet()) {
+            totalLevelsAvailable += (Integer) missionsInCurrentChapter.getValue();
+        }
+
+        return totalLevelsAvailable;
+    }
+
+    public void unlockUserSkill(String skillName){
+        DatabaseReference skillToBeUnlockedRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Skills").child(skillName).child("unlocked");
+        skillToBeUnlockedRef.setValue(true);
+    }
+
+    public void unlockUserAppearanceItem(String appearanceItemName){
+        if(!userAppearancesCollection.get(appearanceItemName).getUnlocked()) {
+            DatabaseReference itemToBeUnlockedRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Appearance").child(appearanceItemName).child("unlocked");
+            itemToBeUnlockedRef.setValue(true);
+        }
+    }
+
+    public void unlockCurrentLevel(Level level){
+        Integer modulusOfLevel = level.getLevel()%21;
+
+        if(modulusOfLevel == 0){
+            modulusOfLevel = 21;
+        }
+
+        if(modulusOfLevel == 2){
+            Integer childLevel = modulusOfLevel-1;
+            DatabaseReference currentLevelToBeUnlocked = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression").child(level.getChapter().toString()).child(childLevel.toString()).child("completed");
+            currentLevelToBeUnlocked.setValue(true);
+        }
+
+        DatabaseReference currentLevelToBeUnlocked = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression").child(level.getChapter().toString()).child(modulusOfLevel.toString()).child("completed");
+        currentLevelToBeUnlocked.setValue(true);
     }
 
     //Set up singup info
-    public void setUpUser(String userID){
+    public void setUpUser(String userID) {
         DatabaseReference userInformation = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information");
 
         DatabaseReference userInnerId = userInformation.child("User ID");
@@ -362,29 +613,46 @@ public class CurrentUserInformation {
 
         userLevel.setValue(1);
 
-        DatabaseReference userXP= userInformation.child("XP");
+        DatabaseReference userXP = userInformation.child("XP");
 
         userXP.setValue(0);
 
-        DatabaseReference userHP= userInformation.child("HP");
+        DatabaseReference userHP = userInformation.child("HP");
 
-        userXP.setValue(10);
+        userHP.setValue(10);
+
+        DatabaseReference userProfilePicture = userInformation.child("Profile Picture");
+
+        userProfilePicture.setValue("https://firebasestorage.googleapis.com/v0/b/myapplication-9586f.appspot.com/o/Profile%2Fprofilepic.png?alt=media&token=1d0d0f95-4d1c-475a-bc36-4ddb79b49955");
+
+        userCurrentActiveChapter = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Game Status").child("Current Chapter");
+
+        userCurrentActiveChapter.setValue(1);
+
+        setCurrentActiveChapter(1);
+
+
+        userCurrentActiveLevel = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Game Status").child("Current Level");
+
+        userCurrentActiveLevel.setValue(1);
+
+        setCurrentActiveLevel(1);
 
 
         userSkills = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Skills");
 
         skillsRef = mDatabase.getReference("Skills");
 
-        skillsRef.addValueEventListener(new ValueEventListener() {
+        skillsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 availableSkills.clear();
-                for(DataSnapshot keyNode:dataSnapshot.getChildren()){
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     Skill skill = keyNode.getValue(Skill.class);
                     availableSkills.add(skill);
                 }
 
-                for(Skill skill:availableSkills){
+                for (Skill skill : availableSkills) {
                     DatabaseReference currentSkill = userSkills.child(skill.getSkillname());
                     currentSkill.setValue(skill);
                 }
@@ -402,16 +670,16 @@ public class CurrentUserInformation {
 
         consumablesRef = mDatabase.getReference("Items").child("Consumables");
 
-        consumablesRef.addValueEventListener(new ValueEventListener() {
+        consumablesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 availableConsumables.clear();
-                for(DataSnapshot keyNode:dataSnapshot.getChildren()){
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     Consumable consumable = keyNode.getValue(Consumable.class);
                     availableConsumables.add(consumable);
                 }
 
-                for(Consumable consumable:availableConsumables){
+                for (Consumable consumable : availableConsumables) {
                     DatabaseReference currentConsumable = userItemsConsumables.child(consumable.getName());
                     currentConsumable.setValue(consumable);
                 }
@@ -426,21 +694,20 @@ public class CurrentUserInformation {
         });
 
         //Add medals table from db to user table
-
         userItemsMedals = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Medals");
 
         medalsRef = mDatabase.getReference("Items").child("Medals");
 
-        medalsRef.addValueEventListener(new ValueEventListener() {
+        medalsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 availableMedals.clear();
-                for(DataSnapshot keyNode:dataSnapshot.getChildren()){
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     Medal medal = keyNode.getValue(Medal.class);
                     availableMedals.add(medal);
                 }
 
-                for(Medal medal:availableMedals){
+                for (Medal medal : availableMedals) {
                     DatabaseReference currentMedal = userItemsMedals.child(medal.getName());
                     currentMedal.setValue(medal);
                 }
@@ -454,21 +721,20 @@ public class CurrentUserInformation {
             }
         });
 
-
         userItemsAppearances = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Appearance");
 
         appearancesRef = mDatabase.getReference("Items").child("Appearance");
 
-        appearancesRef.addValueEventListener(new ValueEventListener() {
+        appearancesRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 availableAppearances.clear();
-                for(DataSnapshot keyNode:dataSnapshot.getChildren()){
+                for (DataSnapshot keyNode : dataSnapshot.getChildren()) {
                     Appearance appearance = keyNode.getValue(Appearance.class);
                     availableAppearances.add(appearance);
                 }
 
-                for(Appearance appearance:availableAppearances){
+                for (Appearance appearance : availableAppearances) {
                     DatabaseReference currentAppearance = userItemsAppearances.child(appearance.getName());
                     currentAppearance.setValue(appearance);
                 }
@@ -481,44 +747,72 @@ public class CurrentUserInformation {
 
             }
         });
+
+        mChaptersReference = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression");
+
+        mChaptersReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                new FirebaseDatabaseHelper().generateUserLevels(new FirebaseDatabaseHelper.DataStatus() {
+                    @Override
+                    public void DataIsLoaded(List<Level> levels, List<String> keys) {
+                        Integer levelId = 1;
+                        for (Level level : levels) {
+                            if (levelId == 22) {
+                                levelId = 1;
+                            }
+                            Integer chapterId = level.getChapter();
+                            DatabaseReference currentLevelReference = mChaptersReference.child(chapterId.toString()).child(levelId.toString());
+                            currentLevelReference.setValue(level);
+
+                            levelId++;
+                        }
+                    }
+
+
+                    @Override
+                    public void DataIsInserted() {
+
+                    }
+
+                    @Override
+                    public void DataIsUpdated() {
+
+                    }
+
+                    @Override
+                    public void DataIsDeleted() {
+
+                    }
+                });
+
+                mChaptersReference.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
-    public void setNewUserName(String newUserName){
-        DatabaseReference userName = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Name");
-
-        userName.setValue(newUserName);
-    }
-
-    //Getters for userInfo
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public Integer getUserLevel() {
-        return userLevel;
-    }
-
-    public Integer getUserXp() {
-        return userXp;
-    }
-
-    public Integer getUserCoins() {
-        return userCoins;
-    }
-
-    public Integer getUserHealth(){return userHealth; }
-
-    public String getFriendSelectedForRemove(){
-        return friendSelectedForRemove;
-    }
-
-    public void setFriendSelectedForRemove(String friendSelectedForRemove){
-        this.friendSelectedForRemove = friendSelectedForRemove;
-    }
-
-    public void deleteProgress(){
+    public void deleteProgress() {
         DatabaseReference userChapterProgress = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Chapter Progression");
         userChapterProgress.setValue(null);
+
+        DatabaseReference userGameStatus = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Game Status");
+        userGameStatus.setValue(null);
+
+        DatabaseReference userItemsStatus = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items");
+        userItemsStatus.setValue(null);
+
+        DatabaseReference userSkillsStatus = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Skills");
+        userSkillsStatus.setValue(null);
+
+        DatabaseReference userInformationStatus = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information");
+        userInformationStatus.setValue(null);
+
+        setUpUser(userPersonalID);
     }
 }
