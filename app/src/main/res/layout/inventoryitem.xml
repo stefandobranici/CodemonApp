@@ -16,7 +16,7 @@
             android:layout_weight="0.5"
             android:id="@+id/itemImage"
             android:src="@drawable/bandana"
-            android:background="@drawable/plain"/>
+            android:background="@drawable/windowborder"/>
 
         <LinearLayout
             android:paddingTop="5dp"
@@ -24,13 +24,15 @@
             android:layout_height="match_parent"
             android:layout_weight="2.25"
             android:weightSum="2"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/windowborder">
             <TextView
                 android:id="@+id/itemName"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="Bandana"
+                android:layout_marginTop="5dp"
                 android:fontFamily="@font/cyberverse"
                 android:layout_gravity="center_horizontal"
                 android:textAlignment="center"
@@ -56,13 +58,15 @@
             android:layout_height="match_parent"
             android:layout_weight="2.25"
             android:weightSum="2"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/windowborder">
             <TextView
                 android:id="@+id/quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="0.75"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
 
                 android:fontFamily="@font/cyberverse"
                 android:text="Quantity: 10"
@@ -74,7 +78,7 @@
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="1.25"
+                android:layout_weight="1"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/cyberverse"
                 android:text="Description"

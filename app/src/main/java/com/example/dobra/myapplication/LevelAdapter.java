@@ -42,19 +42,19 @@ public class LevelAdapter {
             chapterImage.setImageResource(R.drawable.ifworldmap);
         } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(3)){
             ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
-            chapterImage.setImageResource(R.drawable.whilewait);
+            chapterImage.setImageResource(R.drawable.whilewaitmap);
         } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(4)){
             ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
-            chapterImage.setImageResource(R.drawable.forever);
+            chapterImage.setImageResource(R.drawable.forevermap);
         } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(5)){
             ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
-            chapterImage.setImageResource(R.drawable.arrays);
+            chapterImage.setImageResource(R.drawable.arraysmap);
         } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(6)){
             ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
-            chapterImage.setImageResource(R.drawable.methods);
+            chapterImage.setImageResource(R.drawable.methodsmap);
         } else if(CurrentUserInformation.getInstance().getChapterSelected().equals(7)){
             ImageView chapterImage = mainLayout.findViewById(R.id.chapterName);
-            chapterImage.setImageResource(R.drawable.classes);
+            chapterImage.setImageResource(R.drawable.classesmap);
         }
 
         int countLevelsDrawn = 1;

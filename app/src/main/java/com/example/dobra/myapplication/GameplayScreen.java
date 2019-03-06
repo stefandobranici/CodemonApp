@@ -1,10 +1,15 @@
 package com.example.dobra.myapplication;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Handler;
+import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.ArrayMap;
@@ -109,6 +114,8 @@ public class GameplayScreen extends AppCompatActivity {
 
     private TextView saveNotepadContentButton, closeNotepadButton;
 
+    MediaPlayer mPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +124,25 @@ public class GameplayScreen extends AppCompatActivity {
 
         level = CurrentUserInformation.getInstance().getLevelSelectedForPlay();
 
+        CurrentUserInformation.getInstance().setUserBeginActivity();
+
         consolasFont = Typeface.createFromAsset(getAssets(), "font/Consolas.ttf");
+
+        if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("binaural")){
+            if(level.isGreen()){
+                setLearningMusicOn();
+            } else {
+                setTrainingMusicOn();
+            }
+
+            mPlayer.setLooping(true);
+
+            mPlayer.setVolume(50,50);
+
+            mPlayer.start();
+        } else {
+            mPlayer = null;
+        }
 
         currentTextViewClicked = null;
 
@@ -256,7 +281,7 @@ public class GameplayScreen extends AppCompatActivity {
 
             currentProcessedWord.setTypeface(consolasFont);
 
-            currentProcessedWord.setTextSize(16);
+            currentProcessedWord.setTextSize(19);
 
             if (contentType.isKeyword()) {
                 currentProcessedWord.setTextColor(getResources().getColor(R.color.colorAccent));
@@ -362,7 +387,7 @@ public class GameplayScreen extends AppCompatActivity {
 
             currentProcessedWord.setTypeface(consolasFont);
 
-            currentProcessedWord.setTextSize(16);
+            currentProcessedWord.setTextSize(18);
 
             if (contentType.isKeyword()) {
                 currentProcessedWord.setTextColor(getResources().getColor(R.color.colorAccent));
@@ -525,10 +550,6 @@ public class GameplayScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     firstChestRewards();
-
-                    chestBoxOne.setOnClickListener(null);
-                    chestBoxTwo.setOnClickListener(null);
-                    chestBoxThree.setOnClickListener(null);
                 }
             });
 
@@ -537,9 +558,6 @@ public class GameplayScreen extends AppCompatActivity {
                 public void onClick(View v) {
                     secondChestRewards();
 
-                    chestBoxOne.setOnClickListener(null);
-                    chestBoxTwo.setOnClickListener(null);
-                    chestBoxThree.setOnClickListener(null);
                 }
             });
 
@@ -548,9 +566,6 @@ public class GameplayScreen extends AppCompatActivity {
                 public void onClick(View v) {
                     thirdChestRewards();
 
-                    chestBoxOne.setOnClickListener(null);
-                    chestBoxTwo.setOnClickListener(null);
-                    chestBoxThree.setOnClickListener(null);
                 }
             });
 
@@ -618,6 +633,15 @@ public class GameplayScreen extends AppCompatActivity {
                         public void onClick(View v) {
                             mapViewActivity.finish();
                             Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
+                            if(mPlayer!=null){
+                                mPlayer.stop();
+                            }
+
+                            if(level.isGreen()){
+                                CurrentUserInformation.getInstance().setUserEndedLearningActivity();
+                            } else {
+                                CurrentUserInformation.getInstance().setUserEndedTrainingActivity();
+                            }
                             startActivity(mapview_intent);
                             finish();
                         }
@@ -648,6 +672,15 @@ public class GameplayScreen extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     mapViewActivity.finish();
+                    if(mPlayer!=null){
+                        mPlayer.stop();
+                    }
+
+                    if(level.isGreen()){
+                        CurrentUserInformation.getInstance().setUserEndedLearningActivity();
+                    } else {
+                        CurrentUserInformation.getInstance().setUserEndedTrainingActivity();
+                    }
                     Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
                     startActivity(mapview_intent);
                     finish();
@@ -680,6 +713,15 @@ public class GameplayScreen extends AppCompatActivity {
 
                 }
                 mapViewActivity.finish();
+                if(mPlayer!=null){
+                    mPlayer.stop();
+                }
+
+                if(level.isGreen()){
+                    CurrentUserInformation.getInstance().setUserEndedLearningActivity();
+                } else {
+                    CurrentUserInformation.getInstance().setUserEndedTrainingActivity();
+                }
                 Intent mapview_intent = new Intent("android.intent.action.MapViewActivity");
                 startActivity(mapview_intent);
                 finish();
@@ -688,6 +730,10 @@ public class GameplayScreen extends AppCompatActivity {
     }
 
     private void firstChestRewards() {
+        chestBoxOne.setOnClickListener(null);
+        chestBoxTwo.setOnClickListener(null);
+        chestBoxThree.setOnClickListener(null);
+
         continueToMapView.setVisibility(View.VISIBLE);
 
         Random randomDrop = new Random();
@@ -1322,6 +1368,10 @@ public class GameplayScreen extends AppCompatActivity {
     }
 
     private void secondChestRewards() {
+        chestBoxOne.setOnClickListener(null);
+        chestBoxTwo.setOnClickListener(null);
+        chestBoxThree.setOnClickListener(null);
+
         continueToMapView.setVisibility(View.VISIBLE);
 
         Random randomDrop = new Random();
@@ -1955,6 +2005,10 @@ public class GameplayScreen extends AppCompatActivity {
     }
 
     private void thirdChestRewards() {
+        chestBoxOne.setOnClickListener(null);
+        chestBoxTwo.setOnClickListener(null);
+        chestBoxThree.setOnClickListener(null);
+
         continueToMapView.setVisibility(View.VISIBLE);
 
         Random randomDrop = new Random();
@@ -2759,6 +2813,16 @@ public class GameplayScreen extends AppCompatActivity {
         runAwayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mPlayer!=null){
+                    mPlayer.stop();
+                }
+
+                if(level.isGreen()){
+                    CurrentUserInformation.getInstance().setUserEndedLearningActivity();
+                } else {
+                    CurrentUserInformation.getInstance().setUserEndedTrainingActivity();
+                }
+
                 finish();
             }
         });
@@ -2845,6 +2909,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText("int");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -2949,6 +3014,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText("char");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -3053,6 +3119,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText("float");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -3157,6 +3224,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText("double");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -3261,6 +3329,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText("string");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -3365,6 +3434,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText(currentContentTypeProcessed.wordContent + "[]");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -3469,6 +3539,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText(currentContentTypeProcessed.wordContent+"[][]");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -3585,6 +3656,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText("if");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -3689,6 +3761,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText("else");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -3793,6 +3866,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText("else if");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -3910,6 +3984,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText("while");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -4014,6 +4089,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText("do");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -4118,6 +4194,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                 currentTextViewClicked.setText("for");
                                 currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                currentTextViewClicked.setOnClickListener(null);
 
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
@@ -4243,7 +4320,7 @@ public class GameplayScreen extends AppCompatActivity {
         useRevealingPotionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (CurrentUserInformation.getInstance().userConsumablesCollection.get("RevealingPotion").getQuantity() > 0) {
+                if (CurrentUserInformation.getInstance().userConsumablesCollection.get("RevealingPotion").getQuantity() > 0 && currentTextViewClicked == null) {
                     if(allErrorsInContent.size()>0) {
 
                         CurrentUserInformation.getInstance().updateConsumableQuantity("RevealingPotion", -1);
@@ -4272,6 +4349,8 @@ public class GameplayScreen extends AppCompatActivity {
                     } else {
                         Toast.makeText(getApplicationContext(), "No errors to be revealed!", Toast.LENGTH_SHORT).show();
                     }
+                } else if(CurrentUserInformation.getInstance().userConsumablesCollection.get("RevealingPotion").getQuantity() > 0 && currentTextViewClicked != null){
+                    Toast.makeText(getApplicationContext(), "An error is already being revealed! Solve it or deselect it to reveal another error...", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "No Revealing Potion(s) available!", Toast.LENGTH_SHORT).show();
                 }
@@ -4307,6 +4386,7 @@ public class GameplayScreen extends AppCompatActivity {
                         currentContentTypeProcessed = errorsInContent.get(randNumber);
 
                         currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                        currentTextViewClicked.setOnClickListener(null);
 
                         if(currentContentTypeProcessed.correctWord.equals("array")) {
                             currentTextViewClicked.setText(currentContentTypeProcessed.wordContent + "[]");
@@ -4324,6 +4404,8 @@ public class GameplayScreen extends AppCompatActivity {
                         currentTextViewClicked = null;
                         currentContentTypeProcessed = null;
 
+                        Toast.makeText(getApplicationContext(), "Fixer Elixer used! One error has been fixed!", Toast.LENGTH_SHORT).show();
+
 
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -4336,7 +4418,6 @@ public class GameplayScreen extends AppCompatActivity {
                                 if(allErrorsInContent.size()==0){
                                     endGameScreenVictory();
                                 }
-                                Toast.makeText(getApplicationContext(), "Fixer Elixer used! One error has been fixed!", Toast.LENGTH_SHORT).show();
                                 useFixerElixirButton.setText(String.format("Fixer Elixer (" + CurrentUserInformation.getInstance().userConsumablesCollection.get("FixerElixer").getQuantity().toString() + ")"));
                             }
                         }, 2300);
@@ -4379,5 +4460,48 @@ public class GameplayScreen extends AppCompatActivity {
             itemsSkillBarLayout.setVisibility(View.GONE);
             mainMenuBarLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    public void setTrainingMusicOn(){
+
+        mPlayer = MediaPlayer.create(this, R.raw.betawaves);;
+
+        if (mPlayer != null) {
+            mPlayer.setLooping(true);
+            mPlayer.setVolume(50, 50);
+        }
+
+
+        mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+
+            public boolean onError(MediaPlayer mp, int what, int
+                    extra) {
+
+                onError(mPlayer, what, extra);
+                return true;
+            }
+        });
+    }
+
+    public void setLearningMusicOn(){
+        mPlayer = null;
+
+        mPlayer = MediaPlayer.create(this, R.raw.alphawaves);
+
+        if (mPlayer != null) {
+            mPlayer.setLooping(true);
+            mPlayer.setVolume(50, 50);
+        }
+
+
+        mPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+
+            public boolean onError(MediaPlayer mp, int what, int
+                    extra) {
+
+                onError(mPlayer, what, extra);
+                return true;
+            }
+        });
     }
 }

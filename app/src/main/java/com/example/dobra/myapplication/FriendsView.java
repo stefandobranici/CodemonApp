@@ -29,6 +29,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -302,6 +303,8 @@ public class FriendsView extends AppCompatActivity {
     }
 
     private void initRecyclerView() {
+        Collections.sort(mFriends, Collections.reverseOrder());
+
         RecyclerView recyclerView = findViewById(R.id.friendsRecyclerView);
         RecyclerViewAdapter adapter = new RecyclerViewAdapter(getApplicationContext(), mFriends, removeFriendLayout);
         recyclerView.removeAllViewsInLayout();

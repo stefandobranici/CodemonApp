@@ -25,7 +25,7 @@ public class CurrentUserInformation {
 
     private DatabaseReference mChaptersReference;
 
-    private DatabaseReference userCurrentActiveChapter, userCurrentActiveLevel, userInformation, userNameRef, userInnerIDRef, userLevelRef, userXpRef, userCoinsRef, userHpRef, userImgUrl, userCurrentNotepadContent, userCurrentEquippedItem;
+    private DatabaseReference userCurrentActiveChapter, userCurrentActiveLevel, userInformation, userNameRef, userInnerIDRef, userLevelRef, userXpRef, userCoinsRef, userHpRef, userImgUrl, userCurrentNotepadContent, userCurrentEquippedItem, modeSelectorReference;
 
     private DatabaseReference userItemsAppearances, userItemsMedals, userItemsConsumables, userSkills, skillsRef, consumablesRef, medalsRef, appearancesRef;
 
@@ -67,6 +67,11 @@ public class CurrentUserInformation {
 
     private String currentEquippedItem, itemToBeEquipped;
 
+    private String userGameModeSelected;
+
+    private long startTime;
+    private long endTime;
+
     private CurrentUserInformation() {
 
         //Initiate arrays
@@ -89,6 +94,12 @@ public class CurrentUserInformation {
         availableMedals = new ArrayList<>();
 
         availableConsumables = new ArrayList<>();
+
+        userGameModeSelected = "plain";
+
+        startTime = 0;
+
+        endTime = 0;
 
         for (int i = 1; i < 8; i++) {
             numberOfMissionsInChapter.put(i, 0);
@@ -392,6 +403,30 @@ public class CurrentUserInformation {
 
             }
         });
+
+        modeSelectorReference = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Mode");
+
+        modeSelectorReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    String modeSelected = dataSnapshot.getValue(String.class);
+
+
+                    if (TextUtils.isEmpty(modeSelected)) {
+
+                    } else {
+                        userGameModeSelected = modeSelected;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void getUserInvetoryStatus() {
@@ -596,6 +631,14 @@ public class CurrentUserInformation {
         currentNodepadContentFromDbRef.setValue(newContent);
     }
 
+    public String getUserGameModeSelected() {
+        return userGameModeSelected;
+    }
+
+    public void setUserGameModeSelected(String userGameModeSelected) {
+        this.userGameModeSelected = userGameModeSelected;
+    }
+
     public void updateConsumableQuantity(String consumableName, Integer quantityUpdater){
         DatabaseReference consumableToBeUpdated = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Items").child("Consumables").child(consumableName).child("quantity");
 
@@ -745,6 +788,14 @@ public class CurrentUserInformation {
         userSkills = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Skills");
 
         skillsRef = mDatabase.getReference("Skills");
+
+        DatabaseReference userTimeSpentLearningRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Game Status").child("TimeSpentLearning");
+
+        userTimeSpentLearningRef.setValue(0);
+
+        DatabaseReference userTimeSpentTrainingRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Game Status").child("TimeSpentTraining");
+
+        userTimeSpentTrainingRef.setValue(0);
 
         skillsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -917,5 +968,59 @@ public class CurrentUserInformation {
         userInformationStatus.setValue(null);
 
         setUpUser(userPersonalID);
+    }
+
+    public void setUserBeginActivity(){
+        startTime = System.currentTimeMillis();
+    }
+
+    public void setUserEndedLearningActivity(){
+        endTime = System.currentTimeMillis();
+        final long timeSpend = endTime - startTime;
+
+        final DatabaseReference userTimeSpentLearningRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Game Status").child("TimeSpentLearning");
+
+        userTimeSpentLearningRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    long timeAlreadySpentByUser = dataSnapshot.getValue(long.class);
+
+                    userTimeSpentLearningRef.setValue(timeSpend+timeAlreadySpentByUser);
+                } else {
+                    userTimeSpentLearningRef.setValue(timeSpend);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void setUserEndedTrainingActivity(){
+        endTime = System.currentTimeMillis();
+        final long timeSpend = endTime - startTime;
+
+        final DatabaseReference userTimeSpentTrainingRef = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("Game Status").child("TimeSpentTraining");
+
+        userTimeSpentTrainingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    long timeAlreadySpentByUser = dataSnapshot.getValue(long.class);
+
+                    userTimeSpentTrainingRef.setValue(timeSpend+timeAlreadySpentByUser);
+                } else {
+                    userTimeSpentTrainingRef.setValue(timeSpend);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

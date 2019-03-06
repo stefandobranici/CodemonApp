@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -57,6 +58,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewHolder.friendLevel.setText(mFriends.get(i).getFriendLevel());
         viewHolder.friendProgress.setText(mFriends.get(i).getFriendProgress());
         viewHolder.friendActivity.setText(mFriends.get(i).getFriendActivity());
+
+        if(i==0){
+            viewHolder.ladderPosition.setImageResource(R.drawable.cybercoin);
+        } else if(i==1){
+            viewHolder.ladderPosition.setImageResource(R.drawable.cybercoinsilver);
+        } else if(i==2){
+            viewHolder.ladderPosition.setImageResource(R.drawable.cybercoinbronze);
+        } else {
+            viewHolder.ladderPosition.setVisibility(View.GONE);
+        }
+
         viewHolder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,9 +85,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        CircleImageView friendImage;
 
         TextView friendName, friendLevel, friendProgress, friendActivity;
+
+        ImageView ladderPosition, friendImage;
 
         RelativeLayout parentLayout;
 
@@ -87,6 +100,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             friendProgress = itemView.findViewById(R.id.friendProgress);
             friendActivity = itemView.findViewById(R.id.friendActivity);
             parentLayout = itemView.findViewById(R.id.friendParentLayout);
+            ladderPosition = itemView.findViewById(R.id.ladderPosition);
 
         }
     }

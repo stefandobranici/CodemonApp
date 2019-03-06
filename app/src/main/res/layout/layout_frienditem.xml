@@ -9,21 +9,35 @@
         android:weightSum="5"
         android:orientation="horizontal">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="80dp"
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="80dp"
+            android:layout_weight="1"
+            android:background="@drawable/windowborder">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/friendImage"
+                android:src="@drawable/profile"/>
 
-            android:layout_weight="0.5"
-            android:id="@+id/friendImage"
-            android:src="@drawable/profile"/>
+            <ImageView
+                android:id="@+id/ladderPosition"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/cybercoin"
+                android:layout_marginBottom="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
 
         <LinearLayout
             android:paddingTop="5dp"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2.25"
+            android:layout_weight="1.5"
             android:weightSum="2"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@drawable/windowborder">
             <TextView
                 android:id="@+id/friendName"
                 android:layout_width="wrap_content"
@@ -53,15 +67,16 @@
         android:paddingTop="5dp"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2.25"
+        android:layout_weight="2.5"
         android:weightSum="2"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/windowborder">
         <TextView
             android:id="@+id/friendProgress"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="0.75"
+            android:layout_weight="1"
 
             android:fontFamily="@font/cyberverse"
             android:text="ChiuPlus"
@@ -73,9 +88,9 @@
             android:id="@+id/friendActivity"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_weight="1.25"
-            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
             android:fontFamily="@font/cyberverse"
+            android:layout_gravity="center_horizontal"
             android:text="ChiuPlus"
             android:textAlignment="center"
             android:textColor="@color/colorAccent"

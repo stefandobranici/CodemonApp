@@ -56,7 +56,11 @@ public class ShopActivity extends AppCompatActivity {
         purchaseChestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chestBoughtLayout.setVisibility(View.VISIBLE);
+                if(CurrentUserInformation.getInstance().getUserCoins()>=50) {
+                    chestBoughtLayout.setVisibility(View.VISIBLE);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Not enough CyberCoins!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

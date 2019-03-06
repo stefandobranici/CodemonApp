@@ -1,6 +1,6 @@
 package com.example.dobra.myapplication;
 
-public class Friend {
+public class Friend implements Comparable<Friend>{
 
     private String friendImage;
     private String friendName;
@@ -67,5 +67,21 @@ public class Friend {
 
     public void setFriendID(String friendID) {
         this.friendID = friendID;
+    }
+
+    private Integer friendLevelsCompleted(){
+        Integer levelsCompleted = 0;
+        for(int i = 0; i < friendProgress.length(); i++){
+            if(friendProgress.charAt(i) == '/'){
+                levelsCompleted = Integer.parseInt(friendProgress.substring(0, i));
+            }
+        }
+
+        return levelsCompleted;
+    }
+
+    @Override
+    public int compareTo(Friend o) {
+        return this.friendLevelsCompleted().compareTo(o.friendLevelsCompleted());
     }
 }
