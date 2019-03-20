@@ -390,6 +390,7 @@
             android:weightSum="2">
 
             <LinearLayout
+                android:id="@+id/firstLineVariablesSkillBar"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -1336,6 +1337,67 @@
                 android:text="Close"
                 android:textColor="@color/colorAccent"
                 android:textSize="30sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id = "@+id/paintViewLayout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_weight="0.3"
+            android:layout_height="0dp" />
+        <LinearLayout
+            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical">
+            <com.example.dobra.myapplication.PaintView
+                android:id = "@+id/PaintView"
+                android:layout_weight="0.4"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:background="@drawable/windowborder"/>
+
+            <LinearLayout
+                android:layout_weight="0.1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:background="@drawable/textscreenbg">
+
+                <TextView
+                    android:id="@+id/clearCanvasButton"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/windowborder"
+                    android:fontFamily="@font/cyberverse"
+                    android:gravity="center_horizontal"
+                    android:text="Clear"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="30sp"/>
+
+
+                <TextView
+                    android:id="@+id/saveCanvasButton"
+                    android:layout_weight="0.5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/windowborder"
+                    android:fontFamily="@font/cyberverse"
+                    android:gravity="center_horizontal"
+                    android:text="Save"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="30sp"/>
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

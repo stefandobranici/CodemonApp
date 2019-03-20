@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.ArrayMap;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -25,8 +27,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import org.w3c.dom.Text;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +61,7 @@ public class GameplayScreen extends AppCompatActivity {
     private TextView gameScreenPlayerHealth, gameScreenPlayerLevel, gameScreenPlayerName, gameScreenEnemyName, gameScreenEnemyLevel, gameScreenEnemyHealth;
 
     //All menu layouts from third part of the screen
-    private LinearLayout mainMenuBarLayout, mainSkillBarLayout, variablesSkillBarLayout, conditionalsSkillBarLayout, loopsSkillBarLayout, itemsSkillBarLayout;
+    private LinearLayout mainMenuBarLayout, mainSkillBarLayout, variablesSkillBarLayout, conditionalsSkillBarLayout, loopsSkillBarLayout, itemsSkillBarLayout, paintViewLayout;
 
     //Main menu bar buttons;
     private TextView openSkillsBarButton, openItemsBarButton, openNotebookButton, runAwayButton;
@@ -78,6 +83,9 @@ public class GameplayScreen extends AppCompatActivity {
 
     //Text buttons
     private ImageView forwardButtonForText, backButtonForText;
+
+    //Drawing buttons
+    private TextView clearCanvasButton, saveCanvasButton;
 
     //Attack animations
     private GifImageView chiuplusattackanimation, enemyattackanimation;
@@ -115,6 +123,8 @@ public class GameplayScreen extends AppCompatActivity {
     private TextView saveNotepadContentButton, closeNotepadButton;
 
     MediaPlayer mPlayer;
+
+    private PaintView paintView;
 
 
     @Override
@@ -156,6 +166,9 @@ public class GameplayScreen extends AppCompatActivity {
 
         if (level.isGreen()) {
             setLearningScreenOn();
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                setUpDrawingWindow();
+            }
         } else if (level.isViolette()) {
             setTrainingScreenOn();
         } else if (level.isRed()) {
@@ -435,14 +448,25 @@ public class GameplayScreen extends AppCompatActivity {
 
                     completeLevel.setTextColor(getResources().getColor(R.color.colorAccent));
 
-                    completeLevel.setText("Click to Complete!");
+                    if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics") && drawNewSkill()){
+                        completeLevel.setText("Click to DRAW your new skill!");
 
-                    completeLevel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            endGameScreenVictory();
-                        }
-                    });
+                        completeLevel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                displayDrawingWindow();
+                            }
+                        });
+                    } else {
+                        completeLevel.setText("Click to Complete!");
+
+                        completeLevel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                endGameScreenVictory();
+                            }
+                        });
+                    }
 
                     lineOfWords.addView(completeLevel);
 
@@ -516,6 +540,42 @@ public class GameplayScreen extends AppCompatActivity {
         notepadContent.setText(CurrentUserInformation.getInstance().getUserNotepadContent());
 
         notepadLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void setUpDrawingWindow(){
+
+        paintViewLayout = (LinearLayout) findViewById(R.id.paintViewLayout);
+
+        paintView = (PaintView) findViewById(R.id.PaintView);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        paintView.init(metrics);
+    }
+
+    private void displayDrawingWindow(){
+        paintViewLayout.setVisibility(View.VISIBLE);
+
+        clearCanvasButton = (TextView) findViewById(R.id.clearCanvasButton);
+
+        clearCanvasButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                paintView.clear();
+            }
+        });
+
+        saveCanvasButton = (TextView) findViewById(R.id.saveCanvasButton);
+
+        saveCanvasButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                paintViewLayout.setVisibility(View.GONE);
+
+                endGameScreenVictory();
+            }
+        });
+
     }
 
     //Endgame Functionality
@@ -2642,59 +2702,150 @@ public class GameplayScreen extends AppCompatActivity {
     }
 
     private void unlockSkills() {
-        if (level.getLevel() == 2) {
-            skillUnlocked.setText("Unlocked the int Skill!");
+        if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+            if (level.getLevel() == 2) {
+                paintView.saveToDatabase(getApplicationContext(), "int");
+                skillUnlocked.setText("Unlocked the int Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("int");
-        } else if (level.getLevel() == 4) {
-            skillUnlocked.setText("Unlocked the char Skill!");
+                CurrentUserInformation.getInstance().unlockUserSkill("int");
+            } else if (level.getLevel() == 4) {
+                skillUnlocked.setText("Unlocked the char Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("char");
-        } else if (level.getLevel() == 7) {
-            skillUnlocked.setText("Unlocked the float Skill!");
+                CurrentUserInformation.getInstance().unlockUserSkill("char");
+            } else if (level.getLevel() == 7) {
+                skillUnlocked.setText("Unlocked the float Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("float");
-        } else if (level.getLevel() == 10) {
-            skillUnlocked.setText("Unlocked the double Skill!");
+                CurrentUserInformation.getInstance().unlockUserSkill("float");
+            } else if (level.getLevel() == 10) {
+                skillUnlocked.setText("Unlocked the double Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("double");
-        } else if (level.getLevel() == 13) {
-            skillUnlocked.setText("Unlocked the string Skill!");
+                CurrentUserInformation.getInstance().unlockUserSkill("double");
+            } else if (level.getLevel() == 13) {
+                skillUnlocked.setText("Unlocked the string Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("string");
-        } else if (level.getLevel() == 23) {
-            skillUnlocked.setText("Unlocked the if Skill!");
+                CurrentUserInformation.getInstance().unlockUserSkill("string");
+            } else if (level.getLevel() == 23) {
+                skillUnlocked.setText("Unlocked the if Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("if");
-        } else if (level.getLevel() == 25) {
-            skillUnlocked.setText("Unlocked the else Skill!");
+                CurrentUserInformation.getInstance().unlockUserSkill("if");
+            } else if (level.getLevel() == 25) {
+                skillUnlocked.setText("Unlocked the else Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("else");
-        } else if (level.getLevel() == 28) {
-            skillUnlocked.setText("Unlocked the else if Skill!");
+                CurrentUserInformation.getInstance().unlockUserSkill("else");
+            } else if (level.getLevel() == 28) {
+                skillUnlocked.setText("Unlocked the else if Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("else if");
-        } else if (level.getLevel() == 44) {
-            skillUnlocked.setText("Unlocked the while Skill!");
+                CurrentUserInformation.getInstance().unlockUserSkill("else if");
+            } else if (level.getLevel() == 44) {
+                skillUnlocked.setText("Unlocked the while Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("while");
-        } else if (level.getLevel() == 46) {
-            skillUnlocked.setText("Unlocked the do Skill!");
+                CurrentUserInformation.getInstance().unlockUserSkill("while");
+            } else if (level.getLevel() == 46) {
+                skillUnlocked.setText("Unlocked the do Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("do");
-        } else if (level.getLevel() == 65) {
-            skillUnlocked.setText("Unlocked the for Skill!");
+                CurrentUserInformation.getInstance().unlockUserSkill("do");
+            } else if (level.getLevel() == 65) {
+                skillUnlocked.setText("Unlocked the for Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("for");
-        } else if (level.getLevel() == 86) {
-            skillUnlocked.setText("Unlocked the array Skill!");
+                CurrentUserInformation.getInstance().unlockUserSkill("for");
+            } else if (level.getLevel() == 86) {
+                skillUnlocked.setText("Unlocked the array Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("array");
-        } else if (level.getLevel() == 95) {
-            skillUnlocked.setText("Unlocked the 2dArray Skill!");
+                CurrentUserInformation.getInstance().unlockUserSkill("array");
+            } else if (level.getLevel() == 95) {
+                skillUnlocked.setText("Unlocked the 2dArray Skill!");
 
-            CurrentUserInformation.getInstance().unlockUserSkill("2dArray");
+                CurrentUserInformation.getInstance().unlockUserSkill("2dArray");
+            }
         }
+        else {
+            if (level.getLevel() == 2) {
+                skillUnlocked.setText("Unlocked the int Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("int");
+            } else if (level.getLevel() == 4) {
+                skillUnlocked.setText("Unlocked the char Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("char");
+            } else if (level.getLevel() == 7) {
+                skillUnlocked.setText("Unlocked the float Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("float");
+            } else if (level.getLevel() == 10) {
+                skillUnlocked.setText("Unlocked the double Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("double");
+            } else if (level.getLevel() == 13) {
+                skillUnlocked.setText("Unlocked the string Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("string");
+            } else if (level.getLevel() == 23) {
+                skillUnlocked.setText("Unlocked the if Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("if");
+            } else if (level.getLevel() == 25) {
+                skillUnlocked.setText("Unlocked the else Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("else");
+            } else if (level.getLevel() == 28) {
+                skillUnlocked.setText("Unlocked the else if Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("else if");
+            } else if (level.getLevel() == 44) {
+                skillUnlocked.setText("Unlocked the while Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("while");
+            } else if (level.getLevel() == 46) {
+                skillUnlocked.setText("Unlocked the do Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("do");
+            } else if (level.getLevel() == 65) {
+                skillUnlocked.setText("Unlocked the for Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("for");
+            } else if (level.getLevel() == 86) {
+                skillUnlocked.setText("Unlocked the array Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("array");
+            } else if (level.getLevel() == 95) {
+                skillUnlocked.setText("Unlocked the 2dArray Skill!");
+
+                CurrentUserInformation.getInstance().unlockUserSkill("2dArray");
+            }
+        }
+    }
+
+
+    private boolean drawNewSkill() {
+        if (level.getLevel() == 2) {
+            return true;
+        } else if (level.getLevel() == 4) {
+            return true;
+        } else if (level.getLevel() == 7) {
+            return true;
+        } else if (level.getLevel() == 10) {
+            return true;
+        } else if (level.getLevel() == 13) {
+            return true;
+        } else if (level.getLevel() == 23) {
+            return true;
+        } else if (level.getLevel() == 25) {
+            return true;
+        } else if (level.getLevel() == 28) {
+            return true;
+        } else if (level.getLevel() == 44) {
+            return true;
+        } else if (level.getLevel() == 46) {
+            return true;
+        } else if (level.getLevel() == 65) {
+            return true;
+        } else if (level.getLevel() == 86) {
+            return true;
+        } else if (level.getLevel() == 95) {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -2879,6 +3030,19 @@ public class GameplayScreen extends AppCompatActivity {
         intButton = (TextView) findViewById(R.id.intButton);
 
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("int").getUnlocked()) {
+
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                ImageView skillImage = new ImageView(getApplicationContext());
+                skillImage.setLayoutParams(intButton.getLayoutParams());
+                Glide.with(getApplicationContext()).asBitmap().load("https://firebasestorage.googleapis.com/v0/b/myapplication-9586f.appspot.com/o/userDrawnSkills%2FTql7aUkRiOb2niCbyJc60u6VfHt1%2Fint.jpg?alt=media&token=ba36660e-a405-438c-bccb-793268659ccd").into(skillImage);
+
+                intButton.setVisibility(View.GONE);
+
+                LinearLayout firstLineVariablesSkillBar = (LinearLayout) findViewById(R.id.firstLineVariablesSkillBar);
+                firstLineVariablesSkillBar.addView(skillImage);
+
+            }
+
             intButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
