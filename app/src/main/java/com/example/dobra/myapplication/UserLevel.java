@@ -26,6 +26,7 @@ public class UserLevel {
         xpPerLevel.put(8, 7000);
         xpPerLevel.put(9, 10000);
         xpPerLevel.put(10,15000);
+        xpPerLevel.put(11, 100000);
 
         maxHealthPerLevel.put(0, 0);
         maxHealthPerLevel.put(1, 10);

@@ -12,10 +12,14 @@ public class MenuScreenActivity extends AppCompatActivity {
 
     ImageView storyMode, multiplayerMode, practiceMode, profileMode, itemsMode, friendsMode, shopMode, settingsMode;
 
+    private int countBackPresses;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_selector);
+
+        countBackPresses = 0;
 
         setAllOnClickListeners();
 
@@ -27,6 +31,7 @@ public class MenuScreenActivity extends AppCompatActivity {
         storyMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countBackPresses = 0;
                 Intent storyMode = new Intent("android.intent.action.ChapterSelectorActivity");
                 startActivity(storyMode);
             }
@@ -39,6 +44,7 @@ public class MenuScreenActivity extends AppCompatActivity {
         multiplayerMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countBackPresses = 0;
                 Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -50,6 +56,7 @@ public class MenuScreenActivity extends AppCompatActivity {
         practiceMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countBackPresses = 0;
                 Toast.makeText(getApplicationContext(), "Mode not yet implemented! Work In Progress!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -61,6 +68,7 @@ public class MenuScreenActivity extends AppCompatActivity {
         profileMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countBackPresses = 0;
                 Intent profileMode = new Intent("android.intent.action.ProfileViewActivity");
                 startActivity(profileMode);
             }
@@ -73,6 +81,7 @@ public class MenuScreenActivity extends AppCompatActivity {
         friendsMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countBackPresses = 0;
                 Intent friendsMode = new Intent("android.intent.action.FriendsView");
                 startActivity(friendsMode);
             }
@@ -85,6 +94,7 @@ public class MenuScreenActivity extends AppCompatActivity {
         itemsMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countBackPresses = 0;
                 Intent inventory_intent = new Intent("android.intent.action.InventoryActivity");
                 startActivity(inventory_intent);
             }
@@ -97,6 +107,7 @@ public class MenuScreenActivity extends AppCompatActivity {
         shopMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countBackPresses = 0;
                 Intent shop_intent = new Intent("android.intent.action.ShopActivity");
                 startActivity(shop_intent);
             }
@@ -109,6 +120,7 @@ public class MenuScreenActivity extends AppCompatActivity {
         settingsMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                countBackPresses = 0;
                 Intent settingsMode = new Intent("android.intent.action.SettingsScreen");
                 startActivity(settingsMode);
             }
@@ -127,5 +139,15 @@ public class MenuScreenActivity extends AppCompatActivity {
         //Work in progress
         setMultiplayerModeOnClickListener();
         setPracticeModeOnClickListener();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(countBackPresses>0){
+            finish();
+        } else {
+            Toast.makeText(getApplicationContext(), "To quit the app, press the back button one more time!", Toast.LENGTH_SHORT).show();
+            countBackPresses++;
+        }
     }
 }

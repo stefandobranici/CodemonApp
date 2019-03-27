@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,6 +26,8 @@ public class SettingsScreen extends AppCompatActivity {
     private TextView nameChangerButton, closeNameChangeLayout, modeChangeWarningButton, closeModeChangeWarningLayout;
 
     private EditText userNameChangeField;
+
+    private ImageButton backbutton;
 
     LinearLayout nameChangerLayout, changeModeWarningLayout;
 
@@ -45,6 +48,8 @@ public class SettingsScreen extends AppCompatActivity {
         setChangeNameBtnOnClickListener();
 
         setCloseModeChangeWarningLayoutOnClickListener();
+
+        setBackButtonOnClickListener();
 
     }
 
@@ -153,6 +158,17 @@ public class SettingsScreen extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void setBackButtonOnClickListener(){
+        backbutton = (ImageButton) findViewById(R.id.backbutton);
+
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void clearData(){

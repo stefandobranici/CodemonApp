@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Text;
 
@@ -2709,50 +2714,62 @@ public class GameplayScreen extends AppCompatActivity {
 
                 CurrentUserInformation.getInstance().unlockUserSkill("int");
             } else if (level.getLevel() == 4) {
+                paintView.saveToDatabase(getApplicationContext(), "char");
                 skillUnlocked.setText("Unlocked the char Skill!");
 
                 CurrentUserInformation.getInstance().unlockUserSkill("char");
             } else if (level.getLevel() == 7) {
+                paintView.saveToDatabase(getApplicationContext(), "float");
                 skillUnlocked.setText("Unlocked the float Skill!");
 
                 CurrentUserInformation.getInstance().unlockUserSkill("float");
             } else if (level.getLevel() == 10) {
+                paintView.saveToDatabase(getApplicationContext(), "double");
                 skillUnlocked.setText("Unlocked the double Skill!");
 
                 CurrentUserInformation.getInstance().unlockUserSkill("double");
             } else if (level.getLevel() == 13) {
+                paintView.saveToDatabase(getApplicationContext(), "string");
                 skillUnlocked.setText("Unlocked the string Skill!");
 
                 CurrentUserInformation.getInstance().unlockUserSkill("string");
             } else if (level.getLevel() == 23) {
+                paintView.saveToDatabase(getApplicationContext(), "if");
                 skillUnlocked.setText("Unlocked the if Skill!");
 
                 CurrentUserInformation.getInstance().unlockUserSkill("if");
             } else if (level.getLevel() == 25) {
+                paintView.saveToDatabase(getApplicationContext(), "else");
                 skillUnlocked.setText("Unlocked the else Skill!");
 
                 CurrentUserInformation.getInstance().unlockUserSkill("else");
             } else if (level.getLevel() == 28) {
+                paintView.saveToDatabase(getApplicationContext(), "else if");
                 skillUnlocked.setText("Unlocked the else if Skill!");
 
                 CurrentUserInformation.getInstance().unlockUserSkill("else if");
             } else if (level.getLevel() == 44) {
+                paintView.saveToDatabase(getApplicationContext(), "while");
                 skillUnlocked.setText("Unlocked the while Skill!");
 
                 CurrentUserInformation.getInstance().unlockUserSkill("while");
             } else if (level.getLevel() == 46) {
+                paintView.saveToDatabase(getApplicationContext(), "do");
                 skillUnlocked.setText("Unlocked the do Skill!");
 
                 CurrentUserInformation.getInstance().unlockUserSkill("do");
             } else if (level.getLevel() == 65) {
+                paintView.saveToDatabase(getApplicationContext(), "for");
                 skillUnlocked.setText("Unlocked the for Skill!");
 
                 CurrentUserInformation.getInstance().unlockUserSkill("for");
             } else if (level.getLevel() == 86) {
+                paintView.saveToDatabase(getApplicationContext(), "array");
                 skillUnlocked.setText("Unlocked the array Skill!");
 
                 CurrentUserInformation.getInstance().unlockUserSkill("array");
             } else if (level.getLevel() == 95) {
+                paintView.saveToDatabase(getApplicationContext(), "2dArray");
                 skillUnlocked.setText("Unlocked the 2dArray Skill!");
 
                 CurrentUserInformation.getInstance().unlockUserSkill("2dArray");
@@ -2817,31 +2834,31 @@ public class GameplayScreen extends AppCompatActivity {
 
 
     private boolean drawNewSkill() {
-        if (level.getLevel() == 2) {
+        if (level.getLevel() == 2 && !CurrentUserInformation.getInstance().userSkillsCollection.get("int").getUnlocked()) {
             return true;
-        } else if (level.getLevel() == 4) {
+        } else if (level.getLevel() == 4 && !CurrentUserInformation.getInstance().userSkillsCollection.get("char").getUnlocked()) {
             return true;
-        } else if (level.getLevel() == 7) {
+        } else if (level.getLevel() == 7 && !CurrentUserInformation.getInstance().userSkillsCollection.get("float").getUnlocked()) {
             return true;
-        } else if (level.getLevel() == 10) {
+        } else if (level.getLevel() == 10 && !CurrentUserInformation.getInstance().userSkillsCollection.get("double").getUnlocked()) {
             return true;
-        } else if (level.getLevel() == 13) {
+        } else if (level.getLevel() == 13 && !CurrentUserInformation.getInstance().userSkillsCollection.get("string").getUnlocked()) {
             return true;
-        } else if (level.getLevel() == 23) {
+        } else if (level.getLevel() == 23 && !CurrentUserInformation.getInstance().userSkillsCollection.get("if").getUnlocked()) {
             return true;
-        } else if (level.getLevel() == 25) {
+        } else if (level.getLevel() == 25 && !CurrentUserInformation.getInstance().userSkillsCollection.get("else").getUnlocked()) {
             return true;
-        } else if (level.getLevel() == 28) {
+        } else if (level.getLevel() == 28 && !CurrentUserInformation.getInstance().userSkillsCollection.get("else if").getUnlocked()) {
             return true;
-        } else if (level.getLevel() == 44) {
+        } else if (level.getLevel() == 44 && !CurrentUserInformation.getInstance().userSkillsCollection.get("while").getUnlocked()) {
             return true;
-        } else if (level.getLevel() == 46) {
+        } else if (level.getLevel() == 46 && !CurrentUserInformation.getInstance().userSkillsCollection.get("do").getUnlocked()) {
             return true;
-        } else if (level.getLevel() == 65) {
+        } else if (level.getLevel() == 65 && !CurrentUserInformation.getInstance().userSkillsCollection.get("for").getUnlocked()) {
             return true;
-        } else if (level.getLevel() == 86) {
+        } else if (level.getLevel() == 86 && !CurrentUserInformation.getInstance().userSkillsCollection.get("array").getUnlocked()) {
             return true;
-        } else if (level.getLevel() == 95) {
+        } else if (level.getLevel() == 95 && !CurrentUserInformation.getInstance().userSkillsCollection.get("2dArray").getUnlocked()) {
             return true;
         }
 
@@ -2885,13 +2902,13 @@ public class GameplayScreen extends AppCompatActivity {
         variablesSkillBarLayout.setVisibility(View.GONE);
 
         setIntButtonOnClickListener();
-        setCharButtonOnClickListener();
+/*        setCharButtonOnClickListener();
         setFloatButtonOnClickListener();
         setDoubleButtonOnClickListener();
         setStringButtonOnClickListener();
         setToArrayButtonOnClickListener();
         setTo2dArrayButtonOnClickListener();
-        setGoBackToSkillBarButtonFromVariablesOnClickListener();
+        setGoBackToSkillBarButtonFromVariablesOnClickListener();*/
     }
 
     private void setUpConditionalsSkillBarLayout() {
@@ -2899,9 +2916,9 @@ public class GameplayScreen extends AppCompatActivity {
         conditionalsSkillBarLayout.setVisibility(View.GONE);
 
         setIfButtonOnClickListener();
-        setElseButtonOnClickListener();
+/*        setElseButtonOnClickListener();
         setElseIfButtonOnClickListener();
-        setGoBackToSkillBarButtonFromConditionals();
+        setGoBackToSkillBarButtonFromConditionals();*/
     }
 
     private void setUpLoopsSkillBarLayout() {
@@ -2909,9 +2926,9 @@ public class GameplayScreen extends AppCompatActivity {
         loopsSkillBarLayout.setVisibility(View.GONE);
 
         setWhileButtonOnClickListener();
-        setDoButtonOnClickListener();
+/*        setDoButtonOnClickListener();
         setForButtonOnClickListener();
-        setGoBackToSkillBarButtonFromLoops();
+        setGoBackToSkillBarButtonFromLoops();*/
     }
 
     private void setUpItemsSkillBarLayout() {
@@ -3032,51 +3049,176 @@ public class GameplayScreen extends AppCompatActivity {
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("int").getUnlocked()) {
 
             if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
-                ImageView skillImage = new ImageView(getApplicationContext());
-                skillImage.setLayoutParams(intButton.getLayoutParams());
-                Glide.with(getApplicationContext()).asBitmap().load("https://firebasestorage.googleapis.com/v0/b/myapplication-9586f.appspot.com/o/userDrawnSkills%2FTql7aUkRiOb2niCbyJc60u6VfHt1%2Fint.jpg?alt=media&token=ba36660e-a405-438c-bccb-793268659ccd").into(skillImage);
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "int.jpg");
 
-                intButton.setVisibility(View.GONE);
-
-                LinearLayout firstLineVariablesSkillBar = (LinearLayout) findViewById(R.id.firstLineVariablesSkillBar);
-                firstLineVariablesSkillBar.addView(skillImage);
-
-            }
-
-            intButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (currentTextViewClicked != null) {
-                        if (currentContentTypeProcessed.isSecretWord()) {
-                            if (currentContentTypeProcessed.correctWord.equals("int")) {
-                                chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
-                                chiuplusattackanimation.clearAnimation();
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(intButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("int")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
 
 
-                                chiuplusattackanimation.setVisibility(View.VISIBLE);
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
 
-                                allErrorsInContent.remove(currentTextViewClicked);
+                                            allErrorsInContent.remove(currentTextViewClicked);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chiuplusattackanimation.setVisibility(View.GONE);
-                                        chiuplusattackanimation.clearAnimation();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
 
-                                        gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
-                                            endGameScreenVictory();
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText("int");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
                                         }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
                                     }
-                                }, 2300);
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
 
-                                currentTextViewClicked.setText("int");
-                                currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
-                                currentTextViewClicked.setOnClickListener(null);
+                        LinearLayout firstLineVariablesSkillBar = (LinearLayout) findViewById(R.id.firstLineVariablesSkillBar);
+                        firstLineVariablesSkillBar.addView(skillImage);
 
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
+                        firstLineVariablesSkillBar.removeView(intButton);
+
+                        setCharButtonOnClickListener();
+                    }
+                });
+
+            } else {
+
+                intButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentContentTypeProcessed.isSecretWord()) {
+                                if (currentContentTypeProcessed.correctWord.equals("int")) {
+                                    chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                    chiuplusattackanimation.clearAnimation();
+
+
+                                    chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                    allErrorsInContent.remove(currentTextViewClicked);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chiuplusattackanimation.setVisibility(View.GONE);
+                                            chiuplusattackanimation.clearAnimation();
+
+                                            gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                            if (allErrorsInContent.size() == 0) {
+                                                endGameScreenVictory();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setText("int");
+                                    currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                    currentTextViewClicked.setOnClickListener(null);
+
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                } else {
+                                    enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                    enemyattackanimation.clearAnimation();
+
+                                    CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                    enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            enemyattackanimation.setVisibility(View.GONE);
+                                            enemyattackanimation.clearAnimation();
+
+                                            gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                            if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                endGameScreenDefeat();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                }
                             } else {
                                 enemyattackanimation.setImageResource(R.drawable.enemyattack);
                                 enemyattackanimation.clearAnimation();
@@ -3093,7 +3235,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -3103,36 +3245,15 @@ public class GameplayScreen extends AppCompatActivity {
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
                             }
-                        } else {
-                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
-                            enemyattackanimation.clearAnimation();
-
-                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
-
-                            enemyattackanimation.setVisibility(View.VISIBLE);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enemyattackanimation.setVisibility(View.GONE);
-                                    enemyattackanimation.clearAnimation();
-
-                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
-
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
-                                        endGameScreenDefeat();
-                                    }
-                                }
-                            }, 2300);
-
-                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                            currentTextViewClicked = null;
-                            currentContentTypeProcessed = null;
                         }
                     }
-                }
-            });
+                });
+
+                setCharButtonOnClickListener();
+            }
         } else {
+            LinearLayout firstLineVariablesSkillBar = (LinearLayout) findViewById(R.id.firstLineVariablesSkillBar);
+
             intButton.setText("Locked");
 
             intButton.setOnClickListener(new View.OnClickListener() {
@@ -3141,47 +3262,193 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("int").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            firstLineVariablesSkillBar.removeView(intButton);
+            firstLineVariablesSkillBar.addView(intButton);
+
+            setCharButtonOnClickListener();
+
         }
     }
 
     private void setCharButtonOnClickListener() {
         charButton = (TextView) findViewById(R.id.charButton);
 
+
+
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("char").getUnlocked()) {
-            charButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (currentTextViewClicked != null) {
-                        if (currentContentTypeProcessed.isSecretWord()) {
-                            if (currentContentTypeProcessed.correctWord.equals("char")) {
-                                chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
-                                chiuplusattackanimation.clearAnimation();
+
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "char.jpg");
+
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(charButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("char")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
 
 
-                                chiuplusattackanimation.setVisibility(View.VISIBLE);
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
 
-                                allErrorsInContent.remove(currentTextViewClicked);
+                                            allErrorsInContent.remove(currentTextViewClicked);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chiuplusattackanimation.setVisibility(View.GONE);
-                                        chiuplusattackanimation.clearAnimation();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
 
-                                        gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
-                                            endGameScreenVictory();
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText("char");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
                                         }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
                                     }
-                                }, 2300);
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
 
-                                currentTextViewClicked.setText("char");
-                                currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
-                                currentTextViewClicked.setOnClickListener(null);
+                        LinearLayout firstLineVariablesSkillBar = (LinearLayout) findViewById(R.id.firstLineVariablesSkillBar);
+                        firstLineVariablesSkillBar.addView(skillImage);
 
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
+                        firstLineVariablesSkillBar.removeView(charButton);
+
+                        setFloatButtonOnClickListener();
+                    }
+                });
+
+            } else {
+
+                charButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentContentTypeProcessed.isSecretWord()) {
+                                if (currentContentTypeProcessed.correctWord.equals("char")) {
+                                    chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                    chiuplusattackanimation.clearAnimation();
+
+
+                                    chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                    allErrorsInContent.remove(currentTextViewClicked);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chiuplusattackanimation.setVisibility(View.GONE);
+                                            chiuplusattackanimation.clearAnimation();
+
+                                            gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                            if (allErrorsInContent.size() == 0) {
+                                                endGameScreenVictory();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setText("char");
+                                    currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                    currentTextViewClicked.setOnClickListener(null);
+
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                } else {
+                                    enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                    enemyattackanimation.clearAnimation();
+
+                                    CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                    enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            enemyattackanimation.setVisibility(View.GONE);
+                                            enemyattackanimation.clearAnimation();
+
+                                            gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                            if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                endGameScreenDefeat();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                }
                             } else {
                                 enemyattackanimation.setImageResource(R.drawable.enemyattack);
                                 enemyattackanimation.clearAnimation();
@@ -3198,7 +3465,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -3208,36 +3475,14 @@ public class GameplayScreen extends AppCompatActivity {
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
                             }
-                        } else {
-                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
-                            enemyattackanimation.clearAnimation();
-
-                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
-
-                            enemyattackanimation.setVisibility(View.VISIBLE);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enemyattackanimation.setVisibility(View.GONE);
-                                    enemyattackanimation.clearAnimation();
-
-                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
-
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
-                                        endGameScreenDefeat();
-                                    }
-                                }
-                            }, 2300);
-
-                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                            currentTextViewClicked = null;
-                            currentContentTypeProcessed = null;
                         }
                     }
-                }
-            });
+                });
+
+                setFloatButtonOnClickListener();
+            }
         } else {
+            LinearLayout firstLineVariablesSkillBar = (LinearLayout) findViewById(R.id.firstLineVariablesSkillBar);
             charButton.setText("Locked");
 
             charButton.setOnClickListener(new View.OnClickListener() {
@@ -3246,6 +3491,11 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("char").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            firstLineVariablesSkillBar.removeView(charButton);
+            firstLineVariablesSkillBar.addView(charButton);
+
+            setFloatButtonOnClickListener();
         }
     }
 
@@ -3253,6 +3503,118 @@ public class GameplayScreen extends AppCompatActivity {
         floatButton = (TextView) findViewById(R.id.floatButton);
 
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("float").getUnlocked()) {
+
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "float.jpg");
+
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(floatButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("float")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
+
+
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                            allErrorsInContent.remove(currentTextViewClicked);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
+
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText("float");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
+                                    }
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
+
+                        LinearLayout firstLineVariablesSkillBar = (LinearLayout) findViewById(R.id.firstLineVariablesSkillBar);
+                        firstLineVariablesSkillBar.addView(skillImage);
+
+                        firstLineVariablesSkillBar.removeView(floatButton);
+
+                        setDoubleButtonOnClickListener();
+                    }
+                });
+
+            } else {
+
             floatButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -3275,7 +3637,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
+                                        if (allErrorsInContent.size() == 0) {
                                             endGameScreenVictory();
                                         }
                                     }
@@ -3303,7 +3665,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -3329,7 +3691,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                     gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                         endGameScreenDefeat();
                                     }
                                 }
@@ -3342,7 +3704,11 @@ public class GameplayScreen extends AppCompatActivity {
                     }
                 }
             });
+                setDoubleButtonOnClickListener();
+        }
         } else {
+            LinearLayout firstLineVariablesSkillBar = (LinearLayout) findViewById(R.id.firstLineVariablesSkillBar);
+
             floatButton.setText("Locked");
 
             floatButton.setOnClickListener(new View.OnClickListener() {
@@ -3351,6 +3717,11 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("float").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            firstLineVariablesSkillBar.removeView(floatButton);
+            firstLineVariablesSkillBar.addView(floatButton);
+
+            setDoubleButtonOnClickListener();
         }
     }
 
@@ -3358,40 +3729,178 @@ public class GameplayScreen extends AppCompatActivity {
         doubleButton = (TextView) findViewById(R.id.doubleButton);
 
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("double").getUnlocked()) {
-            doubleButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (currentTextViewClicked != null) {
-                        if (currentContentTypeProcessed.isSecretWord()) {
-                            if (currentContentTypeProcessed.correctWord.equals("double")) {
-                                chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
-                                chiuplusattackanimation.clearAnimation();
+
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "double.jpg");
+
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(doubleButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("double")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
 
 
-                                chiuplusattackanimation.setVisibility(View.VISIBLE);
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
 
-                                allErrorsInContent.remove(currentTextViewClicked);
+                                            allErrorsInContent.remove(currentTextViewClicked);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chiuplusattackanimation.setVisibility(View.GONE);
-                                        chiuplusattackanimation.clearAnimation();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
 
-                                        gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
-                                            endGameScreenVictory();
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText("double");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
                                         }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
                                     }
-                                }, 2300);
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
 
-                                currentTextViewClicked.setText("double");
-                                currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
-                                currentTextViewClicked.setOnClickListener(null);
+                        LinearLayout firstLineVariablesSkillBar = (LinearLayout) findViewById(R.id.firstLineVariablesSkillBar);
+                        firstLineVariablesSkillBar.addView(skillImage);
 
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
+                        firstLineVariablesSkillBar.removeView(doubleButton);
+
+                        setStringButtonOnClickListener();
+                    }
+                });
+
+            } else {
+
+                doubleButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentContentTypeProcessed.isSecretWord()) {
+                                if (currentContentTypeProcessed.correctWord.equals("double")) {
+                                    chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                    chiuplusattackanimation.clearAnimation();
+
+
+                                    chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                    allErrorsInContent.remove(currentTextViewClicked);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chiuplusattackanimation.setVisibility(View.GONE);
+                                            chiuplusattackanimation.clearAnimation();
+
+                                            gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                            if (allErrorsInContent.size() == 0) {
+                                                endGameScreenVictory();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setText("double");
+                                    currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                    currentTextViewClicked.setOnClickListener(null);
+
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                } else {
+                                    enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                    enemyattackanimation.clearAnimation();
+
+                                    CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                    enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            enemyattackanimation.setVisibility(View.GONE);
+                                            enemyattackanimation.clearAnimation();
+
+                                            gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                            if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                endGameScreenDefeat();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                }
                             } else {
                                 enemyattackanimation.setImageResource(R.drawable.enemyattack);
                                 enemyattackanimation.clearAnimation();
@@ -3408,7 +3917,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -3418,36 +3927,13 @@ public class GameplayScreen extends AppCompatActivity {
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
                             }
-                        } else {
-                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
-                            enemyattackanimation.clearAnimation();
-
-                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
-
-                            enemyattackanimation.setVisibility(View.VISIBLE);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enemyattackanimation.setVisibility(View.GONE);
-                                    enemyattackanimation.clearAnimation();
-
-                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
-
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
-                                        endGameScreenDefeat();
-                                    }
-                                }
-                            }, 2300);
-
-                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                            currentTextViewClicked = null;
-                            currentContentTypeProcessed = null;
                         }
                     }
-                }
-            });
+                });
+                setStringButtonOnClickListener();
+            }
         } else {
+            LinearLayout firstLineVariablesSkillBar = (LinearLayout) findViewById(R.id.firstLineVariablesSkillBar);
             doubleButton.setText("Locked");
 
             doubleButton.setOnClickListener(new View.OnClickListener() {
@@ -3456,6 +3942,11 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("double").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            firstLineVariablesSkillBar.removeView(doubleButton);
+            firstLineVariablesSkillBar.addView(doubleButton);
+
+            setStringButtonOnClickListener();
         }
     }
 
@@ -3463,40 +3954,178 @@ public class GameplayScreen extends AppCompatActivity {
         stringButton = (TextView) findViewById(R.id.stringButton);
 
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("string").getUnlocked()) {
-            stringButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (currentTextViewClicked != null) {
-                        if (currentContentTypeProcessed.isSecretWord()) {
-                            if (currentContentTypeProcessed.correctWord.equals("string")) {
-                                chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
-                                chiuplusattackanimation.clearAnimation();
+
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "string.jpg");
+
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(stringButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("string")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
 
 
-                                chiuplusattackanimation.setVisibility(View.VISIBLE);
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
 
-                                allErrorsInContent.remove(currentTextViewClicked);
+                                            allErrorsInContent.remove(currentTextViewClicked);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chiuplusattackanimation.setVisibility(View.GONE);
-                                        chiuplusattackanimation.clearAnimation();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
 
-                                        gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
-                                            endGameScreenVictory();
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText("string");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
                                         }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
                                     }
-                                }, 2300);
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
 
-                                currentTextViewClicked.setText("string");
-                                currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
-                                currentTextViewClicked.setOnClickListener(null);
+                        LinearLayout secondLineVariablesSkillBar = (LinearLayout) findViewById(R.id.secondLineVariablesSkillBar);
+                        secondLineVariablesSkillBar.addView(skillImage);
 
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
+                        secondLineVariablesSkillBar.removeView(stringButton);
+
+                        setToArrayButtonOnClickListener();
+                    }
+                });
+
+            } else {
+
+                stringButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentContentTypeProcessed.isSecretWord()) {
+                                if (currentContentTypeProcessed.correctWord.equals("string")) {
+                                    chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                    chiuplusattackanimation.clearAnimation();
+
+
+                                    chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                    allErrorsInContent.remove(currentTextViewClicked);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chiuplusattackanimation.setVisibility(View.GONE);
+                                            chiuplusattackanimation.clearAnimation();
+
+                                            gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                            if (allErrorsInContent.size() == 0) {
+                                                endGameScreenVictory();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setText("string");
+                                    currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                    currentTextViewClicked.setOnClickListener(null);
+
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                } else {
+                                    enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                    enemyattackanimation.clearAnimation();
+
+                                    CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                    enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            enemyattackanimation.setVisibility(View.GONE);
+                                            enemyattackanimation.clearAnimation();
+
+                                            gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                            if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                endGameScreenDefeat();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                }
                             } else {
                                 enemyattackanimation.setImageResource(R.drawable.enemyattack);
                                 enemyattackanimation.clearAnimation();
@@ -3513,7 +4142,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -3523,36 +4152,14 @@ public class GameplayScreen extends AppCompatActivity {
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
                             }
-                        } else {
-                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
-                            enemyattackanimation.clearAnimation();
-
-                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
-
-                            enemyattackanimation.setVisibility(View.VISIBLE);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enemyattackanimation.setVisibility(View.GONE);
-                                    enemyattackanimation.clearAnimation();
-
-                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
-
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
-                                        endGameScreenDefeat();
-                                    }
-                                }
-                            }, 2300);
-
-                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                            currentTextViewClicked = null;
-                            currentContentTypeProcessed = null;
                         }
                     }
-                }
-            });
+                });
+
+                setToArrayButtonOnClickListener();
+            }
         } else {
+            LinearLayout secondLineVariablesSkillBar = (LinearLayout) findViewById(R.id.secondLineVariablesSkillBar);
             stringButton.setText("Locked");
 
             stringButton.setOnClickListener(new View.OnClickListener() {
@@ -3561,6 +4168,11 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("string").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            secondLineVariablesSkillBar.removeView(stringButton);
+            secondLineVariablesSkillBar.addView(stringButton);
+
+            setToArrayButtonOnClickListener();
         }
     }
 
@@ -3568,40 +4180,177 @@ public class GameplayScreen extends AppCompatActivity {
         toArrayButton = (TextView) findViewById(R.id.toArrayButton);
 
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("array").getUnlocked()) {
-            toArrayButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (currentTextViewClicked != null) {
-                        if (currentContentTypeProcessed.isSecretWord()) {
-                            if (currentContentTypeProcessed.correctWord.equals("array")) {
-                                chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
-                                chiuplusattackanimation.clearAnimation();
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "array.jpg");
+
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(toArrayButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("array")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
 
 
-                                chiuplusattackanimation.setVisibility(View.VISIBLE);
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
 
-                                allErrorsInContent.remove(currentTextViewClicked);
+                                            allErrorsInContent.remove(currentTextViewClicked);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chiuplusattackanimation.setVisibility(View.GONE);
-                                        chiuplusattackanimation.clearAnimation();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
 
-                                        gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
-                                            endGameScreenVictory();
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText(currentContentTypeProcessed.wordContent + "[]");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
                                         }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
                                     }
-                                }, 2300);
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
 
-                                currentTextViewClicked.setText(currentContentTypeProcessed.wordContent + "[]");
-                                currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
-                                currentTextViewClicked.setOnClickListener(null);
+                        LinearLayout secondLineVariablesSkillBar = (LinearLayout) findViewById(R.id.secondLineVariablesSkillBar);
+                        secondLineVariablesSkillBar.addView(skillImage);
 
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
+                        secondLineVariablesSkillBar.removeView(toArrayButton);
+
+                        setTo2dArrayButtonOnClickListener();
+                    }
+                });
+
+            } else {
+
+                toArrayButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentContentTypeProcessed.isSecretWord()) {
+                                if (currentContentTypeProcessed.correctWord.equals("array")) {
+                                    chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                    chiuplusattackanimation.clearAnimation();
+
+
+                                    chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                    allErrorsInContent.remove(currentTextViewClicked);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chiuplusattackanimation.setVisibility(View.GONE);
+                                            chiuplusattackanimation.clearAnimation();
+
+                                            gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                            if (allErrorsInContent.size() == 0) {
+                                                endGameScreenVictory();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setText(currentContentTypeProcessed.wordContent + "[]");
+                                    currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                    currentTextViewClicked.setOnClickListener(null);
+
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                } else {
+                                    enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                    enemyattackanimation.clearAnimation();
+
+                                    CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                    enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            enemyattackanimation.setVisibility(View.GONE);
+                                            enemyattackanimation.clearAnimation();
+
+                                            gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                            if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                endGameScreenDefeat();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                }
                             } else {
                                 enemyattackanimation.setImageResource(R.drawable.enemyattack);
                                 enemyattackanimation.clearAnimation();
@@ -3618,7 +4367,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -3628,36 +4377,15 @@ public class GameplayScreen extends AppCompatActivity {
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
                             }
-                        } else {
-                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
-                            enemyattackanimation.clearAnimation();
-
-                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
-
-                            enemyattackanimation.setVisibility(View.VISIBLE);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enemyattackanimation.setVisibility(View.GONE);
-                                    enemyattackanimation.clearAnimation();
-
-                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
-
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
-                                        endGameScreenDefeat();
-                                    }
-                                }
-                            }, 2300);
-
-                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                            currentTextViewClicked = null;
-                            currentContentTypeProcessed = null;
                         }
                     }
-                }
-            });
+                });
+
+                setTo2dArrayButtonOnClickListener();
+            }
         } else {
+            LinearLayout secondLineVariablesSkillBar = (LinearLayout) findViewById(R.id.secondLineVariablesSkillBar);
+
             toArrayButton.setText("Locked");
 
             toArrayButton.setOnClickListener(new View.OnClickListener() {
@@ -3666,6 +4394,11 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("array").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            secondLineVariablesSkillBar.removeView(toArrayButton);
+            secondLineVariablesSkillBar.addView(toArrayButton);
+
+            setTo2dArrayButtonOnClickListener();
         }
     }
 
@@ -3673,40 +4406,177 @@ public class GameplayScreen extends AppCompatActivity {
         to2dArrayButton = (TextView) findViewById(R.id.to2dArrayButton);
 
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("2dArray").getUnlocked()) {
-            to2dArrayButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (currentTextViewClicked != null) {
-                        if (currentContentTypeProcessed.isSecretWord()) {
-                            if (currentContentTypeProcessed.correctWord.equals("2dArray")) {
-                                chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
-                                chiuplusattackanimation.clearAnimation();
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "2dArray.jpg");
+
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(to2dArrayButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("2dArray")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
 
 
-                                chiuplusattackanimation.setVisibility(View.VISIBLE);
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
 
-                                allErrorsInContent.remove(currentTextViewClicked);
+                                            allErrorsInContent.remove(currentTextViewClicked);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chiuplusattackanimation.setVisibility(View.GONE);
-                                        chiuplusattackanimation.clearAnimation();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
 
-                                        gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
-                                            endGameScreenVictory();
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText(currentContentTypeProcessed.wordContent + "[][]");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
                                         }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
                                     }
-                                }, 2300);
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
 
-                                currentTextViewClicked.setText(currentContentTypeProcessed.wordContent+"[][]");
-                                currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
-                                currentTextViewClicked.setOnClickListener(null);
+                        LinearLayout secondLineVariablesSkillBar = (LinearLayout) findViewById(R.id.secondLineVariablesSkillBar);
+                        secondLineVariablesSkillBar.addView(skillImage);
 
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
+                        secondLineVariablesSkillBar.removeView(to2dArrayButton);
+
+                        setGoBackToSkillBarButtonFromVariablesOnClickListener();
+                    }
+                });
+
+            } else {
+
+                to2dArrayButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentContentTypeProcessed.isSecretWord()) {
+                                if (currentContentTypeProcessed.correctWord.equals("2dArray")) {
+                                    chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                    chiuplusattackanimation.clearAnimation();
+
+
+                                    chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                    allErrorsInContent.remove(currentTextViewClicked);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chiuplusattackanimation.setVisibility(View.GONE);
+                                            chiuplusattackanimation.clearAnimation();
+
+                                            gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                            if (allErrorsInContent.size() == 0) {
+                                                endGameScreenVictory();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setText(currentContentTypeProcessed.wordContent + "[][]");
+                                    currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                    currentTextViewClicked.setOnClickListener(null);
+
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                } else {
+                                    enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                    enemyattackanimation.clearAnimation();
+
+                                    CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                    enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            enemyattackanimation.setVisibility(View.GONE);
+                                            enemyattackanimation.clearAnimation();
+
+                                            gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                            if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                endGameScreenDefeat();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                }
                             } else {
                                 enemyattackanimation.setImageResource(R.drawable.enemyattack);
                                 enemyattackanimation.clearAnimation();
@@ -3723,7 +4593,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -3733,36 +4603,15 @@ public class GameplayScreen extends AppCompatActivity {
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
                             }
-                        } else {
-                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
-                            enemyattackanimation.clearAnimation();
-
-                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
-
-                            enemyattackanimation.setVisibility(View.VISIBLE);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enemyattackanimation.setVisibility(View.GONE);
-                                    enemyattackanimation.clearAnimation();
-
-                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
-
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
-                                        endGameScreenDefeat();
-                                    }
-                                }
-                            }, 2300);
-
-                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                            currentTextViewClicked = null;
-                            currentContentTypeProcessed = null;
                         }
                     }
-                }
-            });
+                });
+
+                setGoBackToSkillBarButtonFromVariablesOnClickListener();
+            }
         } else {
+            LinearLayout secondLineVariablesSkillBar = (LinearLayout) findViewById(R.id.secondLineVariablesSkillBar);
+
             to2dArrayButton.setText("Locked");
 
             to2dArrayButton.setOnClickListener(new View.OnClickListener() {
@@ -3771,10 +4620,17 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("2dArray").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            secondLineVariablesSkillBar.removeView(to2dArrayButton);
+            secondLineVariablesSkillBar.addView(to2dArrayButton);
+
+            setGoBackToSkillBarButtonFromVariablesOnClickListener();
         }
     }
 
     private void setGoBackToSkillBarButtonFromVariablesOnClickListener() {
+        LinearLayout secondLineVariablesSkillBar = (LinearLayout) findViewById(R.id.secondLineVariablesSkillBar);
+
         goBackToSkillBarButtonFromVariables = (TextView) findViewById(R.id.goBackToSkillBarButtonFromVariables);
         goBackToSkillBarButtonFromVariables.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3783,6 +4639,10 @@ public class GameplayScreen extends AppCompatActivity {
                 mainSkillBarLayout.setVisibility(View.VISIBLE);
             }
         });
+
+        secondLineVariablesSkillBar.removeView(goBackToSkillBarButtonFromVariables);
+
+        secondLineVariablesSkillBar.addView(goBackToSkillBarButtonFromVariables);
     }
 
     //Conditionals bar menu buttons on click listener; ifButton, elseButton, elseIfButton, goBackToSkillBarButtonFromConditionals;
@@ -3790,40 +4650,178 @@ public class GameplayScreen extends AppCompatActivity {
         ifButton = (TextView) findViewById(R.id.ifButton);
 
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("if").getUnlocked()) {
-            ifButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (currentTextViewClicked != null) {
-                        if (currentContentTypeProcessed.isSecretWord()) {
-                            if (currentContentTypeProcessed.correctWord.equals("if")) {
-                                chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
-                                chiuplusattackanimation.clearAnimation();
+
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "if.jpg");
+
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(ifButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("if")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
 
 
-                                chiuplusattackanimation.setVisibility(View.VISIBLE);
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
 
-                                allErrorsInContent.remove(currentTextViewClicked);
+                                            allErrorsInContent.remove(currentTextViewClicked);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chiuplusattackanimation.setVisibility(View.GONE);
-                                        chiuplusattackanimation.clearAnimation();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
 
-                                        gameScreenEnemyName.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
-                                            endGameScreenVictory();
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText("if");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
                                         }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
                                     }
-                                }, 2300);
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
 
-                                currentTextViewClicked.setText("if");
-                                currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
-                                currentTextViewClicked.setOnClickListener(null);
+                        LinearLayout firstLineConditionalsSkillBarLayout = (LinearLayout) findViewById(R.id.firstLineConditionalsSkillBarLayout);
+                        firstLineConditionalsSkillBarLayout.addView(skillImage);
 
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
+                        firstLineConditionalsSkillBarLayout.removeView(ifButton);
+
+                        setElseButtonOnClickListener();
+                    }
+                });
+
+            } else {
+
+                ifButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentContentTypeProcessed.isSecretWord()) {
+                                if (currentContentTypeProcessed.correctWord.equals("if")) {
+                                    chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                    chiuplusattackanimation.clearAnimation();
+
+
+                                    chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                    allErrorsInContent.remove(currentTextViewClicked);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chiuplusattackanimation.setVisibility(View.GONE);
+                                            chiuplusattackanimation.clearAnimation();
+
+                                            gameScreenEnemyName.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                            if (allErrorsInContent.size() == 0) {
+                                                endGameScreenVictory();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setText("if");
+                                    currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                    currentTextViewClicked.setOnClickListener(null);
+
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                } else {
+                                    enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                    enemyattackanimation.clearAnimation();
+
+                                    CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                    enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            enemyattackanimation.setVisibility(View.GONE);
+                                            enemyattackanimation.clearAnimation();
+
+                                            gameScreenEnemyHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                            if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                endGameScreenDefeat();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                }
                             } else {
                                 enemyattackanimation.setImageResource(R.drawable.enemyattack);
                                 enemyattackanimation.clearAnimation();
@@ -3838,9 +4836,9 @@ public class GameplayScreen extends AppCompatActivity {
                                         enemyattackanimation.setVisibility(View.GONE);
                                         enemyattackanimation.clearAnimation();
 
-                                        gameScreenEnemyHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+                                        gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -3850,36 +4848,15 @@ public class GameplayScreen extends AppCompatActivity {
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
                             }
-                        } else {
-                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
-                            enemyattackanimation.clearAnimation();
-
-                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
-
-                            enemyattackanimation.setVisibility(View.VISIBLE);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enemyattackanimation.setVisibility(View.GONE);
-                                    enemyattackanimation.clearAnimation();
-
-                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
-
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
-                                        endGameScreenDefeat();
-                                    }
-                                }
-                            }, 2300);
-
-                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                            currentTextViewClicked = null;
-                            currentContentTypeProcessed = null;
                         }
                     }
-                }
-            });
+                });
+
+                setElseButtonOnClickListener();
+            }
         } else {
+            LinearLayout firstLineConditionalsSkillBarLayout = (LinearLayout) findViewById(R.id.firstLineConditionalsSkillBarLayout);
+
             ifButton.setText("Locked");
 
             ifButton.setOnClickListener(new View.OnClickListener() {
@@ -3888,6 +4865,11 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("if").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            firstLineConditionalsSkillBarLayout.removeView(ifButton);
+            firstLineConditionalsSkillBarLayout.addView(ifButton);
+
+            setElseButtonOnClickListener();
         }
     }
 
@@ -3895,40 +4877,178 @@ public class GameplayScreen extends AppCompatActivity {
         elseButton = (TextView) findViewById(R.id.elseButton);
 
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("else").getUnlocked()) {
-            elseButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (currentTextViewClicked != null) {
-                        if (currentContentTypeProcessed.isSecretWord()) {
-                            if (currentContentTypeProcessed.correctWord.equals("else")) {
-                                chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
-                                chiuplusattackanimation.clearAnimation();
+
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "else.jpg");
+
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(elseButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("else")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
 
 
-                                chiuplusattackanimation.setVisibility(View.VISIBLE);
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
 
-                                allErrorsInContent.remove(currentTextViewClicked);
+                                            allErrorsInContent.remove(currentTextViewClicked);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chiuplusattackanimation.setVisibility(View.GONE);
-                                        chiuplusattackanimation.clearAnimation();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
 
-                                        gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
-                                            endGameScreenVictory();
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText("else");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
                                         }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
                                     }
-                                }, 2300);
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
 
-                                currentTextViewClicked.setText("else");
-                                currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
-                                currentTextViewClicked.setOnClickListener(null);
+                        LinearLayout firstLineConditionalsSkillBarLayout = (LinearLayout) findViewById(R.id.firstLineConditionalsSkillBarLayout);
+                        firstLineConditionalsSkillBarLayout.addView(skillImage);
 
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
+                        firstLineConditionalsSkillBarLayout.removeView(elseButton);
+
+                        setElseIfButtonOnClickListener();
+                    }
+                });
+
+            } else {
+
+                elseButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentContentTypeProcessed.isSecretWord()) {
+                                if (currentContentTypeProcessed.correctWord.equals("else")) {
+                                    chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                    chiuplusattackanimation.clearAnimation();
+
+
+                                    chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                    allErrorsInContent.remove(currentTextViewClicked);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chiuplusattackanimation.setVisibility(View.GONE);
+                                            chiuplusattackanimation.clearAnimation();
+
+                                            gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                            if (allErrorsInContent.size() == 0) {
+                                                endGameScreenVictory();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setText("else");
+                                    currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                    currentTextViewClicked.setOnClickListener(null);
+
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                } else {
+                                    enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                    enemyattackanimation.clearAnimation();
+
+                                    CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                    enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            enemyattackanimation.setVisibility(View.GONE);
+                                            enemyattackanimation.clearAnimation();
+
+                                            gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                            if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                endGameScreenDefeat();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                }
                             } else {
                                 enemyattackanimation.setImageResource(R.drawable.enemyattack);
                                 enemyattackanimation.clearAnimation();
@@ -3945,7 +5065,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -3955,36 +5075,14 @@ public class GameplayScreen extends AppCompatActivity {
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
                             }
-                        } else {
-                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
-                            enemyattackanimation.clearAnimation();
-
-                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
-
-                            enemyattackanimation.setVisibility(View.VISIBLE);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enemyattackanimation.setVisibility(View.GONE);
-                                    enemyattackanimation.clearAnimation();
-
-                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
-
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
-                                        endGameScreenDefeat();
-                                    }
-                                }
-                            }, 2300);
-
-                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                            currentTextViewClicked = null;
-                            currentContentTypeProcessed = null;
                         }
                     }
-                }
-            });
+                });
+                setElseIfButtonOnClickListener();
+            }
         } else {
+            LinearLayout firstLineConditionalsSkillBarLayout = (LinearLayout) findViewById(R.id.firstLineConditionalsSkillBarLayout);
+
             elseButton.setText("Locked");
 
             elseButton.setOnClickListener(new View.OnClickListener() {
@@ -3993,6 +5091,11 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("else").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            firstLineConditionalsSkillBarLayout.removeView(elseButton);
+            firstLineConditionalsSkillBarLayout.addView(elseButton);
+
+            setElseIfButtonOnClickListener();
         }
     }
 
@@ -4000,40 +5103,178 @@ public class GameplayScreen extends AppCompatActivity {
         elseIfButton = (TextView) findViewById(R.id.elseIfButton);
 
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("else if").getUnlocked()) {
-            elseIfButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (currentTextViewClicked != null) {
-                        if (currentContentTypeProcessed.isSecretWord()) {
-                            if (currentContentTypeProcessed.correctWord.equals("else if")) {
-                                chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
-                                chiuplusattackanimation.clearAnimation();
+
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "else if.jpg");
+
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(elseIfButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("else if")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
 
 
-                                chiuplusattackanimation.setVisibility(View.VISIBLE);
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
 
-                                allErrorsInContent.remove(currentTextViewClicked);
+                                            allErrorsInContent.remove(currentTextViewClicked);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chiuplusattackanimation.setVisibility(View.GONE);
-                                        chiuplusattackanimation.clearAnimation();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
 
-                                        gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
-                                            endGameScreenVictory();
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText("else if");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
                                         }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
                                     }
-                                }, 2300);
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
 
-                                currentTextViewClicked.setText("else if");
-                                currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
-                                currentTextViewClicked.setOnClickListener(null);
+                        LinearLayout secondLineConditionalsSkillBarLayout = (LinearLayout) findViewById(R.id.secondLineConditionalsSkillBarLayout);
+                        secondLineConditionalsSkillBarLayout.addView(skillImage);
 
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
+                        secondLineConditionalsSkillBarLayout.removeView(elseIfButton);
+
+                        setGoBackToSkillBarButtonFromConditionals();
+                    }
+                });
+
+            } else {
+
+                elseIfButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentContentTypeProcessed.isSecretWord()) {
+                                if (currentContentTypeProcessed.correctWord.equals("else if")) {
+                                    chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                    chiuplusattackanimation.clearAnimation();
+
+
+                                    chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                    allErrorsInContent.remove(currentTextViewClicked);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chiuplusattackanimation.setVisibility(View.GONE);
+                                            chiuplusattackanimation.clearAnimation();
+
+                                            gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                            if (allErrorsInContent.size() == 0) {
+                                                endGameScreenVictory();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setText("else if");
+                                    currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                    currentTextViewClicked.setOnClickListener(null);
+
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                } else {
+                                    enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                    enemyattackanimation.clearAnimation();
+
+                                    CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                    enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            enemyattackanimation.setVisibility(View.GONE);
+                                            enemyattackanimation.clearAnimation();
+
+                                            gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                            if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                endGameScreenDefeat();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                }
                             } else {
                                 enemyattackanimation.setImageResource(R.drawable.enemyattack);
                                 enemyattackanimation.clearAnimation();
@@ -4050,7 +5291,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -4060,36 +5301,15 @@ public class GameplayScreen extends AppCompatActivity {
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
                             }
-                        } else {
-                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
-                            enemyattackanimation.clearAnimation();
-
-                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
-
-                            enemyattackanimation.setVisibility(View.VISIBLE);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enemyattackanimation.setVisibility(View.GONE);
-                                    enemyattackanimation.clearAnimation();
-
-                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
-
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
-                                        endGameScreenDefeat();
-                                    }
-                                }
-                            }, 2300);
-
-                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                            currentTextViewClicked = null;
-                            currentContentTypeProcessed = null;
                         }
                     }
-                }
-            });
+                });
+
+                setGoBackToSkillBarButtonFromConditionals();
+            }
         } else {
+            LinearLayout secondLineConditionalsSkillBarLayout = (LinearLayout) findViewById(R.id.secondLineConditionalsSkillBarLayout);
+
             elseIfButton.setText("Locked");
 
             elseIfButton.setOnClickListener(new View.OnClickListener() {
@@ -4098,10 +5318,17 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("else if").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            secondLineConditionalsSkillBarLayout.removeView(elseIfButton);
+            secondLineConditionalsSkillBarLayout.addView(elseIfButton);
+
+            setGoBackToSkillBarButtonFromConditionals();
         }
     }
 
     private void setGoBackToSkillBarButtonFromConditionals() {
+        LinearLayout secondLineConditionalsSkillBarLayout = (LinearLayout) findViewById(R.id.secondLineConditionalsSkillBarLayout);
+
         goBackToSkillBarButtonFromConditionals = (TextView) findViewById(R.id.goBackToSkillBarButtonFromConditionals);
         goBackToSkillBarButtonFromConditionals.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -4110,6 +5337,9 @@ public class GameplayScreen extends AppCompatActivity {
                 mainSkillBarLayout.setVisibility(View.VISIBLE);
             }
         });
+
+        secondLineConditionalsSkillBarLayout.removeView(goBackToSkillBarButtonFromConditionals);
+        secondLineConditionalsSkillBarLayout.addView(goBackToSkillBarButtonFromConditionals);
     }
 
     //Loops bar menu buttons on click listener; whileButton, doButton, forButton, goBackToSkillBarButtonFromLoops;
@@ -4118,40 +5348,178 @@ public class GameplayScreen extends AppCompatActivity {
         whileButton = (TextView) findViewById(R.id.whileButton);
 
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("while").getUnlocked()) {
-            whileButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (currentTextViewClicked != null) {
-                        if (currentContentTypeProcessed.isSecretWord()) {
-                            if (currentContentTypeProcessed.correctWord.equals("while")) {
-                                chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
-                                chiuplusattackanimation.clearAnimation();
+
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "while.jpg");
+
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(whileButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("while")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
 
 
-                                chiuplusattackanimation.setVisibility(View.VISIBLE);
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
 
-                                allErrorsInContent.remove(currentTextViewClicked);
+                                            allErrorsInContent.remove(currentTextViewClicked);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chiuplusattackanimation.setVisibility(View.GONE);
-                                        chiuplusattackanimation.clearAnimation();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
 
-                                        gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
-                                            endGameScreenVictory();
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText("while");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
                                         }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
                                     }
-                                }, 2300);
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
 
-                                currentTextViewClicked.setText("while");
-                                currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
-                                currentTextViewClicked.setOnClickListener(null);
+                        LinearLayout firstLineLoopsSkillBarLayout = (LinearLayout) findViewById(R.id.firstLineLoopsSkillBarLayout);
+                        firstLineLoopsSkillBarLayout.addView(skillImage);
 
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
+                        firstLineLoopsSkillBarLayout.removeView(whileButton);
+
+                        setDoButtonOnClickListener();
+                    }
+                });
+
+            } else {
+
+                whileButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentContentTypeProcessed.isSecretWord()) {
+                                if (currentContentTypeProcessed.correctWord.equals("while")) {
+                                    chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                    chiuplusattackanimation.clearAnimation();
+
+
+                                    chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                    allErrorsInContent.remove(currentTextViewClicked);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chiuplusattackanimation.setVisibility(View.GONE);
+                                            chiuplusattackanimation.clearAnimation();
+
+                                            gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                            if (allErrorsInContent.size() == 0) {
+                                                endGameScreenVictory();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setText("while");
+                                    currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                    currentTextViewClicked.setOnClickListener(null);
+
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                } else {
+                                    enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                    enemyattackanimation.clearAnimation();
+
+                                    CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                    enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            enemyattackanimation.setVisibility(View.GONE);
+                                            enemyattackanimation.clearAnimation();
+
+                                            gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                            if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                endGameScreenDefeat();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                }
                             } else {
                                 enemyattackanimation.setImageResource(R.drawable.enemyattack);
                                 enemyattackanimation.clearAnimation();
@@ -4168,7 +5536,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -4178,36 +5546,15 @@ public class GameplayScreen extends AppCompatActivity {
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
                             }
-                        } else {
-                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
-                            enemyattackanimation.clearAnimation();
-
-                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
-
-                            enemyattackanimation.setVisibility(View.VISIBLE);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enemyattackanimation.setVisibility(View.GONE);
-                                    enemyattackanimation.clearAnimation();
-
-                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
-
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
-                                        endGameScreenDefeat();
-                                    }
-                                }
-                            }, 2300);
-
-                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                            currentTextViewClicked = null;
-                            currentContentTypeProcessed = null;
                         }
                     }
-                }
-            });
+                });
+
+                setDoButtonOnClickListener();
+            }
         } else {
+            LinearLayout firstLineLoopsSkillBarLayout = (LinearLayout) findViewById(R.id.firstLineLoopsSkillBarLayout);
+
             whileButton.setText("Locked");
 
             whileButton.setOnClickListener(new View.OnClickListener() {
@@ -4216,6 +5563,11 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("while").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            firstLineLoopsSkillBarLayout.removeView(whileButton);
+            firstLineLoopsSkillBarLayout.addView(whileButton);
+
+            setDoButtonOnClickListener();
         }
     }
 
@@ -4223,40 +5575,178 @@ public class GameplayScreen extends AppCompatActivity {
         doButton = (TextView) findViewById(R.id.doButton);
 
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("do").getUnlocked()) {
-            doButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (currentTextViewClicked != null) {
-                        if (currentContentTypeProcessed.isSecretWord()) {
-                            if (currentContentTypeProcessed.correctWord.equals("do")) {
-                                chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
-                                chiuplusattackanimation.clearAnimation();
+
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "do.jpg");
+
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(doButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("do")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
 
 
-                                chiuplusattackanimation.setVisibility(View.VISIBLE);
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
 
-                                allErrorsInContent.remove(currentTextViewClicked);
+                                            allErrorsInContent.remove(currentTextViewClicked);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chiuplusattackanimation.setVisibility(View.GONE);
-                                        chiuplusattackanimation.clearAnimation();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
 
-                                        gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
-                                            endGameScreenVictory();
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText("do");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
                                         }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
                                     }
-                                }, 2300);
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
 
-                                currentTextViewClicked.setText("do");
-                                currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
-                                currentTextViewClicked.setOnClickListener(null);
+                        LinearLayout firstLineLoopsSkillBarLayout = (LinearLayout) findViewById(R.id.firstLineLoopsSkillBarLayout);
+                        firstLineLoopsSkillBarLayout.addView(skillImage);
 
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
+                        firstLineLoopsSkillBarLayout.removeView(doButton);
+
+                        setForButtonOnClickListener();
+                    }
+                });
+
+            } else {
+
+                doButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentContentTypeProcessed.isSecretWord()) {
+                                if (currentContentTypeProcessed.correctWord.equals("do")) {
+                                    chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                    chiuplusattackanimation.clearAnimation();
+
+
+                                    chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                    allErrorsInContent.remove(currentTextViewClicked);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chiuplusattackanimation.setVisibility(View.GONE);
+                                            chiuplusattackanimation.clearAnimation();
+
+                                            gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                            if (allErrorsInContent.size() == 0) {
+                                                endGameScreenVictory();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setText("do");
+                                    currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                    currentTextViewClicked.setOnClickListener(null);
+
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                } else {
+                                    enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                    enemyattackanimation.clearAnimation();
+
+                                    CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                    enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            enemyattackanimation.setVisibility(View.GONE);
+                                            enemyattackanimation.clearAnimation();
+
+                                            gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                            if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                endGameScreenDefeat();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                }
                             } else {
                                 enemyattackanimation.setImageResource(R.drawable.enemyattack);
                                 enemyattackanimation.clearAnimation();
@@ -4273,7 +5763,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -4283,36 +5773,14 @@ public class GameplayScreen extends AppCompatActivity {
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
                             }
-                        } else {
-                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
-                            enemyattackanimation.clearAnimation();
-
-                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
-
-                            enemyattackanimation.setVisibility(View.VISIBLE);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enemyattackanimation.setVisibility(View.GONE);
-                                    enemyattackanimation.clearAnimation();
-
-                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
-
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
-                                        endGameScreenDefeat();
-                                    }
-                                }
-                            }, 2300);
-
-                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                            currentTextViewClicked = null;
-                            currentContentTypeProcessed = null;
                         }
                     }
-                }
-            });
+                });
+                setForButtonOnClickListener();
+            }
         } else {
+            LinearLayout firstLineLoopsSkillBarLayout = (LinearLayout) findViewById(R.id.firstLineLoopsSkillBarLayout);
+
             doButton.setText("Locked");
 
             doButton.setOnClickListener(new View.OnClickListener() {
@@ -4321,6 +5789,12 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("do").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            firstLineLoopsSkillBarLayout.removeView(doButton);
+
+            firstLineLoopsSkillBarLayout.addView(doButton);
+
+            setForButtonOnClickListener();
         }
     }
 
@@ -4328,40 +5802,177 @@ public class GameplayScreen extends AppCompatActivity {
         forButton = (TextView) findViewById(R.id.forButton);
 
         if (CurrentUserInformation.getInstance().userSkillsCollection.get("for").getUnlocked()) {
-            forButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (currentTextViewClicked != null) {
-                        if (currentContentTypeProcessed.isSecretWord()) {
-                            if (currentContentTypeProcessed.correctWord.equals("for")) {
-                                chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
-                                chiuplusattackanimation.clearAnimation();
+            if(CurrentUserInformation.getInstance().getUserGameModeSelected().equals("mnemonics")){
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                StorageReference userDrawnSkillImageStorageReference = FirebaseStorage.getInstance().getReference().child("userDrawnSkills").child(mAuth.getCurrentUser().getUid()).child( "for.jpg");
+
+                userDrawnSkillImageStorageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        ImageView skillImage = new ImageView(getApplicationContext());
+                        skillImage.setLayoutParams(forButton.getLayoutParams());
+                        skillImage.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (currentTextViewClicked != null) {
+                                    if (currentContentTypeProcessed.isSecretWord()) {
+                                        if (currentContentTypeProcessed.correctWord.equals("for")) {
+                                            chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                            chiuplusattackanimation.clearAnimation();
 
 
-                                chiuplusattackanimation.setVisibility(View.VISIBLE);
+                                            chiuplusattackanimation.setVisibility(View.VISIBLE);
 
-                                allErrorsInContent.remove(currentTextViewClicked);
+                                            allErrorsInContent.remove(currentTextViewClicked);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        chiuplusattackanimation.setVisibility(View.GONE);
-                                        chiuplusattackanimation.clearAnimation();
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    chiuplusattackanimation.setVisibility(View.GONE);
+                                                    chiuplusattackanimation.clearAnimation();
 
-                                        gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+                                                    gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
 
-                                        if(allErrorsInContent.size()==0){
-                                            endGameScreenVictory();
+                                                    if (allErrorsInContent.size() == 0) {
+                                                        endGameScreenVictory();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setText("for");
+                                            currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                            currentTextViewClicked.setOnClickListener(null);
+
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
+                                        } else {
+                                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                            enemyattackanimation.clearAnimation();
+
+                                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                            enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    enemyattackanimation.setVisibility(View.GONE);
+                                                    enemyattackanimation.clearAnimation();
+
+                                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                    if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                        endGameScreenDefeat();
+                                                    }
+                                                }
+                                            }, 2300);
+
+                                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                            currentTextViewClicked = null;
+                                            currentContentTypeProcessed = null;
                                         }
+                                    } else {
+                                        enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                        enemyattackanimation.clearAnimation();
+
+                                        CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                        enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                enemyattackanimation.setVisibility(View.GONE);
+                                                enemyattackanimation.clearAnimation();
+
+                                                gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                                if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                    endGameScreenDefeat();
+                                                }
+                                            }
+                                        }, 2300);
+
+                                        currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                        currentTextViewClicked = null;
+                                        currentContentTypeProcessed = null;
                                     }
-                                }, 2300);
+                                }
+                            }
+                        });
+                        Glide.with(getApplicationContext()).asBitmap().load(uri.toString()).into(skillImage);
 
-                                currentTextViewClicked.setText("for");
-                                currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
-                                currentTextViewClicked.setOnClickListener(null);
+                        LinearLayout secondLineLoopsSkillBarLayout = (LinearLayout) findViewById(R.id.secondLineLoopsSkillBarLayout);
+                        secondLineLoopsSkillBarLayout.addView(skillImage);
 
-                                currentTextViewClicked = null;
-                                currentContentTypeProcessed = null;
+                        secondLineLoopsSkillBarLayout.removeView(forButton);
+
+                        setGoBackToSkillBarButtonFromLoops();
+                    }
+                });
+
+            } else {
+
+                forButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (currentTextViewClicked != null) {
+                            if (currentContentTypeProcessed.isSecretWord()) {
+                                if (currentContentTypeProcessed.correctWord.equals("for")) {
+                                    chiuplusattackanimation.setImageResource(R.drawable.chiuplusattack);
+                                    chiuplusattackanimation.clearAnimation();
+
+
+                                    chiuplusattackanimation.setVisibility(View.VISIBLE);
+
+                                    allErrorsInContent.remove(currentTextViewClicked);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            chiuplusattackanimation.setVisibility(View.GONE);
+                                            chiuplusattackanimation.clearAnimation();
+
+                                            gameScreenEnemyHealth.setText("HP  " + allErrorsInContent.size() + "/" + enemyMaxHealth);
+
+                                            if (allErrorsInContent.size() == 0) {
+                                                endGameScreenVictory();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setText("for");
+                                    currentTextViewClicked.setTextColor(Color.parseColor("#8FBC8F"));
+                                    currentTextViewClicked.setOnClickListener(null);
+
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                } else {
+                                    enemyattackanimation.setImageResource(R.drawable.enemyattack);
+                                    enemyattackanimation.clearAnimation();
+
+                                    CurrentUserInformation.getInstance().increaseUserHealth(-1);
+
+                                    enemyattackanimation.setVisibility(View.VISIBLE);
+
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            enemyattackanimation.setVisibility(View.GONE);
+                                            enemyattackanimation.clearAnimation();
+
+                                            gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
+
+                                            if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
+                                                endGameScreenDefeat();
+                                            }
+                                        }
+                                    }, 2300);
+
+                                    currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
+                                    currentTextViewClicked = null;
+                                    currentContentTypeProcessed = null;
+                                }
                             } else {
                                 enemyattackanimation.setImageResource(R.drawable.enemyattack);
                                 enemyattackanimation.clearAnimation();
@@ -4378,7 +5989,7 @@ public class GameplayScreen extends AppCompatActivity {
 
                                         gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
 
-                                        if(CurrentUserInformation.getInstance().getUserHealth() == 0){
+                                        if (CurrentUserInformation.getInstance().getUserHealth() == 0) {
                                             endGameScreenDefeat();
                                         }
                                     }
@@ -4388,36 +5999,14 @@ public class GameplayScreen extends AppCompatActivity {
                                 currentTextViewClicked = null;
                                 currentContentTypeProcessed = null;
                             }
-                        } else {
-                            enemyattackanimation.setImageResource(R.drawable.enemyattack);
-                            enemyattackanimation.clearAnimation();
-
-                            CurrentUserInformation.getInstance().increaseUserHealth(-1);
-
-                            enemyattackanimation.setVisibility(View.VISIBLE);
-
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enemyattackanimation.setVisibility(View.GONE);
-                                    enemyattackanimation.clearAnimation();
-
-                                    gameScreenPlayerHealth.setText("HP  " + String.format(CurrentUserInformation.getInstance().getUserHealth().toString()) + "/" + String.format(UserLevel.getInstance().getMaxHealthAtLevel(CurrentUserInformation.getInstance().getUserLevel()).toString()));
-
-                                    if(CurrentUserInformation.getInstance().getUserHealth() == 0){
-                                        endGameScreenDefeat();
-                                    }
-                                }
-                            }, 2300);
-
-                            currentTextViewClicked.setTextColor(getResources().getColor(R.color.colorAccent));
-                            currentTextViewClicked = null;
-                            currentContentTypeProcessed = null;
                         }
                     }
-                }
-            });
+                });
+                setGoBackToSkillBarButtonFromLoops();
+            }
         } else {
+            LinearLayout secondLineLoopsSkillBarLayout = (LinearLayout) findViewById(R.id.secondLineLoopsSkillBarLayout);
+
             forButton.setText("Locked");
 
             forButton.setOnClickListener(new View.OnClickListener() {
@@ -4426,10 +6015,18 @@ public class GameplayScreen extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "This skill will be unlocked at level " + CurrentUserInformation.getInstance().userSkillsCollection.get("for").getUnlockableAtLevel().toString() + "!", Toast.LENGTH_SHORT).show();
                 }
             });
+
+            secondLineLoopsSkillBarLayout.removeView(forButton);
+            secondLineLoopsSkillBarLayout.addView(forButton);
+
+            setGoBackToSkillBarButtonFromLoops();
         }
     }
 
     private void setGoBackToSkillBarButtonFromLoops() {
+
+        LinearLayout secondLineLoopsSkillBarLayout = (LinearLayout) findViewById(R.id.secondLineLoopsSkillBarLayout);
+
         goBackToSkillBarButtonFromLoops = (TextView) findViewById(R.id.goBackToSkillBarButtonFromLoops);
         goBackToSkillBarButtonFromLoops.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -4438,6 +6035,9 @@ public class GameplayScreen extends AppCompatActivity {
                 mainSkillBarLayout.setVisibility(View.VISIBLE);
             }
         });
+
+        secondLineLoopsSkillBarLayout.removeView(goBackToSkillBarButtonFromLoops);
+        secondLineLoopsSkillBarLayout.addView(goBackToSkillBarButtonFromLoops);
     }
 
     //Items bar menu buttons on click listener; useHealthPotionButton, useRevealingPotionButton, useFixerElixirButton, goBackToMainMenuButtonFromItemsBar;

@@ -112,6 +112,7 @@ public class InventoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent storyMode = new Intent("android.intent.action.ChapterSelectorActivity");
                 startActivity(storyMode);
+                finish();
             }
         });
     }
@@ -143,6 +144,7 @@ public class InventoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent profileMode = new Intent("android.intent.action.ProfileViewActivity");
                 startActivity(profileMode);
+                finish();
             }
         });
     }
@@ -154,6 +156,7 @@ public class InventoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent friendsMode = new Intent("android.intent.action.FriendsView");
                 startActivity(friendsMode);
+                finish();
             }
         });
     }
@@ -165,6 +168,7 @@ public class InventoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent inventory_intent = new Intent("android.intent.action.InventoryActivity");
                 startActivity(inventory_intent);
+                finish();
             }
         });
     }
@@ -176,6 +180,7 @@ public class InventoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent shop_intent = new Intent("android.intent.action.ShopActivity");
                 startActivity(shop_intent);
+                finish();
             }
         });
     }
@@ -187,6 +192,7 @@ public class InventoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent settings_intent = new Intent("android.intent.action.SettingsScreen");
                 startActivity(settings_intent);
+                finish();
             }
         });
     }
