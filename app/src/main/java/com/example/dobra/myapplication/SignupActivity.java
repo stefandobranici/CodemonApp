@@ -33,7 +33,10 @@ import org.w3c.dom.Text;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -214,6 +217,15 @@ public class SignupActivity extends AppCompatActivity {
         CurrentUserInformation.getInstance().getUserProgressionStatus();
 
         writeData(userID +"\n" + userPW);
+
+        String currentUser = mAuth.getCurrentUser().getUid();
+
+        DatabaseReference lastLoggedInRef = mDatabase.getReference("Users").child(currentUser).child("User Information").child("LastLoggedIn");
+
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+
+        lastLoggedInRef.setValue(dateFormat.format(date));
 
         Intent login_intent = new Intent("android.intent.action.ModeSelectorActivity");
 

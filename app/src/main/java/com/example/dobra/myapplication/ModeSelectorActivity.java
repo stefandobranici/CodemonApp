@@ -12,6 +12,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +32,12 @@ public class ModeSelectorActivity extends AppCompatActivity {
 
     private DatabaseReference modeSelectorReference;
 
+    private LinearLayout selectModeWarningLayout;
+
+    private TextView modeSelectedExplanation, acceptModeSelected, declineModeSelected;
+
+    private String modeSelectedString;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -41,6 +49,15 @@ public class ModeSelectorActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         modeSelectorReference = mDatabase.getReference("Users").child(mAuth.getCurrentUser().getUid()).child("User Information").child("Mode");
+
+        selectModeWarningLayout = (LinearLayout) findViewById(R.id.selectModeWarningLayout);
+
+        modeSelectedExplanation = (TextView) findViewById(R.id.modeSelectedExplanation);
+
+        modeSelectedString = "";
+
+        setAcceptModeSelectedOnClickListener();
+        setDeclineModeSelected();
 
         binauralBeatsButtonOnClickListener();
         mnemonicsButtonOnClickListener();
@@ -54,11 +71,17 @@ public class ModeSelectorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                modeSelectorReference.setValue("binaural");
+                modeSelectedExplanation.setText("Enhance your learning experience through the use of brain waves!\n\nNote that the use of headphones is required at all times in this mode!");
+
+                selectModeWarningLayout.setVisibility(View.VISIBLE);
+
+                modeSelectedString = "binaural";
+
+/*                modeSelectorReference.setValue("binaural");
 
                 Intent goToMainMenu = new Intent("android.intent.action.MenuScreenActivity");
                 startActivity(goToMainMenu);
-                finish();
+                finish();*/
             }
         });
     }
@@ -70,11 +93,18 @@ public class ModeSelectorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                modeSelectorReference.setValue("mnemonics");
+                modeSelectedExplanation.setText("The Mnemonics learning mode allows you to draw concepts in the way that you imagine them!\n\nUse your creativity to learn and remember difficult concepts!");
+
+                selectModeWarningLayout.setVisibility(View.VISIBLE);
+
+                modeSelectedString = "mnemonics";
+
+
+              /*  modeSelectorReference.setValue("mnemonics");
 
                 Intent goToMainMenu = new Intent("android.intent.action.MenuScreenActivity");
                 startActivity(goToMainMenu);
-                finish();
+                finish();*/
             }
         });
     }
@@ -86,11 +116,44 @@ public class ModeSelectorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                modeSelectorReference.setValue("plain");
+                modeSelectedExplanation.setText("The Plain learning mode offers no additional features to enhance your learning experience.\n\nChoose this mode if you prefer a simple learning experience!");
+
+                selectModeWarningLayout.setVisibility(View.VISIBLE);
+
+                modeSelectedString = "plain";
+
+
+/*                modeSelectorReference.setValue("plain");
+
+                Intent goToMainMenu = new Intent("android.intent.action.MenuScreenActivity");
+                startActivity(goToMainMenu);
+                finish();*/
+            }
+        });
+    }
+
+    private void setAcceptModeSelectedOnClickListener(){
+        acceptModeSelected = (TextView) findViewById(R.id.acceptModeSelected);
+        acceptModeSelected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modeSelectorReference.setValue(modeSelectedString);
 
                 Intent goToMainMenu = new Intent("android.intent.action.MenuScreenActivity");
                 startActivity(goToMainMenu);
                 finish();
+            }
+        });
+    }
+
+    private void setDeclineModeSelected(){
+        declineModeSelected = (TextView) findViewById(R.id.declineModeSelected);
+        declineModeSelected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectModeWarningLayout.setVisibility(View.GONE);
+
+                modeSelectedString = "";
             }
         });
     }

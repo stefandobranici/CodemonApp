@@ -771,6 +771,8 @@ public class CurrentUserInformation {
 
         userProfilePicture.setValue("https://firebasestorage.googleapis.com/v0/b/myapplication-9586f.appspot.com/o/Profile%2Fprofilepic.png?alt=media&token=1d0d0f95-4d1c-475a-bc36-4ddb79b49955");
 
+        currentEquippedItem = "Basic";
+
         DatabaseReference userCurrentlyEquippedItemRef = userInformation.child("EquippedItem");
 
         userCurrentlyEquippedItemRef.setValue("Basic");

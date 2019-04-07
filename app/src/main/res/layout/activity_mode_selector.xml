@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:src="@drawable/binauralbeats2" />
+            android:src="@drawable/binauralbeats3" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -39,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:src="@drawable/mnemonics" />
+            android:src="@drawable/mnemonics2" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -51,6 +51,79 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:src="@drawable/plain" />
+            android:src="@drawable/plain2" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/selectModeWarningLayout"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:background="@drawable/popupbackground"
+        android:weightSum="4">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.25" />
+        <TextView
+            android:id="@+id/modeSelectedExplanation"
+            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_weight="2.8"
+            android:fontFamily="@font/cyberverse"
+            android:paddingTop="17dp"
+            android:text=""
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal"
+            android:weightSum="3">
+            <TextView
+                android:id="@+id/acceptModeSelected"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1.3"
+                android:fontFamily="@font/cyberverse"
+                android:text="Accept"
+                android:textAlignment="center"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/colorAccent"
+                android:textSize="30sp"
+                android:background="@drawable/plain"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="0.4"
+                android:fontFamily="@font/cyberverse"
+                android:paddingTop="7dp"
+                android:text=""
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/declineModeSelected"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1.3"
+                android:fontFamily="@font/cyberverse"
+                android:text="Cancel"
+                android:textAlignment="center"
+                android:layout_gravity="center_vertical"
+                android:textColor="#DC143C"
+                android:textSize="30sp"
+                android:background="@drawable/plain"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>

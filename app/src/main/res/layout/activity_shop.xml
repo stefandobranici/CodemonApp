@@ -81,7 +81,7 @@
                     android:layout_weight="0.8"
                     android:fontFamily="@font/cyberverse"
                     android:paddingTop="18dp"
-                    android:text="50 x"
+                    android:text="25 x"
                     android:textColor="@color/colorAccent"
                     android:textSize="25sp" />
 

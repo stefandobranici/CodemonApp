@@ -1166,7 +1166,7 @@ public class GameplayScreen extends AppCompatActivity {
 
             chestBoxTwoReward.setVisibility(View.VISIBLE);
 
-            chestBoxTwoReward.setImageResource(R.drawable.cybercoins);
+            chestBoxTwoReward.setImageResource(R.drawable.fixerelixer);
 
             chestBoxTwoRewardText.setVisibility(View.VISIBLE);
 
@@ -1364,7 +1364,7 @@ public class GameplayScreen extends AppCompatActivity {
 
             chestBoxThreeReward.setVisibility(View.VISIBLE);
 
-            chestBoxThreeReward.setImageResource(R.drawable.cybercoins);
+            chestBoxThreeReward.setImageResource(R.drawable.fixerelixer);
 
             chestBoxThreeRewardText.setVisibility(View.VISIBLE);
 
@@ -1789,7 +1789,7 @@ public class GameplayScreen extends AppCompatActivity {
 
             chestBoxTwoReward.setVisibility(View.VISIBLE);
 
-            chestBoxTwoReward.setImageResource(R.drawable.cybercoins);
+            chestBoxTwoReward.setImageResource(R.drawable.fixerelixer);
 
             chestBoxTwoRewardText.setVisibility(View.VISIBLE);
 
@@ -2001,7 +2001,7 @@ public class GameplayScreen extends AppCompatActivity {
 
             chestBoxThreeReward.setVisibility(View.VISIBLE);
 
-            chestBoxThreeReward.setImageResource(R.drawable.cybercoins);
+            chestBoxThreeReward.setImageResource(R.drawable.fixerelixer);
 
             chestBoxThreeRewardText.setVisibility(View.VISIBLE);
 
@@ -2402,7 +2402,7 @@ public class GameplayScreen extends AppCompatActivity {
 
             chestBoxTwoReward.setVisibility(View.VISIBLE);
 
-            chestBoxTwoReward.setImageResource(R.drawable.cybercoins);
+            chestBoxTwoReward.setImageResource(R.drawable.fixerelixer);
 
             chestBoxTwoRewardText.setVisibility(View.VISIBLE);
 
@@ -2624,7 +2624,7 @@ public class GameplayScreen extends AppCompatActivity {
 
             chestBoxThreeReward.setVisibility(View.VISIBLE);
 
-            chestBoxThreeReward.setImageResource(R.drawable.cybercoins);
+            chestBoxThreeReward.setImageResource(R.drawable.fixerelixer);
 
             chestBoxThreeRewardText.setVisibility(View.VISIBLE);
 

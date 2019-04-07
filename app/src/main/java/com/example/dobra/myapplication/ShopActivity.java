@@ -56,7 +56,7 @@ public class ShopActivity extends AppCompatActivity {
         purchaseChestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(CurrentUserInformation.getInstance().getUserCoins()>=50) {
+                if(CurrentUserInformation.getInstance().getUserCoins()>=25) {
                     chestBoughtLayout.setVisibility(View.VISIBLE);
                 } else {
                     Toast.makeText(getApplicationContext(), "Not enough CyberCoins!", Toast.LENGTH_SHORT).show();
@@ -77,15 +77,26 @@ public class ShopActivity extends AppCompatActivity {
         rewardPool.put(9, "TopHat");
         rewardPool.put(10, "WizardHat");
 
-        for(int i = 11; i <= 20; i++){
+        rewardPool.put(11, "CaptainHat");
+        rewardPool.put(12, "CowboyHat");
+        rewardPool.put(13, "FarmerHat");
+        rewardPool.put(14, "Headphones");
+        rewardPool.put(15, "KingCrown");
+        rewardPool.put(16, "NinjaHat");
+        rewardPool.put(17, "PirateHat");
+        rewardPool.put(18, "SpaceHelmet");
+        rewardPool.put(19, "TopHat");
+        rewardPool.put(20, "WizardHat");
+
+        for(int i = 21; i <= 30; i++){
             rewardPool.put(i, "FixerElixer");
         }
 
-        for(int i = 21; i <= 50; i++){
+        for(int i = 31; i <= 60; i++){
             rewardPool.put(i, "RevealingPotion");
         }
 
-        for(int i = 51; i <= 100; i++){
+        for(int i = 61; i <= 100; i++){
             rewardPool.put(i, "HealingPotion");
         }
     }
@@ -326,8 +337,8 @@ public class ShopActivity extends AppCompatActivity {
         chestBoxTwoShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(CurrentUserInformation.getInstance().getUserCoins()>=50) {
-                    CurrentUserInformation.getInstance().setUserCoins(-50);
+                if(CurrentUserInformation.getInstance().getUserCoins()>=25) {
+                    CurrentUserInformation.getInstance().setUserCoins(-25);
 
                     generateDropReward();
 
@@ -472,8 +483,8 @@ public class ShopActivity extends AppCompatActivity {
         chestBoxThreeShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(CurrentUserInformation.getInstance().getUserCoins()>=50) {
-                    CurrentUserInformation.getInstance().setUserCoins(-50);
+                if(CurrentUserInformation.getInstance().getUserCoins()>=25) {
+                    CurrentUserInformation.getInstance().setUserCoins(-25);
 
                     generateDropReward();
 
